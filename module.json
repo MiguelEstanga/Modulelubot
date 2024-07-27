@@ -1,0 +1,11 @@
+{
+    "name": "Lubot",
+    "alias": "lubot",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Lubot\\Providers\\LubotServiceProvider"
+    ],
+    "files": []
+}
