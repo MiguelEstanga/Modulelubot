@@ -50,7 +50,7 @@ class CampanaTable extends BaseDataTable
             ->rawColumns(['action', 'ver_segmentos' , 'activate_campaigns']); // Permitir HTML en estas columnas
             
     }
-
+ 
     public function query()
     {
         $query = DB::table('campanas')
