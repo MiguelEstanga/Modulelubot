@@ -16,6 +16,8 @@ Route::prefix('lubot')->group(function() {
     Route::get('/', 'LubotController@index')->name('lubot.admin');
     Route::get('/activacion', 'LubotController@Activacion')->name('lubot.admin');
     Route::post('/activacion', [LubotController::class , 'activacion_post'])->name('lubot.activacion');
+    Route::get('/activacion/default', [LubotController::class , 'datas_compania'])->name('lubot.default_compania');
+
     //Route::get('/activacion', 'LubotController@Activacion')->name('lubot.admin');
 
     
@@ -25,6 +27,6 @@ Route::prefix('lubot')->group(function() {
     Route::get('/ver/cmapañas/eliminar/{id}', 'CampanasController@eliminar')->name('campanas.eliminar');
     Route::get('/ver/cmapanas/cambiar_estado/{id}', 'CampanasController@cambiar')->name('cambiar.estado');
     Route::get('/ver/cmapanas/segmemtos/{id}', 'CampanasController@campana_segmentos')->name('campana_segmentes');
-    Route::get('test', 'LubotController@probar')->name('probarbot');
+    Route::get('test', 'LubotController@probar')->name('probarbot'); 
 
 });

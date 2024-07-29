@@ -1,25 +1,19 @@
 @extends('layouts.app')
 @section('content')
     @if(in_array('admin', user_roles()))
-        <div class="content-wrapper" style="width: 70vw;">
+    <div class="container" style="margin-left: 0!important;">
             <div class="d-flex  ">
 
                 @include('lubot::component.menu-configuracion-lubot')
                 <x-setting-card>
-                    <div class="container">
+                   
                         <x-slot name="header">
-                            <div class="s-b-n-header" id="tabs">
+                          
                                 <h2 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
                                     seleccion de semento    
                                    
                                 </h2>
-                            </div>
-                        </x-slot>
-                    </div>
-                 
-                    <div class="container">
-                      
-                        <x-slot name="action">
+                            
                             <div class="" style="border-radius: 10px; box-shadow:10px rgba(0,0,0,..5); padding:10px;" >
                                 <form action="{{route('campanas.stores')}}" method="POST">
                                     @csrf
@@ -120,31 +114,29 @@
                                                     <div class="col-md-2">
                                                         <x-forms.select fieldId="remind_type" fieldLabel="pais" fieldName="pais[]"
                                                         search="true">
-                                                        <option value="1">Colombia</option>
-                                                             </x-forms.select>
+                                                          
+                                                            <option value="1">pais1</option>
+                                                        </x-forms.select>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <x-forms.select 
                                                             fieldId="remind_type" 
-                                                            fieldLabel="ciudad" 
+                                                            
                                                             fieldName="ciudad[]"
                                                             search="true">
-                                                            <option value="1">bogota</option>
-                                                            <option value="2">Medallin</option>
-                                                            <option value="3">Cali</option>
-                                                            <option value="4">Barranquilla</option>
+                                                            <option value="1">
+                                                                Ciudad1
+                                                            </option>
+                                                           
                                                         </x-forms.select>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <x-forms.select 
                                                         fieldId="remind_type" 
-                                                        fieldLabel="barrio" 
+                                                       
                                                         fieldName="barrio[]"
                                                         search="true">
-                                                        <option value="1">Marsella</option>
-                                                        <option value="2">Villa Alsacia</option>
-                                                        <option value="3">Las Dos Avenidas</option>
-                                                        <option value="4">El Nogal</option>
+                                                        <option value="1">barrio1</option>
                                                         </x-forms.select>
                                                     </div>
                                                     <div class="col-md-2">
@@ -153,10 +145,8 @@
                                                        
                                                         fieldName="segmento[]"
                                                         search="true">
-                                                        <option value="1">ferreteria</option>
-                                                        <option value="2">suministros para odontologia</option>
-                                                        <option value="3">odontologo</option>
-                                                        <option value="4">constructora</option>
+                                                        <option value="1">segmento1</option>
+                                                        
                                                          </x-forms.select>
                                                     </div>
                                                     <div class="col-md-3">
@@ -178,12 +168,19 @@
                                     </div>
                                 </form>
                             </div>
+                        
                         </x-slot>
-                    </div>
+                    
+                 
+                    
                     
                 </x-setting-card>
         
             </div>
+            <script>
+    
+
+            </script>
             <script>
                 const limit = 30;
                 document.getElementById('con_propm').style.display = 'none';
@@ -210,31 +207,26 @@
                             <div class="col-md-2">
                                                         <x-forms.select fieldId="remind_type" fieldLabel="pais" fieldName="pais[]"
                                                         search="true">
-                                                        <option value="1">Colombia</option>
-                                                             </x-forms.select>
+                                                          
+                                                       
+                                                        </x-forms.select>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <x-forms.select 
                                                             fieldId="remind_type" 
-                                                            fieldLabel="ciudad" 
+                                                            
                                                             fieldName="ciudad[]"
                                                             search="true">
-                                                            <option value="1">bogota</option>
-                                                            <option value="2">Medallin</option>
-                                                            <option value="3">Cali</option>
-                                                            <option value="4">Barranquilla</option>
+                                                           
                                                         </x-forms.select>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <x-forms.select 
                                                         fieldId="remind_type" 
-                                                        fieldLabel="barrio" 
+                                                       
                                                         fieldName="barrio[]"
                                                         search="true">
-                                                        <option value="1">Marsella</option>
-                                                        <option value="2">Villa Alsacia</option>
-                                                        <option value="3">Las Dos Avenidas</option>
-                                                        <option value="4">El Nogal</option>
+                                                       
                                                         </x-forms.select>
                                                     </div>
                                                     <div class="col-md-2">
@@ -243,10 +235,9 @@
                                                        
                                                         fieldName="segmento[]"
                                                         search="true">
-                                                        <option value="1">ferreteria</option>
-                                                        <option value="2">suministros para odontologia</option>
-                                                        <option value="3">odontologo</option>
-                                                        <option value="4">constructora</option>
+                                                      
+                                                      
+                                                        
                                                          </x-forms.select>
                                                     </div>
                                                     <div class="col-md-3">

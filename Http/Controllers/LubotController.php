@@ -25,6 +25,8 @@ class LubotController extends AccountBaseController
             }
         );
     }
+
+    protected $ACTIVAR_BOT= "https://1b1f-186-114-249-60.ngrok-free.app/api/testBot";
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -49,6 +51,13 @@ class LubotController extends AccountBaseController
         $this->data['numero']= $this->data['data_companias']->numero ?? "";
         return view('lubot::activacion.index' , $this->data);
     }
+
+    public function datas_compania()
+    {
+       $data = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->first();
+       return response()->json($data);
+    }
+
     public function activacion_post(Request $request)
     {
        
@@ -75,10 +84,10 @@ class LubotController extends AccountBaseController
     }
     public function probar(){
         $response = Http::withHeaders(['Accept' => 'application/json'])
-        ->get('https://1b1f-186-114-249-60.ngrok-free.app/api/testBot');
-        $clientes = $response->body();
+        ->get("{$this->ACTIVAR_BOT}/{$this->data['company']['id']}/2");
+        $clientes = $response;
         return json_encode(['ok' => 'ok']);
-        return 'ejecutando bot';
+        
     }
 
     

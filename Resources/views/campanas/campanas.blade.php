@@ -16,35 +16,20 @@
     }
 @endphp
    @if(in_array('admin', user_roles()))
-   <div style="width: 70vw;">
-        <div class="d-flex  ">
+   <div class="container" style="margin-left: 0!important;">
+        <div class="d-flex " >
             @include('lubot::component.menu-configuracion-lubot')
-            <x-setting-card>
-                <div class="container">
-                    <x-slot name="header">
-                        <div class="s-b-n-header" id="tabs">
-                            <h2 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
-                                seleccion de semento    
-                            </h2>
-                        </div>
-                    </x-slot>
-                    <x-slot name="action" >
-                        <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
-                     
-                           
-                            <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
-
-                                {!! $dataTable->table(['class' => 'table table-hover border-0 w-100']) !!}
-
-                            </div>
-                        </div>
-                       
-
-                    </x-slot>
-                </div>
-            </x-setting-card>    
+                <x-setting-card>
+                        <x-slot name="header">
+                                <h2 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
+                                    seleccion de semento    
+                                </h2>
+                                {{$dataTable->table(['class' => 'table table-hover border-0 w-100'])}}
+                        </x-slot>
+                </x-setting-card>    
+            </div>
             
-        </div>
+        
    </div>
    <script>
         document.addEventListener("DOMContentLoaded", (event) => {
@@ -65,18 +50,12 @@
         })
    </script>
 @endif
-        <div class="container-fluid"></div>
+    <div class="container-fluid"></div>
 @endsection
  
 
 
-<style>
-    .th{
-       text-align: center;
-       font-weight: 300!important;
-       font-size: 12px!important;
-    }
-</style>
+
 
 @push('scripts')
     @include('sections.datatable_js')
@@ -280,3 +259,8 @@
        
     </script>
 @endpush
+<style>
+    .{
+        margin-left: 270;
+    }
+</style>

@@ -26,11 +26,20 @@ class CampanasController extends AccountBaseController
             }
         );
     }
+
+    protected $ACTIVAR_BOT= "https://1b1f-186-114-249-60.ngrok-free.app/api/testBot";
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-
+     protected $API_LUBOT_MASTER = 'https://lubot.healtheworld.com.co/api';
+     
+     protected $API_LUBOT_ENDPOINT = [
+        'paises' => "paises",
+        'segmentos' => 'tipos_negocios',
+        'barrios' => 'barrios',
+        'ciudades' => 'ciudades'
+     ];
      public function Lubot()
     {
         if ( Schema::hasTable('lubot') ) {
@@ -91,9 +100,39 @@ class CampanasController extends AccountBaseController
             //pisa papeles 
         }
     }
+
+    //returno de paises lubot_master
+    public function paises(){
+       $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$this->API_LUBOT_MASTER}/{$this->API_LUBOT_ENDPOINT['paises']}");
+       $data = json_decode($response ,true );
+       return $data;
+    }
+
+    public function segmentos(){
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$this->API_LUBOT_MASTER}/{$this->API_LUBOT_ENDPOINT['segmentos']}");
+        $data = json_decode($response ,true );
+        return $data;
+     }
+
+     public function barrios(){
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$this->API_LUBOT_MASTER}/{$this->API_LUBOT_ENDPOINT['barrios']}");
+        $data = json_decode($response ,true );
+        return $data;
+     }
+
+     public function ciudades(){
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$this->API_LUBOT_MASTER}/{$this->API_LUBOT_ENDPOINT['ciudades']}");
+        $data = json_decode($response ,true );
+        return $data;
+     }
+
     public function index()
     {
-        $this->activeMenu = 'lubot';
+        //$this->data['ciudades'] = $this->ciudades() ?? [];
+        //$this->data['segmentos'] = $this->segmentos() ?? [];
+        //$this->data['barrios'] = $this->barrios() ?? [];
+        //$this->data['paises'] = $this->paises() ?? [];
+        //$this->activeMenu = 'lubot';
         return view('lubot::campanas.index' , $this->data);
     }
 
@@ -102,7 +141,10 @@ class CampanasController extends AccountBaseController
         if(!Schema::hasTable('campanas') ) return back();
         if(!Schema::hasTable('segmentos')) return back();
         if(!Schema::hasTable('prompts')  ) return back();
-       // return $request;
+       
+        
+        
+        
         $data_promps = [];
         if($request->input('pregunta')){
             
@@ -151,7 +193,9 @@ class CampanasController extends AccountBaseController
                 );
             }
 
-        $this->Lubot();
+        //$this->Lubot();
+        $response = Http::withHeaders(['Accept' => 'application/json'])
+        ->get("{$this->ACTIVAR_BOT}/{$this->data['company']['id']}/{$campana->id}");
         return redirect()->route('ver_campanas.todas');
        
       
