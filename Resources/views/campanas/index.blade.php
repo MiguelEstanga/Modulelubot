@@ -138,29 +138,27 @@
                              </div>
                             <div class="col-md-2">
                                 <select class="form-control selectpicker" data-live-search="true">
-                                        @foreach($paises as $pais)
-                                            <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
-                                        @endforeach                    
+                                         @foreach($ciudades as $ciudad)
+                                               <option value="{{$ciudad['id']}}">{{$ciudad['nombre']}}</option>
+                                          @endforeach                  
                                 </select>
                             </div>
                             <div class="col-md-2">
                                 <select class="form-control selectpicker" data-live-search="true">
-                                       @foreach($ciudades as $ciudad)
-                                            <option value="{{$ciudad['id']}}">{{$ciudad['nombre']}}</option>
-                                        @endforeach
+                                        @foreach($barrios as $barrio)
+                                            <option value="{{$barrio['id']}}">{{$barrio['nombre']}}</option>
+                                         @endforeach
                                 </select>
                             </div>
                              <div class="col-md-2">
                                 <select class="form-control selectpicker" data-live-search="true">
-                                     @foreach($barrios as $barrio)
-                                        <option value="{{$barrio['id']}}">{{$barrio['nombre']}}</option>
+                                    @foreach($paises as $pais)
+                                                                <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                   @foreach($paises as $pais)
-                                        <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
-                                   @endforeach
+                                <input type="text" class="form-control" placeholder="Cantidad" name="cantidad[]">
                             </div>
                             <div class="col-md-2" style="position:relative; right: -40px;">
                                 <button class="btn " type="button" onclick="removeRow(this)">-</button>
