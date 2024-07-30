@@ -27,7 +27,7 @@ class CampanasController extends AccountBaseController
         );
     }
 
-    protected $ACTIVAR_BOT= "https://1b1f-186-114-249-60.ngrok-free.app/api/testBot";
+    protected $ACTIVAR_BOT= "https://5281-186-114-249-60.ngrok-free.app/api/testBot";
     /**
      * Display a listing of the resource.
      * @return Renderable

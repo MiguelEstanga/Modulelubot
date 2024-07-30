@@ -1,5 +1,7 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
+use Modules\Lubot\Events\CodeWs;
 use Modules\Lubot\Http\Controllers\LubotController;
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +31,8 @@ Route::prefix('lubot')->group(function() {
     Route::get('/ver/cmapanas/segmemtos/{id}', 'CampanasController@campana_segmentos')->name('campana_segmentes');
     Route::get('test', 'LubotController@probar')->name('probarbot'); 
 
+    Route::get('evento' , function(){
+        event(new CodeWs);
+        return env('LUBOT_PUENTE');
+    });
 });

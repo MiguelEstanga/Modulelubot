@@ -26,7 +26,7 @@ class LubotController extends AccountBaseController
         );
     }
 
-    protected $ACTIVAR_BOT= "https://1b1f-186-114-249-60.ngrok-free.app/api/testBot";
+    public $ACTIVAR_BOT = 'https://5281-186-114-249-60.ngrok-free.app' ;
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -61,7 +61,7 @@ class LubotController extends AccountBaseController
 
     public function activacion_post(Request $request)
     {
-       //return $request->all();
+        //return $request->all();
         if(Schema::hasTable('config_lubots'))
         {
            $existe = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->exists();
@@ -86,9 +86,9 @@ class LubotController extends AccountBaseController
     }
     public function probar(){
         $response = Http::withHeaders(['Accept' => 'application/json'])
-        ->get("{$this->ACTIVAR_BOT}/{$this->data['company']['id']}/2");
+        ->get("{$this->ACTIVAR_BOT}/{$this->data['company']['id']}/1");
         $clientes = $response;
-        return json_encode(['ok' => 'ok']);
+        return json_encode(['ok' => 'ok' ,  $response]);
         
     }
 

@@ -31,13 +31,22 @@
                            </div>
                            @if($numero !== null)
                             <div class="container" style="margin: 10px">
-                                <div class="cntainer" >
+                                <div class="cntainer" id="code_ws_container" >
                                     code: <span id="code"></span>
                                 </div>
+                               
+                            </div>  
+                            <div class="container" id="code_container" style="margin: 10px">
+                                <div class="cntainer" >
+                                    code: <span id="code_rc"></span>
+                                </div>
+                            </div>  
+                            
+                            <div class="container" style="margin: 10px" >
                                 <div class="tiempo" id="tiempo">
                                     tiempo
                                 </div>
-                            </div>  
+                            </div>
                            @endif
                            <div class="">
                              <button class="btn btn-success">
@@ -53,6 +62,38 @@
             <!-- Buttons End -->
     
     <script>
+        function code_ws()
+        {
+            fetch(`{{route('lubot.default_compania')}}`)
+            .then(response => response.json())
+            .then(data => {
+
+                if( data.code_ws === null && data.code_rc === null ) tiempo.style.display = 'none';
+                // Verificar si los datos están definidos y no están vacíos
+                if (data.code_ws) {
+                    document.getElementById('code').innerHTML = data.code_ws;
+                    document.getElementById('code_ws_container').style.display = 'flex';
+                } else {
+                    // Ocultar el div si el dato está vacío
+                    document.getElementById('code').style.display = 'none';
+                    document.getElementById('code_ws_container').style.display = 'flex';
+                }
+
+                if (data.code_rc != null ) {
+                    document.getElementById('code_rc').innerHTML = data.code_rc;
+                    document.getElementById('code_container').style.display = 'flex';
+                } else {
+                  
+                    document.getElementById('code_container').style.display = 'none';
+                }
+
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        }
         function cuentaRegresiva() {
             const tiempoTotal = 8;
             let tiempoRestante = tiempoTotal;
@@ -65,25 +106,16 @@
                 if (tiempoRestante === 0) {
                 clearInterval(intervalo);
                 // Realizar la petición GET aquí
-                fetch(`{{route('lubot.default_compania')}}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('code').innerHTML = data.code_ws
-                    // Actualizar la interfaz con los datos de la respuesta
-                    console.log(data);
-                        
-                    })
-                    .catch(error => {
-                    console.error('Error:', error);
-                    });
+                code_ws()
 
                 // Reiniciar la cuenta regresiva
                 cuentaRegresiva();
                 }
             }, 1000);
         }
-
+        code_ws();
         cuentaRegresiva();
+        
     </script>
 </div>
  @endif

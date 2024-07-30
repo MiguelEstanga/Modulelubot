@@ -18,5 +18,22 @@
             </div>
             
         </div>
+        <script>
+            document.getElementById('lubot_test').addEventListener('click', ()=>{
+                document.getElementById('lubot_test').innerText = "Procesando...";
+                alert('iniciando proceso');
+                // Realizar la solicitud AJAX al servidor
+                fetch(`{{route('probarbot')}}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Raw data:', data); // Log de datos crudos para inspección
+                        document.getElementById('lubot_test').innerText = "ok";
+                    })
+                    .catch(error => {
+                        console.error('Error en la solicitud:', error);
+                        document.getElementById('lubot_test').innerText = "Error de comunicación";
+                    });
+            });
+        </script>
     </x-menu-item>
 
