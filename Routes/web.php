@@ -19,10 +19,10 @@ Route::prefix('lubot')->group(function() {
     Route::get('/activacion/default', [LubotController::class , 'datas_compania'])->name('lubot.default_compania');
 
     //Route::get('/activacion', 'LubotController@Activacion')->name('lubot.admin');
+    Route::get('/get_row', 'CampanasController@get_segmentos_fila')->name('campanas.get_row');
 
-    
-    Route::get('/cmapañas', 'CampanasController@index')->name('campanas.index');
-    Route::post('/cmapañas', 'CampanasController@campanas_stores')->name('campanas.stores');
+    Route::get('/camapañas', 'CampanasController@index')->name('campanas.index');
+    Route::post('/camapañas', 'CampanasController@campanas_stores')->name('campanas.stores');
     Route::get('/ver/cmapañas', 'CampanasController@ver_campanas')->name('ver_campanas.todas');
     Route::get('/ver/cmapañas/eliminar/{id}', 'CampanasController@eliminar')->name('campanas.eliminar');
     Route::get('/ver/cmapanas/cambiar_estado/{id}', 'CampanasController@cambiar')->name('cambiar.estado');

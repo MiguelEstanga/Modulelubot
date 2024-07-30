@@ -16,21 +16,15 @@
     }
 @endphp
    @if(in_array('admin', user_roles()))
-   <div class="container" style="margin-left: 0!important;">
-        <div class="d-flex " >
-            @include('lubot::component.menu-configuracion-lubot')
-                <x-setting-card>
-                        <x-slot name="header">
-                                <h2 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
-                                    seleccion de semento    
-                                </h2>
-                                {{$dataTable->table(['class' => 'table table-hover border-0 w-100'])}}
-                        </x-slot>
-                </x-setting-card>    
-            </div>
+
+   <div class="content-wrapper" >
+           
+        {{$dataTable->table(['class' => 'table table-hover border-0 w-100'])}}
+               
+    </div>
             
         
-   </div>
+   
    <script>
         document.addEventListener("DOMContentLoaded", (event) => {
             let url = `{{route('cambiar.estado' , '*')}}`;

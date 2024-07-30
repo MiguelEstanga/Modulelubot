@@ -126,13 +126,23 @@ class CampanasController extends AccountBaseController
         return $data;
      }
 
+    public function get_segmentos_fila()
+    {
+        $this->data['ciudades'] = $this->ciudades() ?? [];
+        $this->data['segmentos'] = $this->segmentos() ?? [];
+        $this->data['barrios'] = $this->barrios() ?? [];
+        $this->data['paises'] = $this->paises() ?? [];
+        $view = view('partials.form-row', compact('paises', 'barrios', 'segmentos'))->render();
+        return response()->json(['html' => $view]);
+       
+    }
     public function index()
     {
-        //$this->data['ciudades'] = $this->ciudades() ?? [];
-        //$this->data['segmentos'] = $this->segmentos() ?? [];
-        //$this->data['barrios'] = $this->barrios() ?? [];
-        //$this->data['paises'] = $this->paises() ?? [];
-        //$this->activeMenu = 'lubot';
+        $this->data['ciudades'] = $this->ciudades() ?? [];
+        $this->data['segmentos'] = $this->segmentos() ?? [];
+        $this->data['barrios'] = $this->barrios() ?? [];
+        $this->data['paises'] = $this->paises() ?? [];
+        $this->activeMenu = 'lubot';
         return view('lubot::campanas.index' , $this->data);
     }
 

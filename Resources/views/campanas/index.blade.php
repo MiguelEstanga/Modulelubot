@@ -1,357 +1,265 @@
 @extends('layouts.app')
 @section('content')
-    @if(in_array('admin', user_roles()))
-    <div class="container" style="margin-left: 0!important;">
-            <div class="d-flex  ">
-
-                @include('lubot::component.menu-configuracion-lubot')
-                <x-setting-card>
-                   
-                        <x-slot name="header">
-                          
-                                <h2 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
-                                    seleccion de semento    
-                                   
-                                </h2>
-                            
-                            <div class="" style="border-radius: 10px; box-shadow:10px rgba(0,0,0,..5); padding:10px;" >
+    @if(in_array('admin', user_roles())) 
+                            <div class="content-wrapper"  >
                                 <form action="{{route('campanas.stores')}}" method="POST">
                                     @csrf
                                     @method('POST')
-                                    <div class="row">   
-                                        <div class="col-md-6">
+                                    <div class=" container">   
+                                        <div class="col-md-12">
                                             <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldLabel="Nombre de la campana" fieldPlaceholder="Nombre de la campana" fieldName="nombre_campanas"
                                             fieldRequired="true" fieldId="contract_prefix" fieldValue="" />
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <x-forms.select fieldId="remind_type" fieldLabel="Objetivo de lubot" fieldName="remind_type"
                                             search="true">
                                                 <option value="">Selecciona un objetivo</option>
                                             </x-forms.select>
                                         </div>
-                                       
-                                    </div>
 
-                                    <div class="row">
                                         <div class="col-md-12">
-                                            <x-forms.select fieldId="mode" fieldLabel="Modo" fieldName="mode"
+                                            <x-forms.select fieldId="mode" fieldLabel="Modo del bot" fieldName="mode"
                                             search="true">
                                             <option value="1">Propm</option>
-                                            <option selected value="2">Saludo generico</option>
-                                        </x-forms.select>
+                                            <option selected value="2" selected>Saludo generico</option>
+                                            </x-forms.select>
                                         </div>
-                                    </div>
-                                   
-                                    
-                                    <div class="container row" id="con_propm">
-                                        <div class="container col-md-12">
-                                            
-                                            <div class="container">
-                                                <hr>
-                                                <h2 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">Seccion de propmps</h2>
-                                                <div id="form-container"  >
-                                                    <div class="row container mb-2">
-                                                        <div class="col-md-5">
-                                                            <label for="">
-                                                                Si el cliente dice: <span style="color: brown">*</span>
-                                                            </label>
-                                                            <input type="text" class="form-control" placeholder="Pregunta" name="pregunta[]" required>
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            <label for="">
-                                                                lubot debria responder: <span style="color: brown">*</span>
-                                                            </label>
-                                                            <input type="text" class="form-control" placeholder="Respuesta" name="respuesta[]" required>
-                                                        </div>
-                                                        <div class="promps_btn" >
-                                                            <button class="btn btn-success" type="button" onclick="addForm()">
-                                                                +
-                                                            </button>
-                                                        </div>
+                                           
+                                    </div> 
+                                    <div class="container" id="con_propm" style="margin-top:40px;">
+                                            <div id="form-container">
+                                                <div class="row container mb-2 form-row">
+                                                    <div class="col-md-5">
+                                                        <label for="">
+                                                            Si el cliente dice: <span style="color: brown">*</span>
+                                                        </label>
+                                                        <input type="text" class="form-control" placeholder="Pregunta" name="pregunta[]" required>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <label for="">
+                                                            lubot debería responder: <span style="color: brown">*</span>
+                                                        </label>
+                                                        <input type="text" class="form-control" placeholder="Respuesta" name="respuesta[]" required>
+                                                    </div>
+                                                    <div class="promps_btn col-md-2">
+                                                        <button class="btn " type="button" onclick="addForm(this)">
+                                                            +
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                          
-                                        </div>
+                                       
                                     </div>
                                   
-                                    <!--div class="container row">
-                                        <div class="col-md-6" style="margin-top: 20px;">
-                                            <x-forms.select fieldId="remind_type" fieldLabel="Paquete" fieldName="paqute"
-                                            search="true">
-                                                 <option value="">Paquete de 30 msj</option>
-                                            </x-forms.select>
-                                           
-                                        </div>
-                                       
-                                        <div class="row col-md-6" style="width: 300px;margin-top:30px;">
-                                              <div class="col-md-6 form-check">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                                <div 
-                                                    style=" margin:5px 0 0 4px;  padding: :0 0 0 15px;"
-                                                >
-                                                    <p>Si</p>
-                                                </div>
-                                              
-                                              </div>
-                                              <div class="col-md-6 form-check">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                                                <div 
-                                                    style=" margin:5px 0 0 4px;  padding: :0 0 0 10px;"
-                                                >
-                                                    <p>No</p>
-                                                </div>
-                                              </div>
-                                        </div>
-                                    </div -->
-                                    <div class="container">
-                                        <h2 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
-                                            Segmentos
-                                        </h2>
-                                        <div id="input-container">
-                                            <div class="input-row">
-                                               
-                                                    <div class="col-md-2">
-                                                        <x-forms.select fieldId="remind_type" fieldLabel="pais" fieldName="pais[]"
-                                                        search="true">
+                                  
+                                  
+                                  
+                                        
+                                        <div class="container" >
+                                            <hr>
+                                            <div id="input-container">
+                                                <div class="input-row row">
+                                                    <div class="col-md-2 ">
+                                                        <select class="form-control selectpicker" data-live-search="true">
+                                                            @foreach($paises as $pais)
+                                                                <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
+                                                            @endforeach
                                                           
-                                                            <option value="1">pais1</option>
-                                                        </x-forms.select>
+                                                        </select>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <x-forms.select 
-                                                            fieldId="remind_type" 
-                                                            
-                                                            fieldName="ciudad[]"
-                                                            search="true">
-                                                            <option value="1">
-                                                                Ciudad1
-                                                            </option>
-                                                           
-                                                        </x-forms.select>
+                                                        <select class="form-control selectpicker">
+                                                            @foreach($ciudades as $ciudad)
+                                                                <option value="{{$ciudad['id']}}">{{$ciudad['nombre']}}</option>
+                                                             @endforeach
+                                                        </select>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <x-forms.select 
-                                                        fieldId="remind_type" 
-                                                       
-                                                        fieldName="barrio[]"
-                                                        search="true">
-                                                        <option value="1">barrio1</option>
-                                                        </x-forms.select>
+                                                        <select class="form-control selectpicker">
+                                                            @foreach($barrios as $barrio)
+                                                              <option value="{{$barrio['id']}}">{{$barrio['nombre']}}</option>
+                                                             @endforeach
+                                                        </select>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <x-forms.select 
-                                                        fieldId="remind_type" 
-                                                       
-                                                        fieldName="segmento[]"
-                                                        search="true">
-                                                        <option value="1">segmento1</option>
-                                                        
-                                                         </x-forms.select>
+                                                        <select class="form-control selectpicker">
+                                                            @foreach($paises as $pais)
+                                                                <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
+                                                           @endforeach
+                                                        </select>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldPlaceholder="Cantidad" fieldLabel="" fieldName="cantidad"
-                                                         fieldRequired="true" fieldId="contract_prefix" fieldValue="" />
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" placeholder="Cantidad" name="cantidad[]">
                                                     </div>
-                                                    <div class="col-md-3" style="position: relative; bottom:-45px">  
-                                                        <button class="btn btn-success" type="button" onclick="addRow(this)">+</button>
+                                                    <div class="col-md-2" style="position:relative; right: -40px;">
+                                                        <button class="btn" type="button" onclick="addRow()">
+                                                            +
+                                                        </button>
+                                                      
                                                     </div>
-                                                   
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <hr>
-                                    <div class="container">
-                                        <button class="btn btn-success">
-                                            Registrar Campaña
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        
-                        </x-slot>
-                    
-                 
-                    
-                    
-                </x-setting-card>
+                                        <div class="container" style="margin-top:30px ">
+                                            <button class="btn btn-success">
+                                                Registrar campaña
+                                            </button>
+                                        </div>
+                                </div>        
+                     
         
-            </div>
+          
+            
             <script>
-    
+                 con_propm.style.display = "none";
+                mode.addEventListener("change" , function (e) {
+                    console.log(e.target.value)
+                    if(e.target.value == 2 )
+                    {
+                        con_propm.style.display = "none";
+                    }
 
-            </script>
-            <script>
-                const limit = 30;
-                document.getElementById('con_propm').style.display = 'none';
-                document.addEventListener("DOMContentLoaded", (event) => {
-                    document.getElementById('mode').addEventListener('change', function(e) {
-                        if (this.value == '2') {
-                            document.getElementById('con_propm').style.display = 'none';
-                        }
-                        if (this.value == '1') {
-                            document.getElementById('con_propm').style.display = 'grid';
-                        }
-                    })
-                    window.addRow = function(button) {
-                        if (getTotal() >= limit) {
-                            alert('El límite ha sido alcanzado.');
-                            return;
-                        }
-            
-                        const container = document.getElementById('input-container');
-                        const newRow = document.createElement('div');
-                        newRow.classList.add('input-row');
-            
-                        newRow.innerHTML = `
+                    if(e.target.value == 1 )
+                    {
+                        con_propm.style.display = "grid";
+                    }
+                })
+
+                function addRow(button) {
+                    // Definir la nueva fila con literales de plantilla
+                    var newRow = `
+                        <div class="input-row row" style='margin-top:10px;'>
+                              <div class="col-md-2">
+                                    <select class="form-control selectpicker" data-live-search="true">
+                                        @foreach($paises as $pais)
+                                            <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
+                                        @endforeach                      
+                                  </select>
+                             </div>
                             <div class="col-md-2">
-                                                        <x-forms.select fieldId="remind_type" fieldLabel="pais" fieldName="pais[]"
-                                                        search="true">
-                                                          
-                                                       
-                                                        </x-forms.select>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <x-forms.select 
-                                                            fieldId="remind_type" 
-                                                            
-                                                            fieldName="ciudad[]"
-                                                            search="true">
-                                                           
-                                                        </x-forms.select>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <x-forms.select 
-                                                        fieldId="remind_type" 
-                                                       
-                                                        fieldName="barrio[]"
-                                                        search="true">
-                                                       
-                                                        </x-forms.select>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <x-forms.select 
-                                                        fieldId="remind_type" 
-                                                       
-                                                        fieldName="segmento[]"
-                                                        search="true">
-                                                      
-                                                      
-                                                        
-                                                         </x-forms.select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldPlaceholder="Cantidad" fieldLabel="" fieldName="cantidad"
-                                                         fieldRequired="true" fieldId="contract_prefix" fieldValue="" />
-                                                    </div>
-                                    <button class="btn btn-success" type="button" onclick="addRow(this)">+</button>
-                                    <button class="btn btn-danger" type="button" onclick="deleteRow(this)">X</button>
-                        `;
-            
-                        // Append the new row
-                        container.appendChild(newRow);
-            
-                        // Remove the add button from the previous row
-                        const previousRow = button.parentNode;
-                        const previousAddButton = previousRow.querySelector('button[onclick="addRow(this)"]');
-                        previousAddButton.style.display = 'none';
-            
-                        // Show the delete button on the previous row
-                        const previousDeleteButton = previousRow.querySelector('button[onclick="deleteRow(this)"]');
-                        if (previousDeleteButton) {
-                            previousDeleteButton.style.display = 'inline-block';
-                        }
-            
-                        // Update the total and check limit
-                        updateTotal();
+                                <select class="form-control selectpicker" data-live-search="true">
+                                        @foreach($paises as $pais)
+                                            <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
+                                        @endforeach                    
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-control selectpicker" data-live-search="true">
+                                       @foreach($ciudades as $ciudad)
+                                            <option value="{{$ciudad['id']}}">{{$ciudad['nombre']}}</option>
+                                        @endforeach
+                                </select>
+                            </div>
+                             <div class="col-md-2">
+                                <select class="form-control selectpicker" data-live-search="true">
+                                     @foreach($barrios as $barrio)
+                                        <option value="{{$barrio['id']}}">{{$barrio['nombre']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                   @foreach($paises as $pais)
+                                        <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
+                                   @endforeach
+                            </div>
+                            <div class="col-md-2" style="position:relative; right: -40px;">
+                                <button class="btn " type="button" onclick="removeRow(this)">-</button>
+                                <button class="btn " type="button" onclick="addRow(this)">+</button>
+                            </div>
+                        </div>`;
+        
+                    // Añadir la nueva fila al contenedor
+                    $('#input-container').append(newRow);
+        
+                    // Inicializar los selectpicker en la nueva fila
+                    $('.selectpicker').selectpicker('refresh');
+        
+                    // Quitar el botón de agregar de la fila anterior
+                    $(button).remove();
+                }
+        
+                function removeRow(button) {
+                    // Eliminar la fila correspondiente
+                    $(button).closest('.input-row').remove();
+        
+                    // Asegurar que siempre haya un botón de agregar en la última fila
+                    var lastRow = $('#input-container .input-row:last');
+                    if (!lastRow.find('.btn-success').length) {
+                        lastRow.find('.col-md-1').append('<button class="btn btn-success" type="button" onclick="addRow(this)">+</button>');
                     }
-            
-                    window.deleteRow = function(button) {
-                        const row = button.parentNode;
-                        const container = document.getElementById('input-container');
-            
-                        // Remove the row
-                        container.removeChild(row);
-            
-                        // If this is the last row, show the add button on the previous row
-                        const lastRow = container.lastElementChild;
-                        if (lastRow) {
-                            const addButton = lastRow.querySelector('button[onclick="addRow(this)"]');
-                            addButton.style.display = 'inline-block';
-                        }
-            
-                        // Update the total and check limit
-                        updateTotal();
-                    }
-            
-                    window.adjustValue = function(input) {
-                        const currentTotal = getTotal() - (parseInt(input.value) || 0);
-                        const value = parseInt(input.value) || 0;
-                        const newTotal = currentTotal + value;
-            
-                        if (newTotal > limit) {
-                            input.value = limit - currentTotal;
-                            alert('El valor máximo permitido ha sido ajustado.');
-                        }
-            
-                        updateTotal();
-                    }
-            
-                    window.updateTotal = function() {
-                        const total = getTotal();
-                        const addButton = document.querySelector('.input-row:last-child button[onclick="addRow(this)"]');
-            
-                        if (total >= limit && addButton) {
-                            addButton.disabled = true;
-                        } else if (addButton) {
-                            addButton.disabled = false;
-                        }
-                    }
-            
-                    function getTotal() {
-                        const inputs = document.querySelectorAll('input[name="cantidad[]"]');
-                        let total = 0;
-            
-                        inputs.forEach(input => {
-                            total += parseInt(input.value) || 0;
-                        });
-            
-                        return total;
-                    }
+                }
+        
+                $(document).ready(function() {
+                    // Inicializar selectpicker en la fila existente
+                    $('.selectpicker').selectpicker();
                 });
-                function addForm() {
-                        // Obtener el contenedor del formulario
-                        var container = document.getElementById('form-container');
-                        // Clonar el primer formulario dentro del contenedor
-                        var originalForm = container.children[0];
-                        var newForm = originalForm.cloneNode(true);
-                        
-                        // Resetear los valores de los inputs en el formulario clonado
-                        var inputs = newForm.getElementsByTagName('input');
-                        for (var i = 0; i < inputs.length; i++) {
-                            inputs[i].value = '';
-                        }
-                        
-                        // Añadir el botón de eliminación
-                        var removeButton = document.createElement('button');
-                        removeButton.className = 'btn btn-danger promps_btn';
-                        removeButton.textContent = '-';
-                        removeButton.onclick = function() {
-                            container.removeChild(newForm);
-                        };
-                        
-                        // Añadir el botón de eliminación al nuevo formulario
-                        newForm.appendChild(removeButton);
-                        
-                        // Añadir el formulario clonado al contenedor
-                        container.appendChild(newForm);
-                    }
+
+
+                function addForm(button) {
+                        // Definir la nueva fila con literales de plantilla
+                        var newForm = `
+                            <div class="row container mb-2 form-row" style="margin-top:10px;">
+                                <div class="col-md-5">
+                                    <label for="">
+                                        Si el cliente dice: <span style="color: brown">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="Pregunta" name="pregunta[]" required>
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="">
+                                        lubot debería responder: <span style="color: brown">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="Respuesta" name="respuesta[]" required>
+                                </div>
+                                <div class="promps_btn">
+                                    <button class="btn" type="button" onclick="removeForm(this)">-</button>
+                                    <button class="btn " type="button" onclick="addForm(this)">+</button>
+                                </div>
+                            </div>`;
+
+                        // Añadir la nueva fila al contenedor
+                        $('#form-container').append(newForm);
+
+                        // Eliminar el botón de agregar de la fila anterior
+                            $(button).remove();
+                }
+
+        function removeForm(button) {
+            // Eliminar la fila correspondiente
+            $(button).closest('.form-row').remove();
+
+            // Asegurar que siempre haya un botón de agregar en la última fila
+            var lastRow = $('#form-container .form-row:last');
+            if (!lastRow.find('.btn-success').length) {
+                lastRow.find('.promps_btn').append('<button class="btn btn-success" type="button" onclick="addForm(this)">+</button>');
+            }
+        }
             </script>
+            
            <style>
-            .input-row {
-                display: flex;
-                margin-bottom: 10px;
-                
+            .input-row{
+                padding: 0!important;
+                margin-top: 30px;
+                width: 100%;
+              
+            }
+
+            .input-row input{
+                height: 40px!important;
+            }
+        
+            
+            select{
+                position: absolute !important;
+                bottom: 0;
+                left: 50%;
+                display: block !important;
+                width: 0.5px !important;
+                height: 100% !important;
+                padding: 0 !important;
+                opacity: 0 !important;
+                border: none;
+                z-index: 0 !important;
             }
             input{
                 margin-right: 10px;

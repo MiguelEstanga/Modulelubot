@@ -4,27 +4,8 @@
 
 @section('content')
    @if(in_array('admin', user_roles()))
-   <div class="w-100 d-flex ">
-
-    @include('lubot::component.menu-configuracion-lubot')
-
-    <x-setting-card>
-        <x-slot name="header">
-            <div class="s-b-n-header" id="tabs">
-                <h2 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
-                    Activacion
-                  
-                    @if($activacion === true)
-                        Activo
-                    @else
-                       Desactivado
-                    @endif
-            </h2>
-            </div>
-        </x-slot>
-        <x-slot name="action">
-         
-                <div class="row p-20 container" >
+            
+<div class="content-wrapper" >
                     <form action="{{route('lubot.activacion')}}" method="post" class=""  autocomplete="on">
                          
                            @csrf
@@ -45,7 +26,7 @@
                                 </div>
                             </div>  
                            @endif
-                           <div class="container">
+                           <div class="">
                              <button class="btn btn-success">
                                 @if($activacion === true)
                                     Actulizar datos
@@ -55,11 +36,9 @@
                              </button>
                            </div>
                     </form>
-                </div>
+</div>
             <!-- Buttons End -->
-        </x-slot>
-
-    </x-setting-card>
+    
     <script>
         function cuentaRegresiva() {
             const tiempoTotal = 40;
