@@ -10,9 +10,22 @@
                          
                            @csrf
                             @method("post")
-                           <div class="col-lg-12">
-                                <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldLabel="Numero de telefono" fieldPlaceholder="Numero de telefono" fieldName="numero"
-                                fieldRequired="true" fieldId="contract_prefix" :fieldValue="$numero" />
+                           <div class="col-lg-12 row">
+                                <div class="col-md-2 form-group my-3">
+                                    <label for="" class="f-14 text-dark-grey mb-12">
+                                        Código <sup class="f-14 mr-1">*</sup>
+                                    </label>
+                                    <select class="form-control selectpicker" data-live-search="true" style="margin-top: 50px;" name="codigo">
+                                        @foreach($codigos as $codigo)
+                                            <option value="{{$codigo->id}}">{{$codigo->codigos}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-10">
+                                    <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldLabel="Numero de telefono" fieldPlaceholder="Numero de telefono" fieldName="numero"
+                                    fieldRequired="true" fieldId="contract_prefix" :fieldValue="$numero" />
+                                </div>
+                            
                                
                           
                            </div>

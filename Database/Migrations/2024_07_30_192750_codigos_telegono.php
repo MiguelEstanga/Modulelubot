@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-
 return new class extends Migration
 {
     /**
@@ -15,16 +14,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('config_lubots', function (Blueprint $table) {
+        Schema::create('codigos', function (Blueprint $table) {
             $table->id();
-            $table->string('estado')->default(0);
-            $table->string('code_ws')->nullable();
-            $table->string('code_rc')->nullable();
-            $table->string('numero')->nullable();
-            $table->unsignedBigInteger('id_codigo')->nullable();
-            $table->unsignedBigInteger('id_companies')->nullable();
+            $table->string('codigos');
+            $table->string('codigo_compania')->default(null);
             $table->timestamps();
         });
+
+        if(Schema::hasTable('codigos')){
+            DB::table('codigos')->insert([
+                'codigos' => "+57"
+            ]);
+        }
     }
 
     /**
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('config_lubots');
+        //
     }
 };

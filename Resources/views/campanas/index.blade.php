@@ -153,7 +153,7 @@
                              <div class="col-md-2">
                                 <select class="form-control selectpicker" data-live-search="true">
                                     @foreach($paises as $pais)
-                                                                <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
+                                       <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
                                     @endforeach
                                 </select>
                             </div>

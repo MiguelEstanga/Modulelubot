@@ -45,6 +45,7 @@ class LubotController extends AccountBaseController
     {
        //return   DB::table('custom_link_settings')->get();
         $activacion = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->exists();
+        $this->data['codigos'] = DB::table('codigos')->get();
         $this->data['activacion'] = $activacion;
         $this->data['pageTitle'] = "Activacion";
          $this->data['data_companias'] =  $activacion === true ? DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->first() : '';
@@ -60,7 +61,7 @@ class LubotController extends AccountBaseController
 
     public function activacion_post(Request $request)
     {
-       
+       //return $request->all();
         if(Schema::hasTable('config_lubots'))
         {
            $existe = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->exists();
@@ -74,7 +75,8 @@ class LubotController extends AccountBaseController
                     'estado' => 1,
                     'id_companies' => $this->data['company']['id'],
                     'nombre_usuario' => 's',
-                    'numero' => $request->numero,
+                    'numero' => trim($request->numero),
+                    'id_codigo' => $request->codigo
                 ]
             );
 
