@@ -41,7 +41,7 @@
     
     <script>
         function cuentaRegresiva() {
-            const tiempoTotal = 40;
+            const tiempoTotal = 8;
             let tiempoRestante = tiempoTotal;
             const elementoTiempo = document.getElementById('tiempo');
 
