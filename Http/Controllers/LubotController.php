@@ -50,7 +50,7 @@ class LubotController extends AccountBaseController
         $this->data['codigos'] = DB::table('codigos')->get();
         $this->data['activacion'] = $activacion;
         $this->data['pageTitle'] = "Activacion";
-         $this->data['data_companias'] =  $activacion === true ? DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->first() : '';
+        $this->data['data_companias'] =  $activacion === true ? DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->first() : '';
         $this->data['numero']= $this->data['data_companias']->numero ?? "";
         return view('lubot::activacion.index' , $this->data);
     }
@@ -63,7 +63,6 @@ class LubotController extends AccountBaseController
 
     public function activacion_post(Request $request)
     {
-        //return $request->all();
         if(Schema::hasTable('config_lubots'))
         {
            $existe = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->exists();
@@ -94,8 +93,14 @@ class LubotController extends AccountBaseController
         
     }
 
-    public function cambiar_estado(){
-
+    public function cambiar_estado($user_id , $estado){
+        if($estado === 0 )  DB::table('config_lubots')->where('id_companies' , $user_id )->update(['estado_ws' => 0 ]);
+        if($estado === 1 )  DB::table('config_lubots')->where('id_companies' , $user_id )->update(['estado_ws' => 1 ]);
+        if($estado === 2 )  DB::table('config_lubots')->where('id_companies' , $user_id )->update(['estado_ws' => null ]);
+        if($estado > 2) return response()->json(['success' => 'este estado no existe']);
+        return response()->json([
+            'success' => 'evento terminado'
+        ]);
     }
     
 }
