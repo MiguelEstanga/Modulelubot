@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Lubot\Events\CodeWs;
 use Modules\Lubot\Http\Controllers\LubotController;
+use Pusher\Pusher;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,7 +33,29 @@ Route::prefix('lubot')->group(function() {
     Route::get('test', 'LubotController@probar')->name('probarbot'); 
 
     Route::get('evento' , function(){
+        CodeWs::dispatch();
         event(new CodeWs);
         return env('LUBOT_PUENTE');
     });
+});
+
+Route::get('lubot_pusher/ws_code/{user_id}{codigo}' , function($user_id , $codigo){
+    
+        $options = array(
+            'cluster' => 'us2',
+            'useTLS' => true
+          );
+          $pusher = new Pusher(
+            '9f29c49b324e84800f64',
+            '6b56bf5a2d2bdb65f795',
+            '1842818',
+            $options
+          );
+        
+        $pusher->trigger("code_user_ws_{$user_id}" , "{$user_id}" , array('mensage' =>  $codigo ) );
+        CodeWs::dispatch();
+        event(new CodeWs);
+        return response()->json([
+            'success' => 'mensage entregado'
+        ]);
 });

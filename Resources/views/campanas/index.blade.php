@@ -60,7 +60,7 @@
                                             <div id="input-container">
                                                 <div class="input-row row">
                                                     <div class="col-md-2 ">
-                                                        <select class="form-control selectpicker" data-live-search="true">
+                                                        <select name="pais[]" class="form-control selectpicker" data-live-search="true">
                                                             @foreach($paises as $pais)
                                                                 <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
                                                             @endforeach
@@ -68,23 +68,23 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <select class="form-control selectpicker">
+                                                        <select name="ciudad[]" class="form-control selectpicker">
                                                             @foreach($ciudades as $ciudad)
                                                                 <option value="{{$ciudad['id']}}">{{$ciudad['nombre']}}</option>
                                                              @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <select class="form-control selectpicker">
+                                                        <select name="barrio[]" class="form-control selectpicker">
                                                             @foreach($barrios as $barrio)
                                                               <option value="{{$barrio['id']}}">{{$barrio['nombre']}}</option>
                                                              @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <select class="form-control selectpicker">
-                                                            @foreach($paises as $pais)
-                                                                <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
+                                                        <select name="segmento[]" class="form-control selectpicker">
+                                                            @foreach($segmentos as $segmento)
+                                                                <option value="{{$segmento['id']}}">{{$segmento['nombre']}}</option>
                                                            @endforeach
                                                         </select>
                                                     </div>
@@ -130,30 +130,30 @@
                     var newRow = `
                         <div class="input-row row" style='margin-top:10px;'>
                               <div class="col-md-2">
-                                    <select class="form-control selectpicker" data-live-search="true">
+                                    <select name="pais[]" class="form-control selectpicker" data-live-search="true">
                                         @foreach($paises as $pais)
                                             <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
                                         @endforeach                      
                                   </select>
                              </div>
                             <div class="col-md-2">
-                                <select class="form-control selectpicker" data-live-search="true">
+                                <select name="ciudad[]" class="form-control selectpicker" data-live-search="true">
                                          @foreach($ciudades as $ciudad)
                                                <option value="{{$ciudad['id']}}">{{$ciudad['nombre']}}</option>
                                           @endforeach                  
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <select class="form-control selectpicker" data-live-search="true">
+                                <select name="barrio[]" class="form-control selectpicker" data-live-search="true">
                                         @foreach($barrios as $barrio)
                                             <option value="{{$barrio['id']}}">{{$barrio['nombre']}}</option>
                                          @endforeach
                                 </select>
                             </div>
                              <div class="col-md-2">
-                                <select class="form-control selectpicker" data-live-search="true">
-                                    @foreach($paises as $pais)
-                                       <option value="{{$pais['id']}}">{{$pais['nombre']}}</option>
+                                <select name="segmento[]" class="form-control selectpicker" data-live-search="true">
+                                    @foreach($segmentos as $segmento)
+                                       <option value="{{$segmento['id']}}">{{$segmento['nombre']}}</option>
                                     @endforeach
                                 </select>
                             </div>

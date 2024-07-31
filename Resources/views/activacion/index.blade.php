@@ -44,7 +44,7 @@
                             
                             <div class="container" style="margin: 10px" >
                                 <div class="tiempo" id="tiempo">
-                                    tiempo
+                                    
                                 </div>
                             </div>
                            @endif
@@ -56,19 +56,23 @@
                                     Activar 
                                 @endif
                              </button>
+                             <a class="btn btn-success" id="iniciar">
+                                    Iniciar 
+                             </a>
                            </div>
                     </form>
 </div>
             <!-- Buttons End -->
     
     <script>
+        let start = false;
         function code_ws()
         {
             fetch(`{{route('lubot.default_compania')}}`)
             .then(response => response.json())
             .then(data => {
 
-                if( data.code_ws === null && data.code_rc === null ) tiempo.style.display = 'none';
+                //if( data.code_ws === null && data.code_rc === null ) tiempo.style.display = 'none';
                 // Verificar si los datos están definidos y no están vacíos
                 if (data.code_ws) {
                     document.getElementById('code').innerHTML = data.code_ws;
@@ -76,7 +80,7 @@
                 } else {
                     // Ocultar el div si el dato está vacío
                     document.getElementById('code').style.display = 'none';
-                    document.getElementById('code_ws_container').style.display = 'flex';
+                    document.getElementById('code_ws_container').style.display = 'none';
                 }
 
                 if (data.code_rc != null ) {
@@ -92,29 +96,57 @@
             .catch(error => {
                 console.error('Error:', error);
             });
-
         }
+
         function cuentaRegresiva() {
-            const tiempoTotal = 8;
-            let tiempoRestante = tiempoTotal;
-            const elementoTiempo = document.getElementById('tiempo');
+            if(start)
+            {
+                const tiempoTotal = 40;
+                let tiempoRestante = tiempoTotal;
+                const elementoTiempo = document.getElementById('tiempo');
 
-            const intervalo = setInterval(() => {
-                tiempoRestante--;
-                elementoTiempo.textContent = `Tiempo restante: ${tiempoRestante} segundos`;
+                const intervalo = setInterval(() => {
+                    tiempoRestante--;
+                    elementoTiempo.textContent = `Tiempo restante: ${tiempoRestante} segundos`;
 
-                if (tiempoRestante === 0) {
-                clearInterval(intervalo);
-                // Realizar la petición GET aquí
-                code_ws()
-
-                // Reiniciar la cuenta regresiva
-                cuentaRegresiva();
-                }
-            }, 1000);
+                    if (tiempoRestante === 0) {
+                        clearInterval(intervalo);
+                        // Realizar la petición GET aquí
+                        code_ws()
+                        start = false;
+                        alert('Introdusca el codigo de ws en su dispositivo')
+                        // Reiniciar la cuenta regresiva
+                        cuentaRegresiva();
+                    }
+                }, 1000);
+            }
+           
         }
         code_ws();
-        cuentaRegresiva();
+               
+        iniciar.addEventListener('click' , function (e){
+            start = true;
+            document.getElementById('iniciar').innerText = "Procesando...";
+            fetch(`{{route('probarbot')}}`)
+                .then(response => response.json())
+                .then(data => {
+                        console.log('Raw data:', data); // Log de datos crudos para inspección
+                        document.getElementById('iniciar').innerText = "volver a intentar";
+                })
+               .catch(error => {
+                        console.error('Error en la solicitud:', error);
+                        document.getElementById('iniciar').innerText = "Error de comunicación";
+                })
+                .finally(function (){
+                    alert('el bot acaba de inciar debe esperar al rededor de 60s')
+               })
+           
+            cuentaRegresiva();
+        })
+
+         //cuentaRegresiva();
+
+        
         
     </script>
 </div>

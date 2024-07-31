@@ -32,6 +32,6 @@ class CodeWs implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return [new Channel('code_ws'),];
+        return new Channel('code_ws');
     }
 }
