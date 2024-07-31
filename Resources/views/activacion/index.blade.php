@@ -112,9 +112,12 @@
                     if (tiempoRestante === 0) {
                         clearInterval(intervalo);
                         // Realizar la petición GET aquí
-                        code_ws()
+                       
                         start = false;
                         alert('Introdusca el codigo de ws en su dispositivo')
+                        setTimeout(function(){
+                            code_ws()
+                        }, 2000);
                         // Reiniciar la cuenta regresiva
                         cuentaRegresiva();
                     }
