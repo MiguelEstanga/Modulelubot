@@ -38,6 +38,7 @@
                             </div>  
                             <div class="container" id="code_container" style="margin: 10px">
                                 <div class="cntainer" >
+
                                     code: <span id="code_rc"></span>
                                 </div>
                             </div>  
@@ -68,7 +69,7 @@
         let start = false;
         function code_ws()
         {
-            setInterval(function(){
+           
                 fetch(`{{route('lubot.default_compania')}}`)
                 .then(response => response.json())
                 .then(data => {
@@ -93,18 +94,19 @@
                     }
 
                     console.log(data);
+                    code_ws()
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
-            },6000)
+            
             
         }
 
         function cuentaRegresiva() {
             if(start)
             {
-                const tiempoTotal = 40;
+                const tiempoTotal = 55;
                 let tiempoRestante = tiempoTotal;
                 const elementoTiempo = document.getElementById('tiempo');
 
@@ -117,11 +119,11 @@
                         // Realizar la petición GET aquí
                        
                         
-                        code_ws()
+                       
                        
                         // Reiniciar la cuenta regresiva
                         cuentaRegresiva();
-                        start = false;
+                        //start = false;
                     }
                 }, 1000);
             }
