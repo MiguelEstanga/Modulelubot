@@ -94,6 +94,7 @@
                     }
 
                     console.log(data);
+                    if(data.code_ws != null ) start = false;
                     code_ws()
                 })
                 .catch(error => {
