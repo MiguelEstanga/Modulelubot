@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Modules\Lubot\Events\CodeWs;
 use Modules\Lubot\Http\Controllers\LubotController;
 use Pusher\Pusher;
+use Illuminate\Support\Facades\DB;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,23 +41,30 @@ Route::prefix('lubot')->group(function() {
     });
 });
 
-Route::get('lubot_pusher/ws_code/{user_id}{codigo}' , function($user_id , $codigo){
-    
+Route::get('lubot_pusher/estado_ws/{user_id}/{codigo}' , function($user_id , $estado){
+        
+        if($estado === 0 )  DB::table('config_lubots')->where('id_companies' , $user_id )->update(['estado_ws' => 0 ]);
+        if($estado === 1 )  DB::table('config_lubots')->where('id_companies' , $user_id )->update(['estado_ws' => 1 ]);
+        if($estado === 2 )  DB::table('config_lubots')->where('id_companies' , $user_id )->update(['estado_ws' => null ]);
+        if($estado > 2) return response()->json(['success' => 'este estado no existe']);
+
         $options = array(
             'cluster' => 'us2',
             'useTLS' => true
           );
-          $pusher = new Pusher(
+
+        $pusher = new Pusher(
             '9f29c49b324e84800f64',
             '6b56bf5a2d2bdb65f795',
             '1842818',
             $options
           );
         
-        $pusher->trigger("code_user_ws_{$user_id}" , "{$user_id}" , array('mensage' =>  $codigo ) );
+        $pusher->trigger("user_estado_{$user_id}" , "user_{$user_id}" , array('mensage' =>  $estado ) );
         CodeWs::dispatch();
         event(new CodeWs);
         return response()->json([
-            'success' => 'mensage entregado'
+            'success' => 'evento terminado'
         ]);
-});
+        
+})->name('cambiar_estado_ws');

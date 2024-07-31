@@ -33,6 +33,7 @@ class LubotController extends AccountBaseController
      */
     public function index()
     {
+       
         $this->activeMenu = 'lubot';
         return view('lubot::index' , $this->data);
     }
@@ -43,6 +44,7 @@ class LubotController extends AccountBaseController
      */
     public function Activacion()
     {
+        
        //return   DB::table('custom_link_settings')->get();
         $activacion = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->exists();
         $this->data['codigos'] = DB::table('codigos')->get();
@@ -92,5 +94,8 @@ class LubotController extends AccountBaseController
         
     }
 
+    public function cambiar_estado(){
+
+    }
     
 }

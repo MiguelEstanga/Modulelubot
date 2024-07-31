@@ -30,11 +30,15 @@
                           
                            </div>
                            @if($numero !== null)
+                           <div class="container" style="margin: 10px">
+                                <div class="cntainer" id="code_ws_container" >
+                                    Estado: <span id="estado"></span>
+                                </div>
+                            </div>  
                             <div class="container" style="margin: 10px">
                                 <div class="cntainer" id="code_ws_container" >
                                     code: <span id="code"></span>
                                 </div>
-                               
                             </div>  
                             <div class="container" id="code_container" style="margin: 10px">
                                 <div class="cntainer" >
@@ -63,11 +67,29 @@
                            </div>
                     </form>
 </div>
-            <!-- Buttons End -->
-    
-    <script>
+
+
+
+ <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+ <script>
+    let user = {{$company['id']}};
+    let estado = document.getElementById('estado');
+    Pusher.logToConsole = true;
+    var pusher = new Pusher('9f29c49b324e84800f64', {
+         cluster: 'us2'
+    });   
+    var channel = pusher.subscribe(`user_estado_${user}`);
+        channel.bind(`user_${user}`, function(data) {
+           
+            estado.innerHTML = data.mensage
+        
+    });
+</script>
+        <script>
+          
+          
         let start = false;
-let intervalo;
+        let intervalo;
 
 function code_ws() {
     fetch(`{{route('lubot.default_compania')}}`)
@@ -89,7 +111,7 @@ function code_ws() {
                 document.getElementById('code_container').style.display = 'none';
             }
 
-            console.log(data);
+            //console.log(data);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -98,7 +120,7 @@ function code_ws() {
 
 function cuentaRegresiva() {
     if(start) {
-        const tiempoTotal = 55;
+        const tiempoTotal = 60;
         let tiempoRestante = tiempoTotal;
         const elementoTiempo = document.getElementById('tiempo');
 
@@ -118,6 +140,7 @@ function cuentaRegresiva() {
 document.getElementById('iniciar').addEventListener('click', function (e) {
     start = true;
     document.getElementById('iniciar').innerText = "Procesando...";
+   
     fetch(`{{route('probarbot')}}`)
         .then(response => response.json())
         .then(data => {
@@ -130,8 +153,12 @@ document.getElementById('iniciar').addEventListener('click', function (e) {
         })
         .finally(function () {
             //alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
-        });
+    });
 
+    let cambiar_estado_url = `{{route('cambiar_estado_ws' , ['*' , '*'] )}}`
+    let url = cambiar_estado_url.split('*')[0]
+    let user = {{$company['id']}};
+    fetch(`${url}${user}/${0}`).then(res => res.json()).then(res => console.log(res))
     cuentaRegresiva();
 });
 
