@@ -68,40 +68,43 @@
         let start = false;
         function code_ws()
         {
-            fetch(`{{route('lubot.default_compania')}}`)
-            .then(response => response.json())
-            .then(data => {
+            setInterval(function(){
+                fetch(`{{route('lubot.default_compania')}}`)
+                .then(response => response.json())
+                .then(data => {
 
-                //if( data.code_ws === null && data.code_rc === null ) tiempo.style.display = 'none';
-                // Verificar si los datos están definidos y no están vacíos
-                if (data.code_ws) {
-                    document.getElementById('code').innerHTML = data.code_ws;
-                    document.getElementById('code_ws_container').style.display = 'flex';
-                } else {
-                    // Ocultar el div si el dato está vacío
-                    document.getElementById('code').style.display = 'none';
-                    document.getElementById('code_ws_container').style.display = 'none';
-                }
+                    //if( data.code_ws === null && data.code_rc === null ) tiempo.style.display = 'none';
+                    // Verificar si los datos están definidos y no están vacíos
+                    if (data.code_ws) {
+                        document.getElementById('code').innerHTML = data.code_ws;
+                        document.getElementById('code_ws_container').style.display = 'flex';
+                    } else {
+                        // Ocultar el div si el dato está vacío
+                        document.getElementById('code').style.display = 'none';
+                        document.getElementById('code_ws_container').style.display = 'none';
+                    }
 
-                if (data.code_rc != null ) {
-                    document.getElementById('code_rc').innerHTML = data.code_rc;
-                    document.getElementById('code_container').style.display = 'flex';
-                } else {
-                  
-                    document.getElementById('code_container').style.display = 'none';
-                }
+                    if (data.code_rc != null ) {
+                        document.getElementById('code_rc').innerHTML = data.code_rc;
+                        document.getElementById('code_container').style.display = 'flex';
+                    } else {
+                    
+                        document.getElementById('code_container').style.display = 'none';
+                    }
 
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            },6000)
+            
         }
 
         function cuentaRegresiva() {
             if(start)
             {
-                const tiempoTotal = 80;
+                const tiempoTotal = 40;
                 let tiempoRestante = tiempoTotal;
                 const elementoTiempo = document.getElementById('tiempo');
 
@@ -113,11 +116,12 @@
                         clearInterval(intervalo);
                         // Realizar la petición GET aquí
                        
-                        start = false;
+                        
                         code_ws()
                        
                         // Reiniciar la cuenta regresiva
                         cuentaRegresiva();
+                        start = false;
                     }
                 }, 1000);
             }
