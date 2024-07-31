@@ -101,7 +101,7 @@
         function cuentaRegresiva() {
             if(start)
             {
-                const tiempoTotal = 60;
+                const tiempoTotal = 80;
                 let tiempoRestante = tiempoTotal;
                 const elementoTiempo = document.getElementById('tiempo');
 
@@ -114,10 +114,8 @@
                         // Realizar la petición GET aquí
                        
                         start = false;
-                        alert('Introdusca el codigo de ws en su dispositivo')
-                        setTimeout(function(){
-                            code_ws()
-                        }, 2000);
+                        code_ws()
+                       
                         // Reiniciar la cuenta regresiva
                         cuentaRegresiva();
                     }
