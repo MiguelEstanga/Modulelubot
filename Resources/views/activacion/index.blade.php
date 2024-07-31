@@ -67,95 +67,74 @@
     
     <script>
         let start = false;
-        function code_ws()
-        {
-           
-                fetch(`{{route('lubot.default_compania')}}`)
-                .then(response => response.json())
-                .then(data => {
+let intervalo;
 
-                    //if( data.code_ws === null && data.code_rc === null ) tiempo.style.display = 'none';
-                    // Verificar si los datos están definidos y no están vacíos
-                    if (data.code_ws) {
-                        document.getElementById('code').innerHTML = data.code_ws;
-                        document.getElementById('code_ws_container').style.display = 'flex';
-                    } else {
-                        // Ocultar el div si el dato está vacío
-                        document.getElementById('code').style.display = 'none';
-                        document.getElementById('code_ws_container').style.display = 'none';
-                    }
-
-                    if (data.code_rc != null ) {
-                        document.getElementById('code_rc').innerHTML = data.code_rc;
-                        document.getElementById('code_container').style.display = 'flex';
-                    } else {
-                    
-                        document.getElementById('code_container').style.display = 'none';
-                    }
-
-                    console.log(data);
-                    if(data.code_ws != null ) start = false;
-                    code_ws()
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            
-            
-        }
-
-        function cuentaRegresiva() {
-            if(start)
-            {
-                const tiempoTotal = 55;
-                let tiempoRestante = tiempoTotal;
-                const elementoTiempo = document.getElementById('tiempo');
-
-                const intervalo = setInterval(() => {
-                    tiempoRestante--;
-                    elementoTiempo.textContent = `Tiempo restante: ${tiempoRestante} segundos`;
-
-                    if (tiempoRestante === 0) {
-                        clearInterval(intervalo);
-                        // Realizar la petición GET aquí
-                       
-                        
-                       
-                       
-                        // Reiniciar la cuenta regresiva
-                        cuentaRegresiva();
-                        //start = false;
-                    }
-                }, 1000);
+function code_ws() {
+    fetch(`{{route('lubot.default_compania')}}`)
+        .then(response => response.json())
+        .then(data => {
+            // Verificar si los datos están definidos y no están vacíos
+            if (data.code_ws) {
+                document.getElementById('code').innerHTML = data.code_ws;
+                document.getElementById('code_ws_container').style.display = 'flex';
+                clearInterval(intervalo); // Detener el polling cuando se recibe el código
+            } else {
+                document.getElementById('code_ws_container').style.display = 'none';
             }
-           
-        }
-        code_ws();
-               
-        iniciar.addEventListener('click' , function (e){
-            start = true;
-            document.getElementById('iniciar').innerText = "Procesando...";
-            fetch(`{{route('probarbot')}}`)
-                .then(response => response.json())
-                .then(data => {
-                        console.log('Raw data:', data); // Log de datos crudos para inspección
-                        document.getElementById('iniciar').innerText = "volver a intentar";
-                })
-               .catch(error => {
-                        console.error('Error en la solicitud:', error);
-                        document.getElementById('iniciar').innerText = "Error de comunicación";
-                })
-                .finally(function (){
-                    alert('el bot acaba de inciar debe esperar al rededor de 60s')
-               })
-           
-            cuentaRegresiva();
+
+            if (data.code_rc) {
+                document.getElementById('code_rc').innerHTML = data.code_rc;
+                document.getElementById('code_container').style.display = 'flex';
+            } else {
+                document.getElementById('code_container').style.display = 'none';
+            }
+
+            console.log(data);
         })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
 
-         //cuentaRegresiva();
+function cuentaRegresiva() {
+    if(start) {
+        const tiempoTotal = 55;
+        let tiempoRestante = tiempoTotal;
+        const elementoTiempo = document.getElementById('tiempo');
 
-        
-        
+        intervalo = setInterval(() => {
+            tiempoRestante--;
+            elementoTiempo.textContent = `Tiempo restante: ${tiempoRestante} segundos`;
+
+            if (tiempoRestante <= 0) {
+                clearInterval(intervalo);
+                code_ws(); // Realizar la consulta después de la cuenta regresiva
+                start = false; // Evitar que la cuenta regresiva se reinicie
+            }
+        }, 1000);
+    }
+}
+
+document.getElementById('iniciar').addEventListener('click', function (e) {
+    start = true;
+    document.getElementById('iniciar').innerText = "Procesando...";
+    fetch(`{{route('probarbot')}}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Raw data:', data);
+            document.getElementById('iniciar').innerText = "Volver a intentar";
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+            document.getElementById('iniciar').innerText = "Error de comunicación";
+        })
+        .finally(function () {
+            //alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
+        });
+
+    cuentaRegresiva();
+});
+
     </script>
 </div>
  @endif
