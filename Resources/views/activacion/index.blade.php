@@ -213,7 +213,7 @@
                         alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
                     });
                
-                cuentaRegresiva(120);
+                cuentaRegresiva(500);
 
                 // Iniciar polling para verificar el estado_ws
                 pollingInterval = setInterval(code_ws, 1000);
