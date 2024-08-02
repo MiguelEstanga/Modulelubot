@@ -24,7 +24,7 @@ class LubotDatabaseSeeder extends Seeder
         Model::unguard();
         // $this->call("OthersTableSeeder");
 
-          /**
+          
             Schema::create('Lubot', function ($table) {
                 $table->id();
                 $table->string('estado')->default(0);
@@ -34,7 +34,7 @@ class LubotDatabaseSeeder extends Seeder
                 $table->string('estado')->default(0);
             });
       
-
+         /***     
         $companias = DB::table('companies')->pluck('id');
 
         // Obtener los IDs de las compañías que ya tienen un registro en custom_link_settings
@@ -58,7 +58,7 @@ class LubotDatabaseSeeder extends Seeder
         if (!empty($dataToInsert)) {
             DB::table('custom_link_settings')->insert($dataToInsert);
         }
-           
+       */
             
             
 
@@ -212,7 +212,7 @@ class LubotDatabaseSeeder extends Seeder
                 'permission_id' => $permissionSaldoInWallets->id,
                 'permission_type_id' => 5
             ]);
-        */
+        
          
     }
 }

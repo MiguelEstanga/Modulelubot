@@ -33,20 +33,35 @@ class LubotController extends AccountBaseController
      */
     public function index()
     {
-       
         $this->activeMenu = 'lubot';
         return view('lubot::index' , $this->data);
     }
 
+    public function registrar_empresa(){
+        DB::table('config_lubots')->insert([
+            'estado' => 1,
+            'nombre_usuario' => $this->data['company']['name'],
+            'numero' => null,
+            'id_companies' => $this->data['company']['id'],
+            'code_ws' => null,
+            'code_rc' => null,
+            'id_codigo' => null,
+            'estado_ws' => 0,
+            'estado_rc' => 0,
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      * @return Renderable
      */
     public function Activacion()
     {
-        
-       //return   DB::table('custom_link_settings')->get();
         $activacion = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->exists();
+        if(!$activacion)
+        {
+           return  $this->registrar_empresa();
+            $activacion = true;
+        }
         $this->data['codigos'] = DB::table('codigos')->get();
         $this->data['activacion'] = $activacion;
         $this->data['pageTitle'] = "Activacion";
@@ -63,12 +78,13 @@ class LubotController extends AccountBaseController
 
     public function activacion_post(Request $request)
     {
+      
         if(Schema::hasTable('config_lubots'))
         {
            $existe = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->exists();
            if($existe)
            {
-              DB::table('config_lubots')->where('id_companies', $this->data['company']['id'] )->update(['numero' => $request->numero]);
+              DB::table('config_lubots')->where('id_companies', $this->data['company']['id'] )->update(['numero' => $request->numero , 'id_codigo' => $request->codigo]);
               return back();
            }
             $activar =  DB::table('config_lubots')->insert(
