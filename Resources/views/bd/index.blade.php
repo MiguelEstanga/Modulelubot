@@ -1,68 +1,36 @@
-
 @extends('layouts.app')
-@push('datatable-styles')
-    @include('sections.datatable_css')
-@endpush
-
 @section('content')
+    <div class="containt-wrapper row" style="margin:10px; padding:10px;">
+        <div class="d-flex flex-column w-tables rounded mt-3 bg-white col-md-4" style="padding: 10px;">
+            @include('lubot::bd.formulario_registro_bd')
+        </div>
+        <div class="col-md-8 container">
+            <div class="d-flex flex-column w-tables rounded mt-3 bg-white" style="padding: 10px;">
 
-   @if(in_array('admin', user_roles()))
-
-   <div class="content-wrapper" >
-        <div class="d-flex flex-column w-tables rounded mt-3 bg-white" style="padding: 10px;">   
-            {{$dataTable->table(['class' => 'table table-hover border-0 w-100'])}}
-        </div>        
-    </div>
+                {!! $dataTable->table(['class' => 'table table-hover border-0 w-100']) !!}
+    
+            </div>
             
+        </div>
         
-   
-   <script>
-        document.addEventListener("DOMContentLoaded", (event) => {
-            let url = `{{route('cambiar.estado' , '*')}}`;
-            let ulr_parse = url.split('*')[0]
-           
-            document.querySelectorAll('.activar_estado').forEach(element => {
-                 element.addEventListener('change', function(e) {
-                     fetch(`${ulr_parse}${e.target.name}`)
-                     .then(res => res.json())
-                     .then(data => {
-                        window.location.reload();
-                     })
-                     //alert(e.target.name)
-                })
-            });
-           
-        })
-   </script>
-@endif
-    <div class="container-fluid"></div>
+    </div>
+    <style>
+        .list_db{
+            cursor:pointer;
+            transition: all .300s   linear;
+        } 
+        .list_db:hover{
+            background: #f2f2f2;
+        }
+    </style>
 @endsection
- 
-
-
-
-
 @push('scripts')
     @include('sections.datatable_js')
 
     <script>
       
-        const showTable = () => {
-            window.LaravelDataTables["orders-table"].draw(false);
-        }
-        console.log( document.querySelectorAll('.activate_campaigns'))
-        console.log('s')
-        $('.activate_campaigns').on('change' , function(){
-            console.log('s')
-        })
-       
-        $('#orders-table').on('change', '.order-status', function() {
-            var id = $(this).data('order-id');
-            var status = $(this).val();
-
-            changeOrderStatus(id, status);
-        });
-
+      
+    
      
 
        
@@ -203,20 +171,7 @@
                 }
             });
         });
-        const estado  = (element) => {
-            console.log(element.id)
-            let url = `{{route('cambiar.estado' , '*')}}`;
-            let ulr_parse = url.split('*')[0]
-            element.addEventListener('change', function(e) {
-                     fetch(`${ulr_parse}${element.id}`)
-                     .then(res => res.json())
-                     .then(data => {
-                        window.location.reload();
-                     })
-                     //alert(e.target.name)
-                })
-           
-        }
+      
         const applyQuickAction = () => {
             var rowdIds = $("#invoices-table input:checkbox:checked").map(function() {
                 return $(this).val();
@@ -244,8 +199,6 @@
        
     </script>
 @endpush
-<style>
-    .{
-        margin-left: 270;
-    }
-</style>
+
+
+

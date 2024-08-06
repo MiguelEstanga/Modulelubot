@@ -3,8 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Lubot\Events\CodeWs;
 use Modules\Lubot\Http\Controllers\LubotController;
-use Pusher\Pusher;
-use Illuminate\Support\Facades\DB;
+use Modules\Lubot\Http\Controllers\BaseDeDatosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,11 +33,13 @@ Route::prefix('lubot')->group(function() {
     Route::get('/ver/cmapanas/segmemtos/{id}', 'CampanasController@campana_segmentos')->name('campana_segmentes');
     Route::get('test', 'LubotController@probar')->name('probarbot'); 
 
-    Route::get('evento' , function(){
-        CodeWs::dispatch();
-        event(new CodeWs);
-        return env('LUBOT_PUENTE');
-    });
+
+    // base de datos artificiales 
+    Route::get('/bd', 'BaseDeDatosController@index')->name('Lubot.db');
+    Route::get('/bd/{id_db}', 'BaseDeDatosController@show')->name('Lubot.data_db');
+    Route::post('/bd/registro', 'BaseDeDatosController@store')->name('bd.store');
+    Route::get('/bd/delete/{id}', 'BaseDeDatosController@delete')->name('bd.delete');
+   
 });
 
 Route::get('lubot_pusher/estado_ws/{user_id}/{codigo}' , 'CampanasController@cambiar_estado' )->name('cambiar_estado_ws');

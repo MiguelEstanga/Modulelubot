@@ -103,7 +103,7 @@ class LubotController extends AccountBaseController
     }
     public function probar(){
         $response = Http::withHeaders(['Accept' => 'application/json'])
-        ->get("{$this->ACTIVAR_BOT}/{$this->data['company']['id']}/2");
+        ->get("{$this->ACTIVAR_BOT}/2/rc");
         $clientes = $response;
         return json_encode(['ok' => 'ok' ,  $response]);
         

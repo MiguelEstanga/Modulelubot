@@ -11,29 +11,10 @@
             <x-sub-menu-item :link="route('lubot.admin')" text="Activacion"/>
             <x-sub-menu-item :link="route('campanas.index')" text="seleccion de semento"/>
             <x-sub-menu-item :link="route('ver_campanas.todas')" text="Campañas"/>
-            <div class="container">
-                <a class="btn btn-success" id="lubot_test" >
-                    lubot Text
-                </a>
-            </div>
+            <x-sub-menu-item :link="route('Lubot.db')" text="Base de datos"/>
+           
             
         </div>
-        <script>
-            document.getElementById('lubot_test').addEventListener('click', ()=>{
-                document.getElementById('lubot_test').innerText = "Procesando...";
-                alert('iniciando proceso');
-                // Realizar la solicitud AJAX al servidor
-                fetch(`{{route('probarbot')}}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Raw data:', data); // Log de datos crudos para inspección
-                        document.getElementById('lubot_test').innerText = "ok";
-                    })
-                    .catch(error => {
-                        console.error('Error en la solicitud:', error);
-                        document.getElementById('lubot_test').innerText = "Error de comunicación";
-                    });
-            });
-        </script>
+       
     </x-menu-item>
 

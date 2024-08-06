@@ -5,28 +5,32 @@
                                 <form action="{{route('campanas.stores')}}" method="POST">
                                     @csrf
                                     @method('POST')
-                                    <div class=" container">   
-                                        <div class="col-md-12">
-                                            <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldLabel="Nombre de la campana" fieldPlaceholder="Nombre de la campana" fieldName="nombre_campanas"
-                                            fieldRequired="true" fieldId="contract_prefix" fieldValue="" />
-                                        </div>
-                                        <div class="col-md-12">
-                                            <x-forms.select fieldId="remind_type" fieldLabel="Objetivo de lubot" fieldName="remind_type"
-                                            search="true">
-                                                <option value="">Selecciona un objetivo</option>
-                                            </x-forms.select>
-                                        </div>
+                                    <div class="d-flex flex-column w-tables rounded mt-3 bg-white" style="padding: 10px;"> 
+                                        <div class=" container">   
+                                            <div class="col-md-12">
+                                                <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldLabel="Nombre de la campana" fieldPlaceholder="Nombre de la campana" fieldName="nombre_campanas"
+                                                fieldRequired="true" fieldId="contract_prefix" fieldValue="" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <x-forms.select fieldId="remind_type" fieldLabel="Objetivo de lubot" fieldName="remind_type"
+                                                search="true">
+                                                    <option value="">Selecciona un objetivo</option>
+                                                </x-forms.select>
+                                            </div>
 
-                                        <div class="col-md-12">
-                                            <x-forms.select fieldId="mode" fieldLabel="Modo del bot" fieldName="mode"
-                                            search="true">
-                                            <option value="1">Propm</option>
-                                            <option selected value="2" selected>Saludo generico</option>
-                                            </x-forms.select>
-                                        </div>
+                                            <div class="col-md-12">
+                                                <x-forms.select fieldId="mode" fieldLabel="Modo del bot" fieldName="mode"
+                                                search="true">
+                                                <option value="1">Propm</option>
+                                                <option selected value="2" selected>Saludo generico</option>
+                                                </x-forms.select>
+                                            </div>
+                                            
+                                        </div> 
+                                    
+                                  
+                                        <div class="container" id="con_propm" style="margin-top:40px;">
                                            
-                                    </div> 
-                                    <div class="container" id="con_propm" style="margin-top:40px;">
                                             <div id="form-container">
                                                 <div class="row container mb-2 form-row">
                                                     <div class="col-md-5">
@@ -48,15 +52,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                       
                                     </div>
-                                  
-                                  
-                                  
-                                  
-                                        
+                                    
+                                 
                                         <div class="container" >
-                                            <hr>
+                                          
                                             <div id="input-container">
                                                 <div class="input-row row">
                                                     <div class="col-md-2 ">
@@ -99,14 +99,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>  
+                                    
+                                    
                                         <div class="container" style="margin-top:30px ">
-                                            <button class="btn btn-success">
+                                            <button class="btn btn-success" style="width: 100%;">
                                                 Registrar campaña
                                             </button>
                                         </div>
+                                    
+                                       
                                 </div>        
-                     
+                            </div>
         
           
             

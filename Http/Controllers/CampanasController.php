@@ -273,9 +273,9 @@ class CampanasController extends AccountBaseController
              $campana = DB::table('campanas')->where('id', $id)->first();
              $this->data['segmentos'] = $segmentos;
              $this->data['campana'] = $campana;
-             $dataTable->withId(7);
+             $dataTable->withId($this->data['company']['id']);
              return $dataTable->render('lubot::campanas.segmentos' ,  $this->data);
-             return view( 'lubot::campanas.segmentos' ,  $this->data );
+            
         }
    
 }

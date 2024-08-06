@@ -1,40 +1,46 @@
 @extends('layouts.app')
 @section('content')
     <div class="content-wrapper">
-        <form action="{{ route('lubot.activacion') }}" method="post" class="" autocomplete="on">
-            @csrf
-            @method('post')
-            <div class="col-lg-12 row">
-                <div class="col-md-2 form-group my-3">
-                    <label for="" class="f-14 text-dark-grey mb-12">
-                        Código <sup class="f-14 mr-1">*</sup>
-                    </label>
-                    <select class="form-control selectpicker" data-live-search="true" style="margin-top: 50px;"
-                        name="codigo">
-                        @foreach ($codigos as $codigo)
-                            <option value="{{ $codigo->id }}">{{ $codigo->codigos }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-10">
-                    <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldLabel="Numero de telefono"
-                        fieldPlaceholder="Numero de telefono" fieldName="numero" fieldRequired="true"
-                        fieldId="contract_prefix" :fieldValue="$numero" />
-                </div>
-            </div>
-            <div class="">
-                <button class="btn btn-success">
-                    @if ($activacion === true)
-                        Actulizar datos
-                    @else
-                        Iniciar datos
-                    @endif
-                </button>
+        <div class="bg-white ">
+            <div class="container" style="padding: 20px;">
+                <form action="{{ route('lubot.activacion') }}" method="post" class="" autocomplete="on">
+                    @csrf
+                    @method('post')
+                    <div class="col-lg-12 row">
+                        <div class="col-md-2 form-group my-3">
+                            <label for="" class="f-14 text-dark-grey mb-12">
+                                Código <sup class="f-14 mr-1">*</sup>
+                            </label>
+                            <select class="form-control selectpicker" data-live-search="true" style="margin-top: 50px;"
+                                name="codigo">
+                                @foreach ($codigos as $codigo)
+                                    <option value="{{ $codigo->id }}">{{ $codigo->codigos }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-10">
+                            <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldLabel="Numero de telefono"
+                                fieldPlaceholder="Numero de telefono" fieldName="numero" fieldRequired="true"
+                                fieldId="contract_prefix" :fieldValue="$numero" />
+                        </div>
+                    </div>
+                    <div class="container">
+                        <button class="btn btn-success" style="width: 100%;">
+                            @if ($activacion === true)
+                                Actulizar datos
+                            @else
+                                Iniciar datos
+                            @endif
+                        </button>
 
+                    </div>
+                </form>
             </div>
-        </form>
+
+        </div>
+
         <div class="content-wrapper row">
-            <div class="col-md-6"  style="border-right: solid 1px rgba(0,0,0,.1)!important;border-left: solid 1px rgba(0,0,0,.1)!important;">
+            <div class="col-md-6  bg-white content_custom">
                 @if ($numero !== null)
                     <div class="container-fluid">
                         <div class="">
@@ -113,45 +119,48 @@
                             Iniciar ws
                         </a>
                     </div>
-                    
                 @endif
             </div>
-            <div class="col-md-6" style="padding-left: 30px;">
-                @include('lubot::activacion.activacion_rc')
+            <div " class="col-md-6 bg-white content_custom" >
+                        @include('lubot::activacion.activacion_rc')
+                    </div>
+                    
+                </div>
             </div>
-            
-        </div>
-    </div>
-    @include('lubot::activacion.script_ws')
-    <style>
-        #iniciar {
-            transition: opacity 0.5s ease-in-out;
-        }
+            @include('lubot::activacion.script_ws')
+            <style>
+                .content_custom{
+                    height: 300px!important;
+                    width: 100%;
+                }
+                #iniciar {
+                    transition: opacity 0.5s ease-in-out;
+                }
 
-        #iniciar.loading {
-            opacity: 1;
-        }
+                #iniciar.loading {
+                    opacity: 1;
+                }
 
-        /* HTML: <div class="loader"></div> */
-        .container_loader {
+                /* HTML: <div class="loader"></div> */
+                .container_loader {
 
-            margin: auto;
-        }
+                    margin: auto;
+                }
 
-        .loader {
-            width: 100%;
-            height: 20px;
-            background:
-                linear-gradient(#25b09b 0 0) left -40px top 0/40px 20px,
-                linear-gradient(#ddd 0 0) center/100% 50%;
-            background-repeat: no-repeat;
-            animation: l5 1s infinite linear;
-        }
+                .loader {
+                    width: 100%;
+                    height: 20px;
+                    background:
+                        linear-gradient(#25b09b 0 0) left -40px top 0/40px 20px,
+                        linear-gradient(#ddd 0 0) center/100% 50%;
+                    background-repeat: no-repeat;
+                    animation: l5 1s infinite linear;
+                }
 
-        @keyframes l5 {
-            100% {
-                background-position: right -40px top 0, center
-            }
-        }
-    </style>
+                @keyframes l5 {
+                    100% {
+                        background-position: right -40px top 0, center
+                    }
+                }
+            </style>
 @endsection

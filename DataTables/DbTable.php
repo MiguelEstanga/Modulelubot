@@ -6,30 +6,23 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 
-class SegmentosTable extends BaseDataTable
+class DbTable extends BaseDataTable
 {
-    protected $id;
-
-    public function withId($id)
+    
+    public $companie_id;
+    public function ConId($id)
     {
-        $this->id = $id;
+        $this->companie_id = $id;
         return $this;
     }
-   
 
-    function getPrompt($id)
-    {
-        $prompt = DB::table('prompts')->where('id_campanas', $id)->first();
-        //return DB::table('prompts')->where('id_campanas', $id)->first()->prompt ?? $id;
-        return $prompt->prompts ?? 'null'; // Handle case where no record is found
-    }
+  
     public function dataTable($query)
     {
-
         return datatables()
             ->query($query)
             ->addIndexColumn()
-            ->addColumn('action', function ($row) {
+              ->addColumn('action', function ($row) {
                 $action = '<div class="task_view">
                     <div class="dropdown">
                         <a class="task_view_more d-flex align-items-center justify-content-center dropdown-toggle" type="link"
@@ -44,39 +37,27 @@ class SegmentosTable extends BaseDataTable
                 </div>';
                 return $action;
             })
-            ->addColumn('Pais', function ($row) {
-                return $row->pais;
+            ->addColumn('Nombre', function ($row) {
+                return $row->nombre  ;
             })
-            ->addColumn('Ciudad', function ($row) {
-                return $row->ciudad;
+           
+            ->addColumn('Eliminar', function ($row) {
+                return  '<a href="' . route('bd.delete', [$row->id]) . '" class="dropdown-item"><i class="bi bi-trash-fill"></i>Eliminar</a>';;
             })
-            ->addColumn('Barrio', function ($row) {
-                return $row->barrio;
-            })
-            ->addColumn('Segmento', function ($row) {
-                return $row->segmento;
-            })
-            ->addColumn('Promp', function ($row) {
-                return '<p>'. $this->getPrompt(2).' </p>' ;
-            })
-            
-            
-            ->rawColumns(['action', 'Promp' ]); // Permitir HTML en estas columnas
-            
+            ->rawColumns(['action', 'Eliminar' ]); // Permitir HTML en estas columnas
     }
-
+ 
     public function query()
     {
-        $query = DB::table('segmentos')
-            ->select(['id', 'barrio', 'pais', 'segmento' , 'ciudad' ])
-            ->where('id_campanas' , $this->id);
-        return $query;
+          // Obtener los datos desde la columna 'data' de la tabla 'db_user'
+          $query = DB::table('user_db')->select(['id' , 'nombre'])->where('id_companies' ,$this->companie_id );
+          return $query; // Retor
     }
 
     public function html()
     {
         return $this->builder()
-                    ->setTableId('campaigns-table')
+                    ->setTableId('user_db')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('Bfrtip')
@@ -85,7 +66,7 @@ class SegmentosTable extends BaseDataTable
                        // Button::make('create'),
                         Button::make('export'),
                      //   Button::make('print'),
-                       // Button::make('reset'),
+                      //  Button::make('reset'),
                        // Button::make('reload')
                     );
     }
@@ -94,14 +75,9 @@ class SegmentosTable extends BaseDataTable
     {
         return [
             Column::make('id')->title(__('app.id'))->visible(false),
-            Column::make('Pais')->title('Pais'),
-            Column::make('Ciudad')->title('Ciudads'),
-            Column::make('Barrio')->title('Barrios'),
-            Column::make('Segmento')->title('Segmentos'),
-            Column::make('Promp')->title('Promp'),
-            //Column::make('ver_segmentos')->title('Segmentos'),
-           // Column::computed('action')->exportable(false)->printable(false)->orderable(false)->searchable(false)->title(__('app.action'))
-             //   ->width(150)->addClass('text-right pr-20'),
+            Column::make('Nombre')->title('Nombre de la BD'),
+            Column::make('Eliminar')->title('Eliminar BD'),
+        
           
         ];
     }
