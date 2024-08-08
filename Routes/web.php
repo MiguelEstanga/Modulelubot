@@ -29,6 +29,7 @@ Route::prefix('lubot')->group(function() {
     Route::post('/camapañas', 'CampanasController@campanas_stores')->name('campanas.stores');
     Route::get('/ver/cmapañas', 'CampanasController@ver_campanas')->name('ver_campanas.todas');
     Route::get('/ver/cmapañas/eliminar/{id}', 'CampanasController@eliminar')->name('campanas.eliminar');
+    Route::get('/ver/eliminar_segmentos/{id}', 'CampanasController@eliminar_segmentos')->name('segmentos.eliminar');
     Route::get('/ver/cmapanas/cambiar_estado/{id}', 'CampanasController@cambiar')->name('cambiar.estado');
     Route::get('/ver/cmapanas/segmemtos/{id}', 'CampanasController@campana_segmentos')->name('campana_segmentes');
     Route::get('correr_bot/{companie_id}', 'LubotController@correr_bot')->name('correr_bot'); 

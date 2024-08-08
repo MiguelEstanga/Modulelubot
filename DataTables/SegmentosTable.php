@@ -37,7 +37,7 @@ class SegmentosTable extends BaseDataTable
                             <i class="icon-options-vertical icons"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->id . '" tabindex="0">';
-
+                        $action .='<a href="' . route('segmentos.eliminar', $row->id) . '" class="dropdown-item"><i class="bi bi-trash3"></i> Eliminar segmento</a>';
                 $action .= '<a href="' . route('orders.show', [$row->id]) . '" class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
                 $action .= '</div>
                     </div>
@@ -56,12 +56,10 @@ class SegmentosTable extends BaseDataTable
             ->addColumn('Segmento', function ($row) {
                 return $row->segmento;
             })
-            ->addColumn('Promp', function ($row) {
-                return '<p>'. $this->getPrompt(2).' </p>' ;
-            })
+          
             
             
-            ->rawColumns(['action', 'Promp' ]); // Permitir HTML en estas columnas
+            ->rawColumns(['action']); // Permitir HTML en estas columnas
             
     }
 
@@ -95,13 +93,12 @@ class SegmentosTable extends BaseDataTable
         return [
             Column::make('id')->title(__('app.id'))->visible(false),
             Column::make('Pais')->title('Pais'),
-            Column::make('Ciudad')->title('Ciudads'),
+            Column::make('Ciudad')->title('Ciudad'),
             Column::make('Barrio')->title('Barrios'),
             Column::make('Segmento')->title('Segmentos'),
-            Column::make('Promp')->title('Promp'),
-            //Column::make('ver_segmentos')->title('Segmentos'),
-           // Column::computed('action')->exportable(false)->printable(false)->orderable(false)->searchable(false)->title(__('app.action'))
-             //   ->width(150)->addClass('text-right pr-20'),
+           
+            Column::computed('action')->exportable(false)->printable(false)->orderable(false)->searchable(false)->title(__('app.action'))
+                ->width(150)->addClass('text-right pr-20'),
           
         ];
     }

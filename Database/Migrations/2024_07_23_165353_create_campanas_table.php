@@ -27,6 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_companies')->nullable();
             $table->integer('responder_con_ia')->default(1);
             $table->integer('campanas_activa')->default(0);
+            $table->string('objetivo_de_lubot')->default(null);
             $table->string('nombre');
             $table->timestamps();
         });

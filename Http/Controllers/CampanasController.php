@@ -12,6 +12,7 @@ use Modules\Lubot\DataTables\CampanaTable;
 use Modules\Lubot\DataTables\SegmentosTable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use  Modules\Lubot\Http\Controllers\HelperController;
 class CampanasController extends AccountBaseController
 {
     public function __construct()
@@ -32,7 +33,7 @@ class CampanasController extends AccountBaseController
      * Display a listing of the resource.
      * @return Renderable
      */
-     protected $API_LUBOT_MASTER = 'https://lubot.healtheworld.com.co/api';
+     public $API_LUBOT_MASTER = 'https://lubot.healtheworld.com.co/api';
      
      protected $API_LUBOT_ENDPOINT = [
         'paises' => "paises",
@@ -103,43 +104,35 @@ class CampanasController extends AccountBaseController
 
     //returno de paises lubot_master
     public function paises(){
-       $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$this->API_LUBOT_MASTER}/{$this->API_LUBOT_ENDPOINT['paises']}");
+       $response = Http::withHeaders(['Accept' => 'application/json'])->get(HelperController::endpoiny('paises'));
        $data = json_decode($response ,true );
        return $data;
     }
 
     public function segmentos(){
-        $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$this->API_LUBOT_MASTER}/{$this->API_LUBOT_ENDPOINT['segmentos']}");
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get( HelperController::endpoiny('segmentos'));
         $data = json_decode($response ,true );
         return $data;
      }
 
      public function barrios(){
-        $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$this->API_LUBOT_MASTER}/{$this->API_LUBOT_ENDPOINT['barrios']}");
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get( HelperController::endpoiny('barrios'));
         $data = json_decode($response ,true );
         return $data;
      }
 
      public function ciudades(){
-        $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$this->API_LUBOT_MASTER}/{$this->API_LUBOT_ENDPOINT['ciudades']}");
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get(HelperController::endpoiny('ciudades'));
         $data = json_decode($response ,true );
         return $data;
      }
 
-    public function get_segmentos_fila()
-    {
-        $this->data['ciudades'] = $this->ciudades() ?? [];
-        $this->data['segmentos'] = $this->segmentos() ?? [];
-        $this->data['barrios'] = $this->barrios() ?? [];
-        $this->data['paises'] = $this->paises() ?? [];
-        $view = view('partials.form-row', compact('paises', 'barrios', 'segmentos'))->render();
-        return response()->json(['html' => $view]);
-       
-    }
     public function index()
     {
-        $this->data['ciudades'] = $this->ciudades() ?? [];
         $this->data['segmentos'] = $this->segmentos() ?? [];
+        $this->data['objetivos'] = DB::table('objetivos_lubot')->get() ?? [];
+        $this->data['ciudades'] = $this->ciudades() ?? [];
+       
         $this->data['barrios'] = $this->barrios() ?? [];
         $this->data['paises'] = $this->paises() ?? [];
         $this->activeMenu = 'lubot';
@@ -151,13 +144,8 @@ class CampanasController extends AccountBaseController
         if(!Schema::hasTable('campanas') ) return back();
         if(!Schema::hasTable('segmentos')) return back();
         if(!Schema::hasTable('prompts')  ) return back();
-       
-        
-        
-        
         $data_promps = [];
-        if($request->input('pregunta')){
-            
+        if($request->input('mode') === 1){
             for($i = 0 ; $i< count($request->input('pregunta')) ; $i++)
             {
                 $data_promps[] = [
@@ -174,6 +162,7 @@ class CampanasController extends AccountBaseController
                 'nombre' => $request->nombre_campanas,
                 'responder_con_ia' => 1,
                 'campanas_activa' => 0,
+                'objetivo_de_lubot' => $request->objetivo
             ]
         );
         $campana = DB::table('campanas')
@@ -268,14 +257,17 @@ class CampanasController extends AccountBaseController
         
         public function campana_segmentos(SegmentosTable $dataTable ,  $id)
         {
-          
              $segmentos = DB::table('segmentos')->where('id_campanas' , $id)->get();
              $campana = DB::table('campanas')->where('id', $id)->first();
              $this->data['segmentos'] = $segmentos;
              $this->data['campana'] = $campana;
-             $dataTable->withId($this->data['company']['id']);
+             $dataTable->withId($id);
              return $dataTable->render('lubot::campanas.segmentos' ,  $this->data);
-            
         }
-   
+        
+        public function eliminar_segmentos($id)
+        {
+            DB::table('segmentos')->where('id' ,  $id)->delete();
+            return back();
+        }
 }

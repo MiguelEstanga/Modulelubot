@@ -9,7 +9,7 @@
         
         <div class="accordionItemContent pb-2">
             <x-sub-menu-item :link="route('lubot.admin')" text="Activacion"/>
-            <x-sub-menu-item :link="route('campanas.index')" text="seleccion de semento"/>
+            <x-sub-menu-item :link="route('campanas.index')" text="Registrat Campañas"/>
             <x-sub-menu-item :link="route('ver_campanas.todas')" text="Campañas"/>
             <x-sub-menu-item :link="route('Lubot.db')" text="Base de datos"/>
            

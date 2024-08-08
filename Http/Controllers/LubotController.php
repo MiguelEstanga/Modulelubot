@@ -34,7 +34,7 @@ class LubotController extends AccountBaseController
      */
     public function index()
     {
-        $this->activeMenu = 'lubot';
+         $this->activeMenu = 'lubot';
         return view('lubot::index' , $this->data);
     }
 
@@ -76,7 +76,7 @@ class LubotController extends AccountBaseController
 
     public function datas_compania()
     {
-       $data = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->first();
+          $data = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->first();
        return response()->json($data);
     }
 
