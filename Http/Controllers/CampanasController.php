@@ -144,6 +144,7 @@ class CampanasController extends AccountBaseController
         if(!Schema::hasTable('campanas') ) return back();
         if(!Schema::hasTable('segmentos')) return back();
         if(!Schema::hasTable('prompts')  ) return back();
+       // return HelperController::endpoiny('activar_ejecutable_ws');
         $data_promps = [];
         if($request->input('mode') === 1){
             for($i = 0 ; $i< count($request->input('pregunta')) ; $i++)
@@ -156,33 +157,30 @@ class CampanasController extends AccountBaseController
           
         }
         
-         $verificacion = DB::table('campanas')->insert(  
+        $campana_id = DB::table('campanas')->insertGetId(  
             [
                 'id_companies' => $this->data['company']['id'],
                 'nombre' => $request->nombre_campanas,
                 'responder_con_ia' => 1,
-                'campanas_activa' => 0,
+                'campanas_activa' => 1,
                 'objetivo_de_lubot' => $request->objetivo
             ]
         );
-        $campana = DB::table('campanas')
-        ->where('id_companies' , $this->data['company']['id'] )
-        ->orderBy('id', 'desc')
-        ->limit(1)
-        ->first();
+        $check = DB::table("campanas")->where('id' , $campana_id)->exists();
+        if(!$check ) return back();
 
         DB::table('prompts')
         ->insert(
             [
                 'prompt' => (int)$request->mode === 1 ?  json_encode($data_promps) : "Saludo Generico",
-                'id_campanas' => $campana->id
+                'id_campanas' =>  $campana_id
             ]
         );
             for($i = 0 ; $i <= count($request->pais) -1 ; $i++)
             {
                 DB::table('segmentos')->insert(
                     [
-                        'id_campanas' =>  $campana->id ,
+                        'id_campanas' =>  $campana_id ,
                         'segmento' => $request->segmento[$i],
                         'ciudad'   => $request->ciudad[$i],
                         'pais'     => $request->pais[$i],
@@ -191,10 +189,13 @@ class CampanasController extends AccountBaseController
                     ]
                 );
             }
-
+        
+            
+          
         //$this->Lubot();
         $response = Http::withHeaders(['Accept' => 'application/json'])
-        ->get("{$this->ACTIVAR_BOT}/{$this->data['company']['id']}/{$campana->id}");
+        ->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
+      //  return json_decode($response ,true );
         return redirect()->route('ver_campanas.todas');
        
       
