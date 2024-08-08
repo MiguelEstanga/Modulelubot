@@ -21,6 +21,7 @@ class HelperController extends Controller
     $web_hook = self::url('WEB_HOOK_RUL');
     $data = [
         'activar_ws' => "{$web_hook}/activar_ws",
+        'activar_rc' => "{$web_hook}/activar_rc",
     ];
     return  $data[$key];
   }
