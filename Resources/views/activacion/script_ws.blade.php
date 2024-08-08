@@ -3,7 +3,7 @@
     let intervalo;
     let pollingInterval;
     let companie = {{ $id_companie }};
-    let url_webhook_activar_ws = `{{ $activar_ws_url }}/${companie}`;
+    let url_webhook_activar_ws = `{{ $activar_ws_url }}/${companie}/ws`;
 
     code_ws()
 

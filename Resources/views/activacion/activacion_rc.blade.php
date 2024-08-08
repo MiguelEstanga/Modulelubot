@@ -45,10 +45,11 @@
         let countdownIntervalId;
         let countdownTime = 120; // 120 seconds
         let companie = {{ $id_companie }};
-         let url_webhook_activar_rc = `{{ $activar_rc_url }}/${companie}`;
+        let url_webhook_activar_rc = `{{ $activar_ws_url }}/${companie}/rc`;
          
         code_rc()
         function activar_bot(){
+            console.log(`${url_webhook_activar_rc}`)
             fetch(`${url_webhook_activar_rc}`, {
                 headers: {
                     'ngrok-skip-browser-warning': 'true'
