@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Http\Controllers\AccountBaseController;
+use Modules\Lubot\Http\Controllers\HelperController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Http;
@@ -26,7 +27,7 @@ class LubotController extends AccountBaseController
         );
     }
 
-    public $ACTIVAR_BOT = 'https://5281-186-114-249-60.ngrok-free.app/api/testBot' ;
+    
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -56,6 +57,8 @@ class LubotController extends AccountBaseController
      */
     public function Activacion()
     {
+        $this->data['activar_ws_url'] = HelperController::endpoiny('activar_ws');
+        $this->data['id_companie'] = $this->data['company']['id'];
         $activacion = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->exists();
         if(!$activacion)
         {
@@ -101,12 +104,11 @@ class LubotController extends AccountBaseController
         }
        
     }
-    public function probar(){
-        $response = Http::withHeaders(['Accept' => 'application/json'])
-        ->get("{$this->ACTIVAR_BOT}/2/rc");
-        $clientes = $response;
+
+    public function correr_bot($companie_id){
+        $url_webhook = HelperController::url('WEB_HOOK_RUL') ;
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$url_webhook}/activar_ws/{$companie_id}");
         return json_encode(['ok' => 'ok' ,  $response]);
-        
     }
 
     public function cambiar_estado($user_id , $estado){

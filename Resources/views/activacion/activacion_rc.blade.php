@@ -46,7 +46,7 @@
         let countdownTime = 120; // 120 seconds
         code_rc()
         function activar_bot(){
-            fetch(`{{ route('probarbot') }}`)
+            fetch()
             .then(response => response.json())
             .then(data => {
                 console.log('Raw data:', data);

@@ -2,6 +2,8 @@
     let start = false;
     let intervalo;
     let pollingInterval;
+    let companie = {{ $id_companie }};
+    let url_webhook_activar_ws = `{{ $activar_ws_url }}/${companie}`;
 
     code_ws()
 
@@ -70,8 +72,12 @@
         start = true;
         document.getElementById('iniciar').innerText = "Procesando...";
 
-
-        fetch(`{{ route('probarbot') }}`)
+        console.log(`${url_webhook_activar_ws}`)
+        fetch(`${url_webhook_activar_ws}`, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true'
+                }
+            })
             .then(response => response.json())
             .then(data => {
                 console.log('Raw data:', data);

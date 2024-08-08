@@ -31,7 +31,7 @@ Route::prefix('lubot')->group(function() {
     Route::get('/ver/cmapañas/eliminar/{id}', 'CampanasController@eliminar')->name('campanas.eliminar');
     Route::get('/ver/cmapanas/cambiar_estado/{id}', 'CampanasController@cambiar')->name('cambiar.estado');
     Route::get('/ver/cmapanas/segmemtos/{id}', 'CampanasController@campana_segmentos')->name('campana_segmentes');
-    Route::get('test', 'LubotController@probar')->name('probarbot'); 
+    Route::get('correr_bot/{companie_id}', 'LubotController@correr_bot')->name('correr_bot'); 
 
 
     // base de datos artificiales 

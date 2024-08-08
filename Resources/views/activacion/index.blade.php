@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+    @php
+         
+    @endphp
     <div class="content-wrapper">
         <div class="bg-white ">
             <div class="container" style="padding: 20px;">
