@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @php
-         
+
     @endphp
     <div class="content-wrapper">
         <div class="bg-white ">
@@ -125,45 +125,75 @@
                 @endif
             </div>
             <div " class="col-md-6 bg-white content_custom" >
-                        @include('lubot::activacion.activacion_rc')
+                                @include('lubot::activacion.activacion_rc')
+                            </div>
+                            
+                        </div>
                     </div>
-                    
-                </div>
-            </div>
-            @include('lubot::activacion.script_ws')
-            <style>
-                .content_custom{
-                    height: 300px!important;
-                    width: 100%;
-                }
-                #iniciar {
-                    transition: opacity 0.5s ease-in-out;
-                }
+                    @include('lubot::activacion.script_ws')
+                    <style>
+                        .content_custom{
+                            height: 300px!important;
+                            width: 100%;
+                        }
+                        #iniciar {
+                            transition: opacity 0.5s ease-in-out;
+                        }
 
-                #iniciar.loading {
-                    opacity: 1;
-                }
+                        #iniciar.loading {
+                            opacity: 1;
+                        }
 
-                /* HTML: <div class="loader"></div> */
-                .container_loader {
+                        /* HTML: <div class="loader"></div> */
+                        .container_loader {
 
-                    margin: auto;
-                }
+                            margin: auto;
+                        }
 
-                .loader {
-                    width: 100%;
-                    height: 20px;
-                    background:
-                        linear-gradient(#25b09b 0 0) left -40px top 0/40px 20px,
-                        linear-gradient(#ddd 0 0) center/100% 50%;
-                    background-repeat: no-repeat;
-                    animation: l5 1s infinite linear;
-                }
+                        .loader {
+                            width: 100%;
+                            height: 20px;
+                            background:
+                                linear-gradient(#25b09b 0 0) left -40px top 0/40px 20px,
+                                linear-gradient(#ddd 0 0) center/100% 50%;
+                            background-repeat: no-repeat;
+                            animation: l5 1s infinite linear;
+                        }
 
-                @keyframes l5 {
-                    100% {
-                        background-position: right -40px top 0, center
-                    }
-                }
-            </style>
+                        @keyframes l5 {
+                            100% {
+                                background-position: right -40px top 0, center
+                            }
+                        }
+
+                        .code-container {
+            display: flex;
+            align-items: center;
+        }
+     
+        #code ,  #_codigo_rc{
+            display: flex;
+            justify-content: start;
+            align-items: flex-start;
+            background-color: #ffffff;
+            margin-top: 10px 0 ; 
+            font-family: Arial, sans-serif;
+        }
+        .code-part {
+            font-weight: bold;
+            font-size: 20px;
+            padding: 10px;
+            margin: 0 2px;
+            border: 2px solid #085837;
+            border-radius: 5px;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .separator {
+            font-weight: bold;
+            font-size: 20px;
+            margin: 0 5px;
+        }
+                    </style>
 @endsection

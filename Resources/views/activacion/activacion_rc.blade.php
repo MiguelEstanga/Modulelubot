@@ -46,30 +46,32 @@
         let countdownTime = 120; // 120 seconds
         let companie = {{ $id_companie }};
         let url_webhook_activar_rc = `{{ $activar_ws_url }}/${companie}/rc`;
-         
+
         code_rc()
-        function activar_bot(){
+
+        function activar_bot() {
             console.log(`${url_webhook_activar_rc}`)
             fetch(`${url_webhook_activar_rc}`, {
-                headers: {
-                    'ngrok-skip-browser-warning': 'true'
-                }
-            })
-            
-            .then(response => response.json())
-            .then(data => {
-                console.log('Raw data:', data);
-                document.getElementById('iniciar').innerText = "Volver a intentar";
-            })
-            .catch(error => {
-                console.error('Error en la solicitud:', error);
-                document.getElementById('iniciar').innerText = "Error de comunicación";
-            })
-            .finally(function() {
-                alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
-            });
+                    headers: {
+                        'ngrok-skip-browser-warning': 'true'
+                    }
+                })
+
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Raw data:', data);
+                    document.getElementById('iniciar').innerText = "Volver a intentar";
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                    document.getElementById('iniciar').innerText = "Error de comunicación";
+                })
+                .finally(function() {
+                    alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
+                });
 
         }
+
         function code_rc() {
             fetch(`{{ route('lubot.default_compania') }}`)
                 .then(response => response.json())
@@ -91,10 +93,28 @@
                     }
 
                     if (response.code_rc != null) codigo_linea_rc.style.display = 'block';
-                    if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc !=
-                        null) {
+                    if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null) {
                         codigo_rc.style.display = "block";
-                        _codigo_rc.innerHTML = response.code_rc;
+                       // _codigo_rc.innerHTML = response.code_rc;
+                        let code = response?.code_rc
+                        let codeContainer = _codigo_rc;
+                        for (let i = 0; i < code.length; i++) {
+                            if (i === 4) {
+                                // Insertar el guion después de 4 caracteres
+                                const separator = document.createElement('div');
+                                separator.className = 'separator';
+                                separator.textContent = '-';
+                                codeContainer.appendChild(separator);
+                            }
+
+                            // Crear un nuevo div para el carácter
+                            const codePart = document.createElement('div');
+                            codePart.className = 'code-part';
+                            codePart.textContent = code[i];
+
+                            // Insertar el carácter en el contenedor
+                            codeContainer.appendChild(codePart);
+                        }
                     }
                     if (response.code_rc != null && response.estado_rc == 2) {
                         rc_ejecucion.style.display = "block";
