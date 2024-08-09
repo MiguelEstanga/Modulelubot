@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('objetivo_de_lubot')->default(null);
             $table->string('nombre');
             $table->integer('contador')->default(1);
-            $table->integer('encendido')->default(1);
+            $table->integer('encendido')->default(0);
             $table->timestamps();
         });
 
