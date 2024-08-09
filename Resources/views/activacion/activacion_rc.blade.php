@@ -39,65 +39,69 @@
     </button>
 </div>
 <script>
-    $(document).ready(function() {
-        let start_rc = false;
-        let intervalId;
-        let countdownIntervalId;
-        let countdownTime = 120; // 120 seconds
-        let companie = {{ $id_companie }};
-        let url_webhook_activar_rc = `{{ $activar_ws_url }}/${companie}/rc`;
+  $(document).ready(function() {
+    let start_rc = false;
+    let intervalId;
+    let countdownIntervalId;
+    let countdownTime = 120; // 120 seconds
+    let companie = {{ $id_companie }};
+    let url_webhook_activar_rc = `{{ $activar_ws_url }}/${companie}/rc`;
 
-        code_rc()
+    code_rc();
 
-        function activar_bot() {
-            console.log(`${url_webhook_activar_rc}`)
-            fetch(`${url_webhook_activar_rc}`, {
-                    headers: {
-                        'ngrok-skip-browser-warning': 'true'
-                    }
-                })
+    function activar_bot() {
+        
+        fetch(`${url_webhook_activar_rc}`, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Raw data:', data);
+            document.getElementById('iniciar').innerText = "Volver a intentar";
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+            document.getElementById('iniciar').innerText = "Error de comunicación";
+        })
+        .finally(function() {
+            alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
+        });
+    }
 
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Raw data:', data);
-                    document.getElementById('iniciar').innerText = "Volver a intentar";
-                })
-                .catch(error => {
-                    console.error('Error en la solicitud:', error);
-                    document.getElementById('iniciar').innerText = "Error de comunicación";
-                })
-                .finally(function() {
-                    alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
-                });
+    function code_rc() {
+        fetch(`{{ route('lubot.default_compania') }}`)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
 
-        }
-
-        function code_rc() {
-            fetch(`{{ route('lubot.default_compania') }}`)
-                .then(response => response.json())
-                .then(response => {
-                    console.log(response);
-                    if (response.estado_rc === 1) {
-                        estado_rc.innerHTML = `
+                // Actualiza el estado de `estado_rc` aquí
+                if (response.estado_rc === 1) {
+                    estado_rc.innerHTML = `
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#f1c40f" class="bi bi-lightbulb-fill" viewBox="0 0 16 16">
                             <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5"/>
                         </svg>
                     `;
-                    }
+                }
 
-                    if (response.estado_rc === 2) {
-                        estado_rc.innerHTML = `
+                if (response.estado_rc === 2) {
+                    estado_rc.innerHTML = `
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#186a3b" class="bi bi-lightbulb-fill" viewBox="0 0 16 16">
                             <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5"/>
                         </svg>`;
-                    }
+                }
 
-                    if (response.code_rc != null) codigo_linea_rc.style.display = 'block';
+                if (response.code_rc != null) {
+                    codigo_linea_rc.style.display = 'block';
                     if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null) {
                         codigo_rc.style.display = "block";
-                       // _codigo_rc.innerHTML = response.code_rc;
-                        let code = response?.code_rc
+                        // Limpiar el contenedor antes de agregar nuevos elementos
+                        _codigo_rc.innerHTML = '';
+                        
+                        let code = response.code_rc;
                         let codeContainer = _codigo_rc;
+
                         for (let i = 0; i < code.length; i++) {
                             if (i === 4) {
                                 // Insertar el guion después de 4 caracteres
@@ -116,41 +120,44 @@
                             codeContainer.appendChild(codePart);
                         }
                     }
-                    if (response.code_rc != null && response.estado_rc == 2) {
-                        rc_ejecucion.style.display = "block";
-                        loader_rc.style.display = 'none';
-                        clearInterval(intervalId);
-                        clearInterval(countdownIntervalId);
-                        activar_rc.disabled = false;
-                        activar_rc.style.color = "";
-                    }
-                });
-        }
+                }
 
-        function startCountdown() {
-            countdownTime = 120;
-            countdownIntervalId = setInterval(function() {
-                countdownTime--;
-                if (countdownTime <= 0) {
-                    clearInterval(countdownIntervalId);
+                if (response.code_rc != null && response.estado_rc == 2) {
+                    rc_ejecucion.style.display = "block";
+                    loader_rc.style.display = 'none';
                     clearInterval(intervalId);
+                    clearInterval(countdownIntervalId);
                     activar_rc.disabled = false;
                     activar_rc.style.color = "";
-                    loader_rc.style.display = 'none';
                 }
-            }, 1000);
-        }
+            });
+    }
 
-        $('#activar_rc').on('click', function() {
-            if (!start_rc) {
-                activar_bot();
-                start_rc = true;
-                loader_rc.style.display = 'block';
-                activar_rc.disabled = true;
-                activar_rc.style.color = "#f2f2f2";
-                intervalId = setInterval(code_rc, 1000);
-                startCountdown();
+    function startCountdown() {
+        countdownTime = 120;
+        countdownIntervalId = setInterval(function() {
+            countdownTime--;
+            if (countdownTime <= 0) {
+                clearInterval(countdownIntervalId);
+                clearInterval(intervalId);
+                activar_rc.disabled = false;
+                activar_rc.style.color = "";
+                loader_rc.style.display = 'none';
             }
-        });
+        }, 1000);
+    }
+
+    $('#activar_rc').on('click', function() {
+        if (!start_rc) {
+            activar_bot();
+            start_rc = true;
+            loader_rc.style.display = 'block';
+            activar_rc.disabled = true;
+            activar_rc.style.color = "#f2f2f2";
+            intervalId = setInterval(code_rc, 1000);
+            startCountdown();
+        }
     });
+});
+
 </script>

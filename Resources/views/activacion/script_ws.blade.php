@@ -26,6 +26,7 @@
                  
                     code_ws_container.style.display = "block"
                     let codeContainer = document.getElementById('code');
+                    codeContainer.innerHTML = ""
                     for (let i = 0; i < code.length; i++) {
                         if (i === 4) {
                             // Insertar el guion después de 4 caracteres

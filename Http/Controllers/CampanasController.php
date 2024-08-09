@@ -256,14 +256,24 @@ class CampanasController extends AccountBaseController
             ]);
         }
         
+        public function estado_campana($id)
+        {
+           
+            $campana = DB::table('campanas')->where('id' , $id)->get();
+            return json_encode( $campana );
+        }
         public function campana_segmentos(SegmentosTable $dataTable ,  $id)
         {
-             $segmentos = DB::table('segmentos')->where('id_campanas' , $id)->get();
-             $campana = DB::table('campanas')->where('id', $id)->first();
-             $this->data['segmentos'] = $segmentos;
-             $this->data['campana'] = $campana;
-             $dataTable->withId($id);
-             return $dataTable->render('lubot::campanas.segmentos' ,  $this->data);
+            $segmentos = DB::table('segmentos')->where('id_campanas' , $id)->get();
+           
+            $campana = DB::table('campanas')->where('id', $id)->first();
+            $this->data['campana_estado'] = route('estado_campna' , $campana->id );
+            $this->data['segmentos'] = $segmentos;
+            $this->data['campana'] = $campana;
+            $this->data['id_companie'] =  $this->data['company']['id'];
+             $this->data['url_activar_bot'] = HelperController::endpoiny('activar_ejecutable_ws');
+            $dataTable->withId($id);
+            return $dataTable->render('lubot::campanas.segmentos' ,  $this->data);
         }
         
         public function eliminar_segmentos($id)
