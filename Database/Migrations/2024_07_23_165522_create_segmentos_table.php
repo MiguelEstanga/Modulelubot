@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('segmentos', function (Blueprint $table) {
             $table->id();
-            $table->string('segmento');
+            $table->string('tipo_de_negocio');
             $table->string('barrio');
             $table->string('pais');
             $table->string('ciudad');

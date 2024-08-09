@@ -109,7 +109,7 @@ class CampanasController extends AccountBaseController
        return $data;
     }
 
-    public function segmentos(){
+    public function tipo_de_negocio(){
         $response = Http::withHeaders(['Accept' => 'application/json'])->get( HelperController::endpoiny('segmentos'));
         $data = json_decode($response ,true );
         return $data;
@@ -129,7 +129,7 @@ class CampanasController extends AccountBaseController
 
     public function index()
     {
-        $this->data['segmentos'] = $this->segmentos() ?? [];
+        $this->data['segmentos'] = $this->tipo_de_negocio() ?? [];
         $this->data['objetivos'] = DB::table('objetivos_lubot')->get() ?? [];
         $this->data['ciudades'] = $this->ciudades() ?? [];
        
@@ -181,7 +181,7 @@ class CampanasController extends AccountBaseController
                 DB::table('segmentos')->insert(
                     [
                         'id_campanas' =>  $campana_id ,
-                        'segmento' => $request->segmento[$i],
+                        'tipo_de_negocio' => $request->segmento[$i],
                         'ciudad'   => $request->ciudad[$i],
                         'pais'     => $request->pais[$i],
                         'barrio'   => $request->barrio[$i] ,
@@ -258,8 +258,7 @@ class CampanasController extends AccountBaseController
         
         public function estado_campana($id)
         {
-           
-            $campana = DB::table('campanas')->where('id' , $id)->get();
+            $campana = DB::table('campanas')->where('id' , $id)->first();
             return json_encode( $campana );
         }
         public function campana_segmentos(SegmentosTable $dataTable ,  $id)

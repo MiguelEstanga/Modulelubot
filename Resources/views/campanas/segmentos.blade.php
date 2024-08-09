@@ -42,7 +42,7 @@
                                         Segmento :
                                     </p>
                                     <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
-                                        {{ $segmento->segmento }}
+                                        {{ $segmento->tipo_de_negocio }}
                                     </p>
                                 </div>
                                 <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
@@ -152,7 +152,6 @@
                 verificar_actividad()
 
                 function verificar_actividad() {
-                    alert(campana_estado)
                     fetch(campana_estado_url)
                     .then(response => response.json())
                     .then(response => console.log(response))
