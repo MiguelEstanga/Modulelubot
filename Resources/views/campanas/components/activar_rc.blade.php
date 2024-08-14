@@ -155,7 +155,7 @@
 
         $('#activar_rc').on('click', function() {
             if (!start_rc) {
-                // activar_bot();
+                activar_bot();
                 container_codigo_rc.style.display = 'flex'
                 start_rc = true;
                 
