@@ -19,7 +19,7 @@ class CampanasController extends AccountBaseController
     {
         parent::__construct();
         $this->url_activar_rc = HelperController::endpoiny('ejecutable_inicio_sesion');
-        $this->companie = $this->data['company']['id'];
+        $this->data['companie'] = $this->data['company']['id'];
         $this->pageTitle = 'app.menu.balance_admin';
         $this->activeSettingMenu = 'front_theme_settings';
         $this->data['logo'] =   $this->data['logo'] = HelperController::public('logo');
