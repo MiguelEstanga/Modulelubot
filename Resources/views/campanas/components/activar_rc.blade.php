@@ -77,7 +77,7 @@
 
         function activar_bot() {
 
-            fetch("", {
+            fetch(url_webhook_activar_rc, {
                     headers: {
                         'ngrok-skip-browser-warning': 'true'
                     }
@@ -89,7 +89,7 @@
                 })
                 .catch(error => {
                     console.error('Error en la solicitud:', error);
-                    document.getElementById('iniciar').innerText = "Error de comunicación";
+                    
                 })
                 .finally(function() {
                     alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
