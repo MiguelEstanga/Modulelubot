@@ -48,6 +48,7 @@ class BaseDeDatosController extends AccountBaseController
 
     public function store(Request $request)
     {
+         $request->all();
         if($request->hasFile('file'))
         {
             $path = $request->file('file')->store('temp'); 
@@ -70,7 +71,7 @@ class BaseDeDatosController extends AccountBaseController
            }
            $db_user =  DB::table('user_db')->insertGetId([
                 'id_companies' => $this->data['company']['id'],
-                'nombre' => $request->bd_name
+                'nombre' => $request->nombre_campana	
             ]);
 
             

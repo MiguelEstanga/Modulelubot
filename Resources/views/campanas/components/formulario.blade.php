@@ -6,28 +6,28 @@
     </div>
     <div>
         <input class="custom_input" type="text" placeholder="Nombre de tu campaña" name="nombre_campana">
-        <div class="text-layout">
+        <div class="text-layout" style="position: relative; top:-10px;">
             ¿Qué tipo de clientes te interesan?
         </div>
-        <div class="custom_input">
-            <select name="segmento" class="form-control selectpicker custom_input">
+        <div class="">
+            <select name="segmento" class="form-control selectpicker ">
                 @foreach ($segmentos as $segmento)
                     <option value="{{ $segmento['id'] }}">{{ $segmento['nombre'] }}</option>
                 @endforeach
             </select>
         </div>
         <div>
-            <div class="divider"></div>
+            <div class="divider" style="margin-top:30px;"></div>
             <div class="text-layout">
                 ¿Dónde quieres que encuentre clientes para ti?
             </div>
             <div>
                 @include('lubot::campanas.components.segmentos')
             </div>
-            <div class="divider"></div>
+            <div class="divider" style="margin-top:30px;"></div>
             <div class="frecuencia">
                 <span class="text-layout">Frecuencia de envío</span>
-                <input class="input_number" type="number" name="frecuencia">
+                <input class="" type="number" name="frecuencia" style="width: 75px!important; height:35px!important;">
                 <span class="text-layout">cada</span>
                 <div class="col-md-2">
                     <select name="temporalidad" class="form-control selectpicker">
@@ -40,7 +40,7 @@
             <div class="frecuencia">
                 <span class="text-layout">Selecciona tu plan</span>
                 <div class="col-md-2">
-                    <select name="plan" class="form-control selectpicker">
+                    <select name="plan" class=" selectpicker" style="width:284px!important;">
 
                         <option value=" 30 Envíos  PRO - $10 USD"> 30 Envíos PRO - $10 USD</option>
 
@@ -56,7 +56,29 @@
 
     </div>
 </div>
-<form action=""></form>
+<style>
+    .btn_container {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        align-items: flex-end;
+    }
+
+    .frecuencia {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .container-auto {
+
+
+        height: auto !important;
+        padding: 30px;
+    }
+</style>
 <script>
     // Crea un nuevo objeto FormData
     const formData = new FormData();
@@ -329,80 +351,6 @@
     }
 
 
-    function sendDataFromLocalStorage() {
-        // Paso 1: Recuperar los datos del localStorage
-        const data = JSON.parse(localStorage.getItem('formData'));
-
-        // Verificar que data no sea null
-        if (!data) {
-            console.error('No se encontró "formData" en localStorage.');
-            return;
-        }
-
-        // Paso 2: Crear un formulario
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/ruta/a/tu/controlador'; // Reemplaza con la ruta correcta en tu servidor
-
-        // Agregar el token CSRF como un campo oculto
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = '_csrf'; // Nombre del campo que espera tu servidor
-        csrfInput.value = csrfToken;
-        form.appendChild(csrfInput);
-
-        // Paso 3: Agregar campos ocultos con los datos
-        for (const key in data) {
-            if (data.hasOwnProperty(key)) {
-                if (Array.isArray(data[key])) {
-                    data[key].forEach(value => {
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = `${key}[]`;
-                        input.value = value;
-                        form.appendChild(input);
-                    });
-                } else {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = key;
-                    input.value = data[key];
-                    form.appendChild(input);
-                }
-            }
-        }
-
-        // Paso 4: Agregar el formulario al cuerpo del documento
-        document.body.appendChild(form);
-
-        // Paso 5: Enviar el formulario
-        form.submit();
-
-        // Paso 6: Opcionalmente, eliminar el formulario después de enviarlo
-        document.body.removeChild(form);
-    }
+   
 </script>
-<style>
-    .btn_container {
-        width: 100%;
-        display: flex;
-        justify-content: end;
-        align-items: flex-end;
-    }
 
-    .frecuencia {
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    .container-auto {
-
-
-        height: auto !important;
-        padding: 20px;
-    }
-</style>

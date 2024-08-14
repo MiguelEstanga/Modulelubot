@@ -132,12 +132,13 @@ class CampanasController extends AccountBaseController
 
     public function index()
     {
-        $this->data['companie'] = $this->data['company']['id'];
-        $this->data['segmentos'] = $this->tipo_de_negocio() ?? [];
-        $this->data['objetivos'] = DB::table('objetivos_lubot')->get() ?? [];
-        $this->data['ciudades'] = $this->ciudades() ?? [];
-        $this->data['barrios'] = $this->barrios() ?? [];
-        $this->data['paises'] = $this->paises() ?? [];
+        $this->data['config_lubot'] = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->first(); 
+        $this->data['companie'] =  $this->data['company']['id'];
+        $this->data['segmentos'] = [['id' => 1 , 'nombre' => "text"]]; //$this->tipo_de_negocio() ?? [];
+        $this->data['objetivos'] =  DB::table('objetivos_lubot')->get() ?? [];
+        $this->data['ciudades'] =  [['id' => 1 ,'nombre' => "text"]];//$this->ciudades() ?? [];
+        $this->data['barrios'] = [['id' => 1, 'nombre' => "text"]];// $this->barrios() ?? [];
+        $this->data['paises'] =  [['id' => 1 , 'nombre' => "text"]];//$this->paises() ?? [];
         $this->activeMenu = 'lubot';
         return view('lubot::campanas.index' , $this->data);
     }
@@ -226,14 +227,6 @@ class CampanasController extends AccountBaseController
                 'response_bot' => $response
             ]
         );
-    
-        
-       
-       
-        
-        
-            
-          
         //$this->Lubot();
        
       //  return json_decode($response ,true );

@@ -1,6 +1,6 @@
 <div class="content_logo_helper " >
     <div class="logo">
-        <img src="{{ $logo }}" alt="">
+        <img src="{{ $logo }}" alt="" width="100px" height="">
     </div>
     <div class="encabezado">
         <h2 class="fuente-titulo-xdefecto">

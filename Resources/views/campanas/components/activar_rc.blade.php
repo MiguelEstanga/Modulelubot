@@ -6,7 +6,7 @@
           </svg>
     </div>
 
-    <div class="_container-action">
+    <div class="__container-action">
         <div  id="conten_loader_rc" class="conten_loader_rc" style="display: none;">
             <div class="loader"></div>
         </div>
@@ -14,12 +14,12 @@
             <div class="logo" class="logo">
                 <img src="{{ $logo }}" alt="">
             </div>
-            <div>
+            <div class="code_rc_">
                 <h2 class="fuente-titulo-xdefecto">
-                    Sincronziza tu teléfono
+                    Te enviamos una notificación
                 </h2>
                 <p class="text-layout">
-                    Ingresa este código para sincronizar tu teléfono con Lubot
+                    Con esta segunda verificación estamos listos!
                 </p>
                 <div id="_codigo_rc">
 
@@ -32,6 +32,30 @@
 </div>
 
 <style>
+    .__container-action{
+      
+        position: relative;
+        width: 757px;
+        height: 251px;
+        border-radius: 10px;
+        background: #fff;
+        transition: all linear 300ms;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        align-items: center;
+    }
+    .code_rc_{
+        position: relative;
+        top: -20px;
+        left: 30px;
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
     .conten_loader_rc{
         padding: 10px;
         background: var(--color-primario-text);
@@ -51,9 +75,9 @@
          let companie = {{$companie}}; 
            let url_webhook_activar_rc =  `{{ $url_activar_rc }}/${companie}/rc`;
         setTimeout(() => {
-            conten_loader_rc.style.display = 'none'
+           conten_loader_rc.style.display = 'none'
         }, 3000);
-        code_rc();
+       code_rc();
       
         let codeContainer = document.getElementById('_codigo_rc');
 
@@ -85,7 +109,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Raw data:', data);
-                    document.getElementById('iniciar').innerText = "Volver a intentar";
+                   
                 })
                 .catch(error => {
                     console.error('Error en la solicitud:', error);
@@ -101,7 +125,7 @@
                 .then(response => response.json())
                 .then(response => {
                     console.log(response)
-                    if(response.estado_rc === 0 ) activar_bot();
+                    //if(response.estado_rc === 0 ) activar_bot();
                     if(response.estado_rc === 0 || response.estado_rc === 2) conten_loader_rc.style.display = 'flex';
                     if (response.code_rc != null) {
                         if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null) 
@@ -129,8 +153,6 @@
                     }
                     if (response.code_rc != null && response.estado_rc == 2) 
                     {
-                        
-                       
                         clearInterval(intervalId);
                         clearInterval(countdownIntervalId);
                         conten_loader_rc.style.display = 'none';
@@ -156,11 +178,15 @@
 
         $('#activar_rc').on('click', function() {
             if (!start_rc) {
-                
+               let code_bd_rc = `{{$config_lubot->code_rc === null ? 0 : 1}}`
+               let estado_bd_rc = `{{$config_lubot->estado_rc}}`
+               
+                if( parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0)
+                {
+                    activar_bot()
+                }
                 container_codigo_rc.style.display = 'flex'
                 start_rc = true;
-                
-               
                 intervalId = setInterval(code_rc, 1000);
                 startCountdown();
             }

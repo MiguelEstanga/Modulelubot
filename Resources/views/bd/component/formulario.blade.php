@@ -1,20 +1,30 @@
-<h2 class="fuente-titulo-xdefecto">
+<h2 class="fuente-titulo-xdefecto" style="padding-left: 30px;">
     Carga tu Base de datos
 </h2>
 <div class="container">
     <form action="{{route('bd.store')}}" method="POST" enctype="multipart/form-data" >
         @csrf
+        <div class="" style="padding-left:20px; ">
+            <input class="custom_input" type="text" name="nombre_campana" placeholder="nombre de la campaña">
+        </div>
         <div class="container_file">
             <div class="container">
                 <x-forms.file class="mr-0 mr-lg-2 mr-md-2" fieldLabel="" fieldPlaceholder="base de datos" fieldName="file"
                 fieldRequired="true" fieldId="contract_prefix" fieldValue="" />
             </div>
         </div>
-        <div>
+        <div  style="padding-left:20px; margin-bottom:20px;">
+            <button class="color-fondo-primario btn color-segundario-text">
+                Registrar
+            </button>
+      
+        </div>
+        <div style="padding-left:20px; ">
             <a class="color-fondo-primario btn color-segundario-text"  href="">
                 Descargar archivo de ejemplo
             </a>
         </div>
+       
         <div class="p-10">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">

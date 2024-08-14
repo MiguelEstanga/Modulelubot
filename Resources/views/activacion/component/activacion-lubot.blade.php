@@ -1,22 +1,24 @@
-<div class="_container-action row">
+<div class="_container-action ">
     <div class="container-loader" style="display:none;" id="container_loader">
         <div class="loader"></div>
-        <div class="fuente-titulo-xdefecto"  style="color: #fff!important; ">
+        <div class="fuente-titulo-xdefecto" style="color: #fff!important; ">
             Estamos haciendo mágia, espera...
         </div>
     </div>
     <div class="container-loader" style="display:none;" id="abra_cadabra">
         <div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="#fff" class="bi bi-check-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-              </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="#fff"
+                class="bi bi-check-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                <path
+                    d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
+            </svg>
         </div>
-        <div class="fuente-titulo-xdefecto"  style="color: #fff!important; text-align:center;">
+        <div class="fuente-titulo-xdefecto" style="color: #fff!important; text-align:center;">
             Abra Kadabra!
         </div>
     </div>
-   
+
     <div class="contenedor_action_center row">
 
         <div class="logo">
@@ -50,7 +52,7 @@
                     <button class="btn btn-success">
                         Activar
                     </button>
-                   
+
                 </div>
             </form>
             <div style="margin-top:10px; ">
@@ -65,12 +67,14 @@
 <div class="_container-action">
     <div class="container-loader" style="display:none" id="abra_cadabra_listo">
         <div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="#fff" class="bi bi-check-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-              </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="#fff"
+                class="bi bi-check-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                <path
+                    d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
+            </svg>
         </div>
-        <div class="fuente-titulo-xdefecto"  style="color: #fff!important; text-align:center;">
+        <div class="fuente-titulo-xdefecto" style="color: #fff!important; text-align:center;">
             Un poco de magia, y voilà!
         </div>
     </div>
@@ -104,11 +108,11 @@
             <p class="text-layout" style="width: 540px;">
                 El primer asistente con Inteligencia Artificial, capaz de conectar
                 tu negocio con potenciales clientes en todo el mundo <br>
-                <div id="crear_campana">
+            <div id="crear_campana">
 
-                </div>
-               
-              
+            </div>
+
+
             </p>
 
         </div>
@@ -188,6 +192,4 @@
         height: 53px;
 
     }
-
-
 </style>

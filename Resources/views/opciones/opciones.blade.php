@@ -2,7 +2,7 @@
 @section('content')
     @include('lubot::css.css')
     <div class="content-wrapper opciones">
-        <a class="cart_url" href="">
+        <a class="cart_url" href="{{route('tipo_de_campanas')}}">
             <div class="_container-action c-hover">
                 <div class="url_option row" style="margin-top: 40px;">
                     <div class="logo" class="logo">

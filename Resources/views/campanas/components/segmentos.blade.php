@@ -1,5 +1,5 @@
-<div class="d-flex flex-column w-tables rounded mt-3 bg-white" style="padding: 10px;">
-    <div class="container">
+
+    <div class="_container">
 
         <div id="input-container">
             <div class="input-row row">
@@ -28,7 +28,12 @@
 
                 <div class="col-md-4 cantidad">
                     <span>Cantidad: </span>
-                    <input type="number" class="form-control" style="width: 71px!important; height:37px!important;"
+                    <input type="number" 
+                        style=" 
+                            width: 71px!important;  
+                            height: 30px!important;
+                        "
+                        class="__cantidad" 
                         placeholder="Cantidad" name="cantidad[]">
                 </div>
                 <div class="col-md-2" style="position:relative; right: -40px;">
@@ -41,8 +46,15 @@
         </div>
     </div>
 
-</div>
+
 <style>
+    ._container{
+     
+        height: auto;
+    }
+    .__cantidad{
+      
+    }
     .cantidad {
         display: flex;
         flex-direction: row;

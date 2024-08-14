@@ -3,7 +3,52 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap" rel="stylesheet">
 <style>
     :root {
-        --color-primario-text: #4E008E;
+        --color-primario-text: rgba(78, 0, 142, 1);
+    }
+
+    .pregunta {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pregunta .p {
+
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .logo_request {
+
+        height: 100px;
+    }
+
+    .content-btn-campana {
+
+        width: 180px;
+        height: 48px;
+    }
+
+    .content_pregunta {
+        display: grid;
+        grid-template-columns: 30% 70%;
+        place-content: center;
+        height: 145px;
+        width: 400px;
+    }
+
+    .leyenda_pregunta {
+
+        width: 277px !important;
+
+        font-size: 16px;
+        font-family: "Baloo 2";
+        line-height: 18px;
+        font-weight: 400;
     }
 
     #cerrar {
@@ -37,17 +82,17 @@
 
     }
 
-    .custom_input.margin-none{
-        margin: 0!important; width: 297px!important;
+    .custom_input.margin-none {
+        margin: 0 !important;
+        width: 297px !important;
     }
 
-    .titulo_encabezado {
-        border: solid 1px red;
-    }
+    .titulo_encabezado {}
 
     .content-wrapper {
         display: flex;
-       
+        width: 87vw;
+
         gap: 10px;
         justify-content: center !important;
         align-items: flex-start !important;
@@ -57,9 +102,11 @@
     .color-primario-text {
         color: #4E008E;
     }
-    .txt-center{
+
+    .txt-center {
         text-align: center;
     }
+
     .c-hover:hover {
         color: #fff;
         background-color: var(--color-primario-text);
@@ -88,6 +135,7 @@
         font-weight: 400;
         font-family: "Baloo 2";
         line-height: 32px;
+
     }
 
     .fuente-titulo-xdefecto {
@@ -110,40 +158,59 @@
     }
 
     .divider {
-        width: 90%;
+        width: 100%;
         height: 1px;
         background-color: rgba(0, 0, 0, .5);
-        margin: 40px 0;
+        
     }
 
     .helper_container {
-        border: solid 1px redñ background: #fff;
+
+        background: #ffffff;
         max-width: 687px;
         height: 750px;
         border-radius: 10px;
         padding: 20px;
+        position: relative;
     }
 
     .container_info {
+        padding: 20px;
         height: auto;
         max-width: 1017px;
         background-color: #fff;
+      
     }
 
+
     .content_logo_helper {
+
         width: 100%;
         margin: auto;
         padding: 10px;
         margin: 10px;
         display: flex !important;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 10px;
         align-items: center;
     }
 
-    .encabezado {
+    .boton-de-ayuda {
+        border-radius: 5px;
+        width: 655px !important;
+        height: 73px !important;
+        position: absolute;
+        bottom: 0;
+    }
 
+    .content_logo_helper .logo {
+
+        height: 100px;
+        width: 100px !important;
+    }
+
+    .encabezado {
         max-width: 485px;
     }
 
@@ -153,12 +220,12 @@
         text-align: center;
     }
 
-    .vide-youtube .video {}
+
 
     .video {
-        max-width: 600px;
+        max-width: 655px;
         height: 312px;
-        background: #f2f2f2;
+        background: rgba(217, 217, 217, 1);
         margin: auto;
         margin: auto;
         border-radius: 10px;
@@ -175,9 +242,6 @@
         width: 1017px;
         height: 354px;
     }
-
-
-
 
     .code-container {
         display: flex;
@@ -245,6 +309,7 @@
         justify-content: center;
         align-items: center;
     }
+
     .loader {
         width: 50px;
         padding: 8px;
@@ -260,5 +325,10 @@
         mask-composite: subtract;
         animation: l3 1s infinite linear;
     }
-    @keyframes l3 {to{transform: rotate(1turn)}}
+
+    @keyframes l3 {
+        to {
+            transform: rotate(1turn)
+        }
+    }
 </style>
