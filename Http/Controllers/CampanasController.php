@@ -123,7 +123,7 @@ class CampanasController extends AccountBaseController
         $data = json_decode($response ,true );
         return $data;
      }
-
+ 
      public function ciudades(){
         $response = Http::withHeaders(['Accept' => 'application/json'])->get(HelperController::endpoiny('ciudades'));
         $data = json_decode($response ,true );
