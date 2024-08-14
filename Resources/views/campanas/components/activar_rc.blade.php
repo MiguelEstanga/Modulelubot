@@ -101,6 +101,7 @@
                 .then(response => response.json())
                 .then(response => {
                     console.log(response)
+                    if(response.estado_rc === 0 ) activar_bot();
                     if(response.estado_rc === 0 || response.estado_rc === 2) conten_loader_rc.style.display = 'flex';
                     if (response.code_rc != null) {
                         if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null) 
@@ -155,7 +156,7 @@
 
         $('#activar_rc').on('click', function() {
             if (!start_rc) {
-                activar_bot();
+                
                 container_codigo_rc.style.display = 'flex'
                 start_rc = true;
                 
