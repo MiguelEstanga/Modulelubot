@@ -19,7 +19,7 @@ class CampanasController extends AccountBaseController
     {
         parent::__construct();
         $this->url_activar_rc = HelperController::endpoiny('ejecutable_inicio_sesion');
-        $this->data['companie'] = $this->data['company']['id'];
+      
         $this->pageTitle = 'app.menu.balance_admin';
         $this->activeSettingMenu = 'front_theme_settings';
         $this->data['logo'] =   $this->data['logo'] = HelperController::public('logo');
@@ -132,7 +132,7 @@ class CampanasController extends AccountBaseController
 
     public function index()
     {
-        
+        $this->data['companie'] = $this->data['company']['id'];
         $this->data['segmentos'] = $this->tipo_de_negocio() ?? [];
         $this->data['objetivos'] = DB::table('objetivos_lubot')->get() ?? [];
         $this->data['ciudades'] = $this->ciudades() ?? [];
