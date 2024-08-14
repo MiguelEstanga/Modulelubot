@@ -19,8 +19,8 @@ class HelperController extends Controller
   public static function public($key)
   {
     $data =  [
-      'logo' =>  asset('lubot_icon.png'),
-      'requiest' =>  asset('request.png'),
+      'logo' =>  'https://res.cloudinary.com/deq9rulqu/image/upload/v1723675402/lubot_icon_ovm7y2.png',//asset('lubot_icon.png'),
+      'requiest' =>  'https://res.cloudinary.com/deq9rulqu/image/upload/v1723675399/request_aohokz.png'//asset('request.png'),
     ];
     return $data[$key];
   }
