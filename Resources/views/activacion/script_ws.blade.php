@@ -111,7 +111,7 @@
         console.log(container_loader);
        
         console.log(`${url_webhook_activar_ws}`)
-        /*
+    
         fetch(`${url_webhook_activar_ws}`, {
                 headers: {
                     'ngrok-skip-browser-warning': 'true'
@@ -129,7 +129,7 @@
             .finally(function() {
                 alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
             });
-        */
+        
         cuentaRegresiva(500);
 
         // Iniciar polling para verificar el estado_ws

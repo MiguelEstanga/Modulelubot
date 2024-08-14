@@ -18,6 +18,8 @@ class CampanasController extends AccountBaseController
     public function __construct()
     {
         parent::__construct();
+        $this->url_activar_rc = HelperController::public('ejecutable_inicio_sesion');
+        $this->companie = $this->data['company']['id'];
         $this->pageTitle = 'app.menu.balance_admin';
         $this->activeSettingMenu = 'front_theme_settings';
         $this->data['logo'] =   $this->data['logo'] = HelperController::public('logo');
@@ -131,13 +133,11 @@ class CampanasController extends AccountBaseController
     public function index()
     {
         
-        $this->data['segmentos'] = [
-            ['id' => 1 , 'nombre' => 'test']
-        ];//$this->tipo_de_negocio() ?? [];
+        $this->data['segmentos'] = $this->tipo_de_negocio() ?? [];
         $this->data['objetivos'] = DB::table('objetivos_lubot')->get() ?? [];
-        $this->data['ciudades'] = [  ['id' => 1 , 'nombre' => 'test',   ['id' => 1 , 'nombre' => 'test']]];//$this->ciudades() ?? [];
-        $this->data['barrios'] = [  ['id' => 1 , 'nombre' => 'test'],   ['id' => 1 , 'nombre' => 'test']];//$this->barrios() ?? [];
-         $this->data['paises'] = [  ['id' => 1 , 'nombre' => 'test'],   ['id' => 1 , 'nombre' => 'test']];//$this->paises() ?? [];
+        $this->data['ciudades'] = $this->ciudades() ?? [];
+        $this->data['barrios'] = $this->barrios() ?? [];
+        $this->data['paises'] = $this->paises() ?? [];
         $this->activeMenu = 'lubot';
         return view('lubot::campanas.index' , $this->data);
     }
