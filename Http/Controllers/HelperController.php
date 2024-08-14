@@ -16,7 +16,14 @@ class HelperController extends Controller
     ];
     return  $data[$key];
   }
-
+  public static function public($key)
+  {
+    $data =  [
+      'logo' =>  asset('lubot_icon.png'),
+      'requiest' =>  asset('request.png'),
+    ];
+    return $data[$key];
+  }
   public static function endpoiny($key)
   {
     //$web_hook = self::url('lubot_master'); produccion

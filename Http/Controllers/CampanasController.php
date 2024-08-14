@@ -20,6 +20,7 @@ class CampanasController extends AccountBaseController
         parent::__construct();
         $this->pageTitle = 'app.menu.balance_admin';
         $this->activeSettingMenu = 'front_theme_settings';
+        $this->data['logo'] =   $this->data['logo'] = HelperController::public('logo');
         $this->middleware(
             function ($request, $next) {
               //  abort_403(!in_array('balance', $this->user->modules));
@@ -129,12 +130,14 @@ class CampanasController extends AccountBaseController
 
     public function index()
     {
-        $this->data['segmentos'] = $this->tipo_de_negocio() ?? [];
+        
+        $this->data['segmentos'] = [
+            ['id' => 1 , 'nombre' => 'test']
+        ];//$this->tipo_de_negocio() ?? [];
         $this->data['objetivos'] = DB::table('objetivos_lubot')->get() ?? [];
-        $this->data['ciudades'] = $this->ciudades() ?? [];
-       
-        $this->data['barrios'] = $this->barrios() ?? [];
-        $this->data['paises'] = $this->paises() ?? [];
+        $this->data['ciudades'] = [  ['id' => 1 , 'nombre' => 'test',   ['id' => 1 , 'nombre' => 'test']]];//$this->ciudades() ?? [];
+        $this->data['barrios'] = [  ['id' => 1 , 'nombre' => 'test'],   ['id' => 1 , 'nombre' => 'test']];//$this->barrios() ?? [];
+         $this->data['paises'] = [  ['id' => 1 , 'nombre' => 'test'],   ['id' => 1 , 'nombre' => 'test']];//$this->paises() ?? [];
         $this->activeMenu = 'lubot';
         return view('lubot::campanas.index' , $this->data);
     }
@@ -144,64 +147,102 @@ class CampanasController extends AccountBaseController
         if(!Schema::hasTable('campanas') ) return back();
         if(!Schema::hasTable('segmentos')) return back();
         if(!Schema::hasTable('prompts')  ) return back();
-       // return HelperController::endpoiny('activar_ejecutable_ws');
-        $data_promps = [];
-        if($request->input('mode') === 1){
-            for($i = 0 ; $i< count($request->input('pregunta')) ; $i++)
-            {
-                $data_promps[] = [
-                    'pregunta' => $request->input('pregunta')[$i],
-                    'respuesta' => $request->input('respuesta')[$i],
-                ];
-            }
-          
+
+        $paises = array();
+        $ciudades = array();
+        $barrios = array();
+        $cantidad = array();
+        $tipo_de_negocio = $request->segmento;
+        $objetivo_lubot = $request->objetivo_lubot;
+        $como_me_llamo = $request->como_me_llamo;
+        $frecuencia = $request->frecuencia;
+        $plan = $request->plan;
+        $temporalidad = $request->temporalidad;
+        $spbre_la_empresa = $request->spbre_la_empresa;
+        $nombre_campana = $request->nombre_campana;
+        $preguntas_respuestas = $request->preguntas_respuestas ?? 'saludo generico';
+        foreach ($request->paises as $pais) 
+        {
+            $paises[] = $pais['id'];
         }
-        
+
+        foreach ($request->ciudades as $ciudad) 
+        {
+            $ciudades[] = $ciudad['id'];
+        }
+
+        foreach ($request->barrios as $barrio) 
+        {
+            $barrios[] = $barrio['id'];
+        }   
+        foreach ($request->cantidades as $cantidad)
+        {
+            $cantidades[] = $cantidad['cantidad'];
+        }
+      //return json_encode($preguntas_respuestas);
         $campana_id = DB::table('campanas')->insertGetId(  
             [
                 'id_companies' => $this->data['company']['id'],
-                'nombre' => $request->nombre_campanas,
-                'responder_con_ia' => 1,
-                'campanas_activa' => 1,
-                'objetivo_de_lubot' => $request->objetivo
+                'nombre' => $nombre_campana,
+                'objetivo_de_lubot' => $objetivo_lubot,
+                'como_me_llamo' => $como_me_llamo,
+                'frecuencia' => $frecuencia,
+                'tipo_negocio' => $tipo_de_negocio,
+                'spbre_la_empresa' => $spbre_la_empresa,
+                'temporalidad' =>  $temporalidad 
             ]
         );
-        $check = DB::table("campanas")->where('id' , $campana_id)->exists();
-        if(!$check ) return back();
 
+        for($i = 0 ; $i <= count($paises) -1 ; $i++)
+        {
+            DB::table('segmentos')->insert(
+                [
+                    'id_campanas' =>  $campana_id ,
+                    'tipo_de_negocio' => $tipo_de_negocio,
+                    'ciudad'   => $ciudades[$i],
+                    'pais'     => $paises[$i],
+                    'barrio'   => $barrios[$i] ,
+                    'cantidad' => $cantidades[$i]
+                ]
+            );
+        }
+
+        $response = Http::withHeaders(['Accept' => 'application/json'])
+        ->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
         DB::table('prompts')
         ->insert(
             [
-                'prompt' => (int)$request->mode === 1 ?  json_encode($data_promps) : "Saludo Generico",
-                'id_campanas' =>  $campana_id
+                'prompt' =>  json_encode($preguntas_respuestas),
+                'id_campanas' =>  $campana_id,
+                
             ]
         );
-            for($i = 0 ; $i <= count($request->pais) -1 ; $i++)
-            {
-                DB::table('segmentos')->insert(
-                    [
-                        'id_campanas' =>  $campana_id ,
-                        'tipo_de_negocio' => $request->segmento[$i],
-                        'ciudad'   => $request->ciudad[$i],
-                        'pais'     => $request->pais[$i],
-                        'barrio'   => $request->barrio[$i] ,
-                        'cantidad' => $request->cantidad[$i]
-                    ]
-                );
-            }
+
+
+        return json_encode(
+            [
+                'status' => 200,
+                'reponse' =>  'ok' ,
+                'response_bot' => $response
+            ]
+        );
+    
+        
+       
+       
+        
         
             
           
         //$this->Lubot();
-        $response = Http::withHeaders(['Accept' => 'application/json'])
-        ->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
+       
       //  return json_decode($response ,true );
         return redirect()->route('ver_campanas.todas');
        
       
         
     }
-  
+    
     public function ver_campanas(CampanaTable $dataTable)
     {
        
@@ -212,11 +253,10 @@ class CampanasController extends AccountBaseController
         return $dataTable->render('lubot::campanas.campanas' , $this->data);
     }
 
+
     public function eliminar($id)
     {
          $campanas =  DB::table('campanas')->where('id' ,  $id)->first();
-          //$prompt =  DB::table('prompts')->where('id_campanas' ,   $campanas->id )->delete();
-       
 
           $segmentos = DB::table('segmentos')->where('id_campanas' ,  $id)->get();
          foreach($segmentos as $segmento)
@@ -227,7 +267,12 @@ class CampanasController extends AccountBaseController
          //$campanas->delete();
          return back();
     }
-
+    //opciones 
+    public function campanas_opciones()
+    {
+        $this->data['logo'] = HelperController::public('logo');
+        return view('lubot::opciones.opciones' ,  $this->data);
+    }
    
         public function cambiar($id)
         {
@@ -274,10 +319,18 @@ class CampanasController extends AccountBaseController
             $dataTable->withId($id);
             return $dataTable->render('lubot::campanas.segmentos' ,  $this->data);
         }
-        
+
         public function eliminar_segmentos($id)
         {
             DB::table('segmentos')->where('id' ,  $id)->delete();
             return back();
+        }
+
+        //tipo de campana view
+        public function tipo_campana_view()
+        {
+            $this->data['logo'] = HelperController::public('logo');
+            $this->data['requiest'] = HelperController::public('requiest');
+            return view('lubot::campanas.tipo_de_campanas' , $this->data);
         }
 }

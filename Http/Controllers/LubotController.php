@@ -57,8 +57,9 @@ class LubotController extends AccountBaseController
      */
     public function Activacion()
     {
+        
         $this->data['activar_ws_url'] = HelperController::endpoiny('ejecutable_inicio_sesion');
-       
+        $this->data['logo'] = HelperController::public('logo');
         $this->data['id_companie'] = $this->data['company']['id'];
         $activacion = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->exists();
         if(!$activacion)

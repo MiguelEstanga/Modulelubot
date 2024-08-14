@@ -25,10 +25,13 @@ return new class extends Migration
         Schema::create('campanas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_companies')->nullable();
-            $table->integer('responder_con_ia')->default(1);
-            $table->integer('campanas_activa')->default(0);
             $table->string('objetivo_de_lubot')->default(null);
             $table->string('nombre');
+            $table->string('como_me_llamo');
+            $table->string('frecuencia');
+            $table->string('tipo_negocio');
+            $table->string('spbre_la_empresa');
+            $table->string('temporalidad');
             $table->integer('contador')->default(1);
             $table->integer('encendido')->default(0);
             $table->timestamps();

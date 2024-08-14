@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
-
+use Modules\Lubot\Http\Controllers\HelperController;
 
 class BaseDeDatosController extends AccountBaseController
 {
@@ -36,8 +36,11 @@ class BaseDeDatosController extends AccountBaseController
      */
     public function index( DbTable $dataTable )
     {
-        //$this->data['db'] = DB::table('user_db' )->where('id_companies' , $this->data['company']['id'] )->get();
-      
+        $this->data['db'] = DB::table('user_db' )->where('id_companies' , $this->data['company']['id'] )->get();
+       
+        $this->data['logo'] = HelperController::public('logo');
+        $this->data['requiest'] = HelperController::public('requiest');
+
         return $dataTable->ConId($this->data['company']['id'])
                          ->render('lubot::bd.index' , $this->data);
     }

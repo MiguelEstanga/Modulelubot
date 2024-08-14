@@ -1,6 +1,36 @@
 @extends('layouts.app')
 @section('content')
+    @include('lubot::css.css')
+
     <div class="containt-wrapper row" style="margin:10px; padding:10px;">
+
+        <div class="helper_container">
+           
+           @include('lubot::bd.component.helper_user')
+        </div>
+        <div class="col-md-6" style="gap: 10px;">
+            <div class="bd_container row">
+                <div class="col-md-6 p-10">
+                    @include('lubot::bd.component.formulario')
+                </div>
+                <div class="col-md-6">
+                    @include('lubot::bd.component.bd-template')
+                </div>
+    
+                
+            </div>
+
+            <div class="bd_container row" style="margin-top: 10px; ">
+                @include('lubot::bd.component.campana_pro')
+               
+            </div>
+        </div>
+      
+       
+    </div>
+    </div>
+
+    <!--div class="containt-wrapper row" style="margin:10px; padding:10px;">
         <div class="d-flex flex-column w-tables rounded mt-3 bg-white col-md-4" style="padding: 10px;">
             @include('lubot::bd.formulario_registro_bd')
         </div>
@@ -8,19 +38,29 @@
             <div class="d-flex flex-column w-tables rounded mt-3 bg-white" style="padding: 10px;">
 
                 {!! $dataTable->table(['class' => 'table table-hover border-0 w-100']) !!}
-    
+
             </div>
-            
+
         </div>
-        
-    </div>
+
+    </div-->
+    
     <style>
-        .list_db{
-            cursor:pointer;
-            transition: all .300s   linear;
-        } 
-        .list_db:hover{
+        .list_db {
+            cursor: pointer;
+            transition: all .300s linear;
+        }
+
+        .list_db:hover {
             background: #f2f2f2;
+        }
+        .bd_container{
+            width: 1017px;
+            height: 449px;
+            margin-left: 100px;
+
+            background: #fff;
+            border-radius: 10px;
         }
     </style>
 @endsection
@@ -28,13 +68,6 @@
     @include('sections.datatable_js')
 
     <script>
-      
-      
-    
-     
-
-       
-
         $('#search-text-field').on('keyup', function() {
             if ($('#search-text-field').val() != "") {
                 $('#reset-filters').removeClass('d-none');
@@ -171,7 +204,7 @@
                 }
             });
         });
-      
+
         const applyQuickAction = () => {
             var rowdIds = $("#invoices-table input:checkbox:checked").map(function() {
                 return $(this).val();
@@ -195,10 +228,5 @@
                 }
             })
         };
-      
-       
     </script>
 @endpush
-
-
-

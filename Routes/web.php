@@ -26,7 +26,7 @@ Route::prefix('lubot')->group(function() {
     Route::get('/get_row', 'CampanasController@get_segmentos_fila')->name('campanas.get_row');
 
     Route::get('/camapañas', 'CampanasController@index')->name('campanas.index');
-    Route::post('/camapañas', 'CampanasController@campanas_stores')->name('campanas.stores');
+    Route::post('/camapanas', 'CampanasController@campanas_stores')->name('campanas.stores');
     Route::get('/ver/cmapañas', 'CampanasController@ver_campanas')->name('ver_campanas.todas');
     Route::get('/ver/cmapañas/eliminar/{id}', 'CampanasController@eliminar')->name('campanas.eliminar');
     Route::get('/ver/eliminar_segmentos/{id}', 'CampanasController@eliminar_segmentos')->name('segmentos.eliminar');
@@ -35,6 +35,8 @@ Route::prefix('lubot')->group(function() {
     //verificar estado de campana
     Route::get('/campana_estado/{id}', 'CampanasController@estado_campana')->name('estado_campna'); 
     Route::get('correr_bot/{companie_id}', 'LubotController@correr_bot')->name('correr_bot'); 
+    Route::get('opciones/', 'CampanasController@campanas_opciones')->name('campanas_opciones'); 
+    Route::get('seleciona-el-tipo-de-campanas/', 'CampanasController@tipo_campana_view')->name('tipo_de_campanas'); 
 
     
    
