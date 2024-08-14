@@ -48,7 +48,7 @@
         let intervalId;
         let countdownIntervalId;
         let countdownTime = 120; // 120 seconds
-        //   let companie = ; 
+         let companie = {{$companie}}; 
            let url_webhook_activar_rc =  `{{ $url_activar_rc }}/${companie}/rc`;
         setTimeout(() => {
             conten_loader_rc.style.display = 'none'
