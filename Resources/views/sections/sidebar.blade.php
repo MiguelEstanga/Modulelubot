@@ -1,4 +1,4 @@
-
+@if (in_array(\Modules\Zoom\Entities\ZoomSetting::MODULE_NAME, user_modules()) && in_array('admin', user_roles()))
     <x-menu-item icon="camera-video" text="Lubot" :addon="App::environment('demo')">
         <x-slot name="iconPath">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
@@ -16,3 +16,4 @@
        
     </x-menu-item>
 
+@endif
