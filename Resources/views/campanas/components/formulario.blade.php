@@ -214,7 +214,7 @@
     </div>
     <div class="col-md-2">
         <select name="barrio[]" class="form-control selectpicker barrio-select" data-live-search="true">
-               
+               <option value="0">Todos</option>
         </select>
     </div>
     <div class="col-md-4 cantidad">
@@ -278,6 +278,7 @@
                 .then(data => {
                     // Limpiar el select de barrios actual
                     barrioSelect.innerHTML = '';
+                    barrioSelect.innerHTML = '<option value="0">Todos</option>';
 
                     // Agregar una opción por defecto
                     const defaultOption = document.createElement('option');
@@ -327,7 +328,7 @@
                 .then(data => {
                     // Limpiar el select de barrios actual
                     barrioSelect.innerHTML = '';
-
+                    barrioSelect.innerHTML = '<option value="0">Todos</option>';
                     // Agregar una opción por defecto
                     const defaultOption = document.createElement('option');
                     barrioSelect.appendChild(defaultOption);
