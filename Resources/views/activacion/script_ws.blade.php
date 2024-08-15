@@ -9,8 +9,6 @@
     setTimeout(() => {
               container_loader.style.display ='none'
     }, 3000);
-   
-   
     function code_ws() {
        
         fetch(`{{ route('lubot.default_compania') }}`)

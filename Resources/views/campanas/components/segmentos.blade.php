@@ -12,19 +12,17 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select name="ciudad[]" class="form-control selectpicker">
+                    <select name="ciudad[]" onchange="loadBarrios(this)" class="form-control selectpicker">
                         @foreach ($ciudades as $ciudad)
                             <option value="{{ $ciudad['id'] }}">{{ $ciudad['nombre'] }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-2">
-                    <select name="barrio[]" class="form-control selectpicker">
-                        @foreach ($barrios as $barrio)
-                            <option value="{{ $barrio['id'] }}">{{ $barrio['nombre'] }}</option>
-                        @endforeach
+                <div class="col-md-2" id='conten_barrios_dinamicos'>
+                    <select name="barrio[]" id='barrio_select1' class="form-control selectpicker barrio-select" data-live-search="true">
+                        <option value="">Seleccione un barrio</option>
                     </select>
-                </div>
+                </div> 
 
                 <div class="col-md-4 cantidad">
                     <span>Cantidad: </span>
