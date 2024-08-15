@@ -1,4 +1,4 @@
-<div class="alert" style="display: flex;" id="modal_preguntas_y_respuesta">
+<div class="alert" style="display: none;" id="modal_preguntas_y_respuesta">
     <div class="cerrar" id="cerrar_rc" style="z-index: 10;">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill"
             viewBox="0 0 16 16">
