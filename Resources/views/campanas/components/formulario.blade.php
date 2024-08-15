@@ -200,7 +200,8 @@
         var newRow = `
 <div class="input-row row" style='margin-top:10px;'>
     <div class="col-md-2">
-        <select name="pais[]" class="form-control selectpicker" data-live-search="true">
+        <select name="pais[]"   onchange="loadciudad(this)" class="form-control selectpicker" data-live-search="true">
+            <option value="0">Todos</option>
             @foreach ($paises as $pais)
                 <option value="{{ $pais['id'] }}">{{ $pais['nombre'] }}</option>
             @endforeach
@@ -208,14 +209,12 @@
     </div>
     <div class="col-md-2">
         <select name="ciudad[]" onchange="loadBarrios(this)" class="form-control selectpicker" data-live-search="true">
-            @foreach ($ciudades as $ciudad)
-                <option value="{{ $ciudad['id'] }}">{{ $ciudad['nombre'] }}</option>
-            @endforeach
+             <option value="0">Todos</option>
         </select>
     </div>
     <div class="col-md-2">
         <select name="barrio[]" class="form-control selectpicker barrio-select" data-live-search="true">
-               <option value="">Seleccione un barrio</option>
+               
         </select>
     </div>
     <div class="col-md-4 cantidad">
@@ -259,15 +258,22 @@
         updateFormData();
     }
 
-    function loadBarrios(ciudadSelect) {
+    function loadciudad(ciudadSelect) {
         const ciudadId = ciudadSelect.value;
 
         // Encuentra el barrio-select correspondiente en la misma fila
         const parentRow = ciudadSelect.closest('.input-row');
-        const barrioSelect = parentRow.querySelector('select[name="barrio[]"]');
-
+        const barrioSelect = parentRow.querySelector('select[name="ciudad[]"]');
+        
         if (ciudadId) {
-            fetch(`https://lubot.healtheworld.com.co/api/barrios/${ciudadId}`)
+            let fetchUrl;
+            if (parseInt(ciudadId) === 0) {
+                fetchUrl = `https://lubot.healtheworld.com.co/api/ciudades`;
+                alert('todos')
+            } else {
+                fetchUrl = `https://lubot.healtheworld.com.co/api/ciudades/${ciudadId}`;
+            }
+            fetch(fetchUrl)
                 .then(response => response.json())
                 .then(data => {
                     // Limpiar el select de barrios actual
@@ -275,10 +281,56 @@
 
                     // Agregar una opción por defecto
                     const defaultOption = document.createElement('option');
-                    defaultOption.value = '';
-                    defaultOption.textContent = 'Seleccione un barrio';
                     barrioSelect.appendChild(defaultOption);
+                    // Agregar las nuevas opciones de barrios
+                    data.forEach(ciudad => {
+                        const option = document.createElement('option');
+                        option.value = ciudad.id;
+                        option.textContent = ciudad.nombre;
+                        barrioSelect.appendChild(option);
+                    });
 
+                    // Refrescar el selectpicker si estás usando bootstrap-select
+                    $(barrioSelect).selectpicker('refresh');
+
+                    // Actualizar el storage después de cargar los barrios
+                    updateFormData();
+                })
+                .catch(error => {
+                    console.error('Error al cargar los barrios:', error);
+                });
+        } else {
+            // Si no hay ciudad seleccionada, limpiar el select de barrios
+            barrioSelect.innerHTML = '<option value="">Seleccione un barrio</option>';
+            $(barrioSelect).selectpicker('refresh');
+            updateFormData(); // Actualizar el storage si se selecciona una ciudad vacía
+        }
+    }
+
+    function loadBarrios(ciudadSelect) {
+        const ciudadId = ciudadSelect.value;
+
+        // Encuentra el barrio-select correspondiente en la misma fila
+        const parentRow = ciudadSelect.closest('.input-row');
+        const barrioSelect = parentRow.querySelector('select[name="barrio[]"]');
+        console.log(ciudadId)
+        if (ciudadId) {
+            let fetchUrl;
+            if (parseInt(ciudadId) === 0) {
+                fetchUrl = `https://lubot.healtheworld.com.co/api/barrios`;
+                alert('todos')
+            } else {
+                fetchUrl = `https://lubot.healtheworld.com.co/api/barrios/${ciudadId}`;
+            }
+            fetch(fetchUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Limpiar el select de barrios actual
+                    barrioSelect.innerHTML = '';
+
+                    // Agregar una opción por defecto
+                    const defaultOption = document.createElement('option');
+                    barrioSelect.appendChild(defaultOption);
                     // Agregar las nuevas opciones de barrios
                     data.forEach(barrio => {
                         const option = document.createElement('option');

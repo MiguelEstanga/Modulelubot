@@ -136,8 +136,8 @@ class CampanasController extends AccountBaseController
         $this->data['companie'] =  $this->data['company']['id'];
         $this->data['segmentos'] = $this->tipo_de_negocio() ?? [];
         $this->data['objetivos'] =  DB::table('objetivos_lubot')->get() ?? [];
-        $this->data['ciudades'] =  $this->ciudades() ?? [];
-        $this->data['barrios'] =  $this->barrios() ?? [];
+      //  $this->data['ciudades'] =  $this->ciudades() ?? [];
+       // $this->data['barrios'] =  $this->barrios() ?? [];
         $this->data['paises'] =  $this->paises() ?? [];
         $this->activeMenu = 'lubot';
         return view('lubot::campanas.index' , $this->data);
