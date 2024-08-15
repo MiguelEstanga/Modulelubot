@@ -84,117 +84,8 @@
     const formData = new FormData();
 
     // Función para actualizar el FormData
-    function updateFormData() {
-        // Limpiar el formData antes de agregar nuevos valores
-        formData.delete('nombre_campana');
-        formData.delete('segmento');
-        formData.delete('frecuencia');
-        formData.delete('temporalidad');
-        formData.delete('plan');
-        formData.delete('paises');
-        formData.delete('ciudades');
-        formData.delete('barrios');
-        formData.delete('cantidades');
-        formData.delete('preguntas_respuestas');
-        formData.delete('como_me_llamo');
-        formData.delete('objetivo_lubot');
-        formData.delete('spbre_la_empresa');
-
-        // Capturar los valores individuales
-        formData.append('nombre_campana', document.querySelector('input[name="nombre_campana"]').value);
-        formData.append('segmento', document.querySelector('select[name="segmento"]').value);
-        formData.append('frecuencia', document.querySelector('input[name="frecuencia"]').value);
-        formData.append('temporalidad', document.querySelector('select[name="temporalidad"]').value);
-        formData.append('plan', document.querySelector('select[name="plan"]').value);
-
-        // Capturar nuevos campos
-        formData.append('como_me_llamo', document.querySelector('input[name="como_me_llamo"]').value);
-        formData.append('objetivo_lubot', document.querySelector('select[name="objetivo_lubot"]').value);
-        formData.append('spbre_la_empresa', document.querySelector('textarea[name="spbre_la_empresa"]').value);
-
-        // Capturar los valores que pueden repetirse y agruparlos en arrays de objetos
-        let paisesArray = [];
-        document.querySelectorAll('select[name="pais[]"]').forEach(select => {
-            paisesArray.push({
-                id: select.value
-            });
-        });
-        formData.append('paises', JSON.stringify(paisesArray));
-
-        let ciudadesArray = [];
-        document.querySelectorAll('select[name="ciudad[]"]').forEach(select => {
-            ciudadesArray.push({
-                id: select.value
-            });
-        });
-        formData.append('ciudades', JSON.stringify(ciudadesArray));
-
-        let barriosArray = [];
-        document.querySelectorAll('select[name="barrio[]"]').forEach(select => {
-            barriosArray.push({
-                id: select.value
-            });
-        });
-        formData.append('barrios', JSON.stringify(barriosArray));
-
-        let cantidadesArray = [];
-        document.querySelectorAll('input[name="cantidad[]"]').forEach(input => {
-            cantidadesArray.push({
-                cantidad: input.value
-            });
-        });
-        formData.append('cantidades', JSON.stringify(cantidadesArray));
-
-        // Capturar preguntas y respuestas en un array de objetos
-        let preguntasRespuestasArray = [];
-        const preguntas = document.querySelectorAll('input[name="pregunta[]"]');
-        const respuestas = document.querySelectorAll('input[name="respuesta[]"]');
-
-        preguntas.forEach((input, index) => {
-            let pregunta = input.value;
-            let respuesta = respuestas[index].value;
-            preguntasRespuestasArray.push({
-                pregunta: pregunta,
-                respuesta: respuesta
-            });
-        });
-
-        formData.append('preguntas_respuestas', JSON.stringify(preguntasRespuestasArray));
-
-        // Convertir el FormData a un objeto para almacenarlo en localStorage
-        let formDataObject = {};
-        formData.forEach((value, key) => {
-            formDataObject[key] = value;
-        });
-
-        // Guardar el objeto en localStorage
-        localStorage.setItem('formData', JSON.stringify(formDataObject));
-
-        console.log('FormData actualizado y guardado en localStorage:',
-            formDataObject); // Mostrar el FormData actualizado
-    }
-
-
-    // Función para agregar event listeners a los nuevos campos
-    function addEventListenersToNewFields(fields) {
-        fields.forEach(field => {
-            field.addEventListener('input', updateFormData);
-            field.addEventListener('change', updateFormData);
-        });
-    }
-
-    // Llamada inicial para capturar los valores existentes en los campos
-    document.querySelectorAll('input, select, textarea').forEach(element => {
-        element.addEventListener('input', updateFormData);
-        element.addEventListener('change', updateFormData);
-    });
-
-    // Llamar a la función una vez para capturar los valores iniciales (si los hay)
-    updateFormData();
-
-    // Función para añadir una nueva fila en el formulario (duplicar)
     function addRow(button) {
-        var newRow = `
+    var newRow = `
     <div class="input-row row" style='margin-top:10px;'>
         <div class="col-md-2">
             <select name="pais[]" class="form-control selectpicker" data-live-search="true">
@@ -204,17 +95,15 @@
             </select>
         </div>
         <div class="col-md-2">
-            <select name="ciudad[]" class="form-control selectpicker" data-live-search="true">
+            <select name="ciudad[]" class="form-control selectpicker ciudad-select" data-live-search="true">
                 @foreach ($ciudades as $ciudad)
                     <option value="{{ $ciudad['id'] }}">{{ $ciudad['nombre'] }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-md-2">
-            <select name="barrio[]" class="form-control selectpicker" data-live-search="true">
-                @foreach ($barrios as $barrio)
-                    <option value="{{ $barrio['id'] }}">{{ $barrio['nombre'] }}</option>
-                @endforeach
+            <select name="barrio[]" class="form-control selectpicker barrio-select" data-live-search="true">
+                <option value="">Seleccione un barrio</option>
             </select>
         </div>
         <div class="col-md-4 cantidad">
@@ -227,21 +116,69 @@
         </div>
     </div>`;
 
-        // Añadir la nueva fila al contenedor
-        const newFieldsContainer = document.createElement('div');
-        newFieldsContainer.innerHTML = newRow;
-        document.getElementById('input-container').appendChild(newFieldsContainer);
+    // Añadir la nueva fila al contenedor
+    const newFieldsContainer = document.createElement('div');
+    newFieldsContainer.innerHTML = newRow;
+    document.getElementById('input-container').appendChild(newFieldsContainer);
 
-        // Inicializar los selectpicker en la nueva fila
-        $('.selectpicker').selectpicker('refresh');
+    // Inicializar los selectpicker en la nueva fila
+    $('.selectpicker').selectpicker('refresh');
 
-        // Añadir event listeners a los nuevos campos
-        const newFields = newFieldsContainer.querySelectorAll('input, select, textarea');
-        addEventListenersToNewFields(newFields);
+    // Añadir event listeners a los nuevos campos
+    const newFields = newFieldsContainer.querySelectorAll('input, select, textarea');
+    addEventListenersToNewFields(newFields);
 
-        // Quitar el botón de agregar de la fila anterior
-        $(button).remove();
+    // Añadir event listener para cargar los barrios cuando cambie la ciudad
+    const ciudadSelect = newFieldsContainer.querySelector('.ciudad-select');
+    const barrioSelect = newFieldsContainer.querySelector('.barrio-select');
+    ciudadSelect.addEventListener('change', function() {
+        loadBarrios(ciudadSelect, barrioSelect);
+    });
+
+    // Quitar el botón de agregar de la fila anterior
+    $(button).remove();
+}
+
+function loadBarrios(ciudadSelect, barrioSelect) {
+    const ciudadId = ciudadSelect.value;
+
+    if (ciudadId) {
+        fetch(`https://lubot.healtheworld.com.co/api/barrios/${ciudadId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Limpiar el select de barrios actual
+                barrioSelect.innerHTML = '';
+
+                // Agregar una opción por defecto
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Seleccione un barrio';
+                barrioSelect.appendChild(defaultOption);
+
+                // Agregar las nuevas opciones de barrios
+                data.forEach(barrio => {
+                    const option = document.createElement('option');
+                    option.value = barrio.id;
+                    option.textContent = barrio.nombre;
+                    barrioSelect.appendChild(option);
+                });
+
+                // Refrescar el selectpicker
+                $(barrioSelect).selectpicker('refresh');
+            })
+            .catch(error => {
+                console.error('Error al cargar los barrios:', error);
+            });
+    } else {
+        // Si no hay ciudad seleccionada, limpiar el select de barrios
+        barrioSelect.innerHTML = '<option value="">Seleccione un barrio</option>';
+        $(barrioSelect).selectpicker('refresh');
     }
+}
+
+
+
+
 
     function removeRow(button) {
         // Eliminar la fila correspondiente
@@ -287,7 +224,7 @@
 
         // Añadir event listeners a los nuevos campos
         const newFields = formContainer.querySelectorAll('input, select, textarea');
-        addEventListenersToNewFields(newFields);
+      //  addEventListenersToNewFields(newFields);
 
         // Actualizar el FormData después de añadir la fila
         updateFormData();

@@ -280,7 +280,9 @@
         height: 100%;
         background-color: #514b82;
         position: absolute;
-        z-index: 10;
+        right: 0;
+        top: 0;
+        z-index: 1;
         border-radius: 10px;
         display: flex;
         flex-direction: column;

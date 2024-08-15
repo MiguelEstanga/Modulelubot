@@ -86,11 +86,11 @@
         if (start) {
             const tiempoTotal = time;
             let tiempoRestante = tiempoTotal;
-            const elementoTiempo = document.getElementById('tiempo');
+            const elementoTiempo = document.getElementById('code_espera');
           
             intervalo = setInterval(() => {
-                tiempoRestante--;
-                //elementoTiempo.textContent = `Tiempo restante: ${tiempoRestante} segundos`;
+                tiempoRestante++;
+                elementoTiempo.textContent = `${tiempoRestante} `;
                
                 if (tiempoRestante <= 0) {
 
@@ -130,7 +130,7 @@
                 alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
             });
         
-        cuentaRegresiva(500);
+        cuentaRegresiva(0);
 
         // Iniciar polling para verificar el estado_ws
         pollingInterval = setInterval(code_ws, 1000);
