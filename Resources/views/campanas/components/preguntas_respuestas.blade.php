@@ -1,4 +1,4 @@
-<div class="alert" style="display: none;" id="modal_preguntas_y_respuesta">
+<div class="alert" style="display: flex;" id="modal_preguntas_y_respuesta">
     <div class="cerrar" id="cerrar_rc" style="z-index: 10;">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill"
             viewBox="0 0 16 16">
@@ -34,7 +34,7 @@
             CONFIGURACIÓN.
 
         </div>
-        <div class="" style="margin-top:10px;">
+        <div class="preguntas_respuesta__" style="margin-top:10px;">
             <div id="form-container">
                 <div class="preguntas_respuesta">
                     <div class="col-md-5">
@@ -64,6 +64,43 @@
     });
 </script>
 <style>
+    .preguntas_respuesta__{
+        overflow-y:scroll; 
+        height: 160px;
+        margin-top: 10px;
+        scrollbar-width: thin;
+        /* Ancho de la scrollbar (auto, thin, none) */
+        scrollbar-color: #888 #f1f1f1;
+        /* Color del thumb y del track */
+       
+    }
+     /* Estilo general para la scrollbar dentro del div */
+     .preguntas_respuesta__::-webkit-scrollbar {
+        width: 10px;
+        /* Ancho de la scrollbar */
+    }
+
+    /* Estilo de la parte interna de la scrollbar */
+    .preguntas_respuesta__::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        /* Color de fondo del track de la scrollbar */
+        border-radius: 10px;
+        /* Bordes redondeados */
+    }
+
+    /* Estilo del thumb (la parte que se desplaza) de la scrollbar */
+    .preguntas_respuesta__::-webkit-scrollbar-thumb {
+        background: #888;
+        /* Color del thumb */
+        border-radius: 10px;
+        /* Bordes redondeados */
+    }
+
+    /* Estilo del thumb al pasar el mouse por encima */
+    .preguntas_respuesta__::-webkit-scrollbar-thumb:hover {
+        background: #555;
+        /* Color del thumb al hacer hover */
+    }
     .btn_enviar {
 
         position: absolute;
