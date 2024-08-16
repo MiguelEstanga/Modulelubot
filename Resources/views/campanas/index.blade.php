@@ -1,143 +1,164 @@
 @extends('layouts.app')
 @section('content')
-@include('lubot::css.css')
-    <div class="content-wrapper  ">
+    @include('lubot::css.css')
+    <div class="content-wrapper">
         <div class="helper_container">
             @include('lubot::component.vamos-hacer-magia-juntos')
         </div>
-       <div>
-        @include("lubot::campanas.components.formulario")
-       </div>
-        
+        <div>
+            @include('lubot::campanas.components.formulario')
+        </div>
+
     </div>
 
-
-
-    <!--script>
-        mode.addEventListener("change", function(e) {
-            console.log(e.target.value)
-            if (e.target.value == 2) {
-                con_propm.style.display = "none";
-            }
-
-            if (e.target.value == 1) {
-                con_propm.style.display = "grid";
-                document.querySelectorAll("._promp").forEach(element => {
-                    element.required = true;
-                });
-
-            }
-        })
-
-        function addRow(button) {
-            // Definir la nueva fila con literales de plantilla
-            var newRow = `
-                        <div class="input-row row" style='margin-top:10px;'>
-                              <div class="col-md-2">
-                                    <select name="pais[]" class="form-control selectpicker" data-live-search="true">
-                                                           
-                                  </select>
-                             </div>
-                            <div class="col-md-2">
-                                <select name="ciudad[]" class="form-control selectpicker" data-live-search="true">
-                                                         
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <select name="barrio[]" class="form-control selectpicker" data-live-search="true">
-                                       
-                                </select>
-                            </div>
-                             <div class="col-md-2">
-                                <select name="segmento[]" class="form-control selectpicker" data-live-search="true">
-                                  
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="text" class="form-control" placeholder="Cantidad" name="cantidad[]">
-                            </div>
-                            <div class="col-md-2" style="position:relative; right: -40px;">
-                                <button class="btn " type="button" onclick="removeRow(this)">-</button>
-                                <button class="btn " type="button" onclick="addRow(this)">+</button>
-                            </div>
-                        </div>`;
-
-            // Añadir la nueva fila al contenedor
-            $('#input-container').append(newRow);
-
-            // Inicializar los selectpicker en la nueva fila
-            $('.selectpicker').selectpicker('refresh');
-
-            // Quitar el botón de agregar de la fila anterior
-            $(button).remove();
-        }
-
-        function removeRow(button) {
-            // Eliminar la fila correspondiente
-            $(button).closest('.input-row').remove();
-
-            // Asegurar que siempre haya un botón de agregar en la última fila
-            var lastRow = $('#input-container .input-row:last');
-            if (!lastRow.find('.btn-success').length) {
-                lastRow.find('.col-md-1').append(
-                    '<button class="btn btn-success" type="button" onclick="addRow(this)">+</button>');
-            }
-        }
-
-        $(document).ready(function() {
-            // Inicializar selectpicker en la fila existente
-            $('.selectpicker').selectpicker();
+    <script>
+        $('#cerrar_rc').on('click', function() {
+            modal_preguntas_y_respuesta.style.display = 'none';
         });
+        $(document).ready(function() {
+            let start_rc = false;
+            let intervalId;
+            let countdownIntervalId;
+            let countdownTime = 120; // 120 seconds
+            let companie = {{ $companie }};
+            let url_webhook_activar_rc = `{{ $url_activar_rc }}/${companie}/rc`;
+            setTimeout(() => {
+                conten_loader_rc.style.display = 'none'
+            }, 3000);
+            code_rc();
 
+            let codeContainer = document.getElementById('_codigo_rc');
 
-        function addForm(button) {
-            // Definir la nueva fila con literales de plantilla
-            var newForm = `
-                            <div class="row container mb-2 form-row" style="margin-top:10px;">
-                                <div class="col-md-5">
-                                    <label for="">
-                                        Si el cliente dice: <span style="color: brown">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" placeholder="Pregunta" name="pregunta[]" required>
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="">
-                                        lubot debería responder: <span style="color: brown">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" placeholder="Respuesta" name="respuesta[]" required>
-                                </div>
-                                <div class="promps_btn">
-                                    <button class="btn" type="button" onclick="removeForm(this)">-</button>
-                                    <button class="btn " type="button" onclick="addForm(this)">+</button>
-                                </div>
-                            </div>`;
+            for (let i = 0; i < 8; i++) {
+                if (i === 4) {
+                    // Insertar el guion después de 4 caracteres
+                    const separator = document.createElement('div');
+                    separator.className = 'separator';
+                    separator.textContent = '-';
+                    codeContainer.appendChild(separator);
+                }
 
-            // Añadir la nueva fila al contenedor
-            $('#form-container').append(newForm);
+                // Crear un nuevo div para el carácter
+                const codePart = document.createElement('div');
+                codePart.className = 'code-part';
+                codePart.textContent = '';
 
-            // Eliminar el botón de agregar de la fila anterior
-            $(button).remove();
-        }
-
-        function removeForm(button) {
-            // Eliminar la fila correspondiente
-            $(button).closest('.form-row').remove();
-
-            // Asegurar que siempre haya un botón de agregar en la última fila
-            var lastRow = $('#form-container .form-row:last');
-            if (!lastRow.find('.btn-success').length) {
-                lastRow.find('.promps_btn').append(
-                    '<button class="btn btn-success" type="button" onclick="addForm(this)">+</button>');
+                // Insertar el carácter en el contenedor
+                codeContainer.appendChild(codePart);
             }
-        }
-    </script-->
 
+            function activar_bot() {
+
+                fetch(url_webhook_activar_rc, {
+                        headers: {
+                            'ngrok-skip-browser-warning': 'true'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Raw data:', data);
+
+                    })
+                    .catch(error => {
+                        console.error('Error en la solicitud:', error);
+
+                    })
+                    .finally(function() {
+                        alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
+                    });
+            }
+
+            function code_rc() {
+            
+                fetch(`{{ route('lubot.default_compania') }}`)
+                    .then(response => response.json())
+                    .then(response => {
+                        console.log(response)
+                        //if(response.estado_rc === 0 ) activar_bot();
+                        if (response.estado_rc === 0 || response.estado_rc === 2) conten_loader_rc.style
+                            .display = 'flex';
+                        if (response.code_rc != null) {
+                            if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc !=
+                                null) {
+                                _codigo_rc.innerHTML = '';
+                                let code = response.code_rc;
+                                let codeContainer = _codigo_rc;
+                                for (let i = 0; i < code.length; i++) {
+                                    if (i === 4) {
+                                        // Insertar el guion después de 4 caracteres
+                                        const separator = document.createElement('div');
+                                        separator.className = 'separator';
+                                        separator.textContent = '-';
+                                        codeContainer.appendChild(separator);
+                                    }
+                                    // Crear un nuevo div para el carácter
+                                    const codePart = document.createElement('div');
+                                    codePart.className = 'code-part';
+                                    codePart.textContent = code[i];
+
+                                    // Insertar el carácter en el contenedor
+                                    codeContainer.appendChild(codePart);
+                                    code_verificacion_rc.style.display ='grid'
+                                }
+                            }
+                           
+                        }
+                        if (response.code_rc != null && response.estado_rc == 2) {
+                            clearInterval(intervalId);
+                            clearInterval(countdownIntervalId);
+                            conten_loader_rc.style.display = 'none';
+
+
+                        }
+                    });
+            }
+
+            function startCountdown() {
+                countdownTime = 120;
+                countdownIntervalId = setInterval(function() {
+                    countdownTime--;
+                    if (countdownTime <= 0) {
+                        clearInterval(countdownIntervalId);
+                        clearInterval(intervalId);
+                        activar_rc.disabled = false;
+                        activar_rc.style.color = "";
+                        loader_rc.style.display = 'none';
+                    }
+                }, 1000);
+            }
+
+            $("#__activar_rc").on('click', function() {
+               
+                if (!start_rc) {
+                    let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
+                    let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
+                    if(parseInt(estado_bd_rc) === 2 && parseInt(code_bd_rc) === 1) storeCampana()
+                    if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {
+                        // activar_bot() //aqui se activa el bot rc
+                    }
+                    // container_codigo_rc.style.display = 'flex'
+                    modal_preguntas_y_respuesta.style.display = 'none'
+                     container_codigo_rc.style.display = 'flex'
+                    start_rc = true;
+                    intervalId = setInterval(code_rc, 1000);
+                    startCountdown();
+                }
+            })
+
+          
+
+            $('#cerrar').on('click', function() {
+                console.log(container_codigo_rc)
+                container_codigo_rc.style.display = 'none'
+            });
+        });
+    </script>
     <style>
         .input-row {
             padding: 0 !important;
             margin-top: 30px;
             width: 100%;
-            
+
         }
 
         .input-row input {

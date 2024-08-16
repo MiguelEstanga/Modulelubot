@@ -42,15 +42,13 @@
                 <span class="text-layout">Selecciona tu plan</span>
                 <div class="col-md-2">
                     <select name="plan" class=" selectpicker" style="width:284px!important;">
-
                         <option value=" 30 Envíos  PRO - $10 USD"> 30 Envíos PRO - $10 USD</option>
-
                     </select>
                 </div>
 
 
             </div>
-            <div class="btn_container" id="activar_rc">
+            <div class="btn_container" onclick="modal_preguntas_respuest()">
                 <button type="submit" class="btn btn-envio">Pagar y Enviar Campaña</button>
             </div>
         </div>
@@ -195,7 +193,7 @@
 
     // Función para añadir una nueva fila en el formulario (duplicar)
     function addRow(button) {
-       
+
         var newRow = `
 <div class="input-row row" style='margin-top:10px;'>
     <div class="col-md-2">
@@ -368,8 +366,10 @@
         updateFormData();
     }
 
-    function enviar_campana(id) {
+    //function campana store 
+    function storeCampana() {
         // Asegúrate de que la ruta sea interpolada correctamente en el Blade.
+        
         const url = `{{ route('campanas.stores') }}`;
         console.log('form')
         const data = JSON.parse(localStorage.getItem('formData'))
@@ -398,7 +398,7 @@
             .then(responseData => {
                 if (responseData.status === 200) {
                     modal_preguntas_y_respuesta.style.display = 'none'
-
+                    //pisa papeles aqui finaliza preguntas y respuesta 
                     alert('listo')
                 }
                 console.log(responseData);
@@ -406,4 +406,12 @@
             })
             .catch(error => console.error('Error:', error));
     }
+
+
+
+
+    function modal_preguntas_respuest() {
+        modal_preguntas_y_respuesta.style.display = 'flex'
+    }
 </script>
+

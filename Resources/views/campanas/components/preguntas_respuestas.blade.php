@@ -1,12 +1,13 @@
 <div class="alert" style="display: none;" id="modal_preguntas_y_respuesta">
-    <div class="cerrar" id="cerrar_rc" style="z-index: 10;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill"
-            viewBox="0 0 16 16">
-            <path
-                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-        </svg>
-    </div>
+
     <div class="container_preguntas_respuesta">
+        <div class="cerrar" id="cerrar_rc" style="z-index: 10;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+            </svg>
+        </div>
         <h2 class="fuente-titulo-xdefecto  txt-center" style="width: 859px; ">
             ¿Cómo debo hablar con tus clientes?
         </h2>
@@ -53,29 +54,32 @@
         </div>
         <div class="btn_enviar">
             <button class="btn btn-envio" type="submit">Prueba mis respuestas </button>
-            <button class="btn btn-envio" type="submit" id="enviar_campana" onclick="enviar_campana(1)" >Enviar Campaña </button>
+            <button 
+                class="btn btn-envio" 
+                type="submit" 
+              
+                id="__activar_rc"
+            > Enviar Campaña </button>
         </div>
     </div>
 </div>
 </div>
-<script>
-    $('#cerrar_rc').on('click', function() {
-        modal_preguntas_y_respuesta.style.display = 'none';
-    });
-</script>
+
+
 <style>
-    .preguntas_respuesta__{
-        overflow-y:scroll; 
+    .preguntas_respuesta__ {
+        overflow-y: scroll;
         height: 160px;
         margin-top: 10px;
         scrollbar-width: thin;
         /* Ancho de la scrollbar (auto, thin, none) */
         scrollbar-color: #888 #f1f1f1;
         /* Color del thumb y del track */
-       
+
     }
-     /* Estilo general para la scrollbar dentro del div */
-     .preguntas_respuesta__::-webkit-scrollbar {
+
+    /* Estilo general para la scrollbar dentro del div */
+    .preguntas_respuesta__::-webkit-scrollbar {
         width: 10px;
         /* Ancho de la scrollbar */
     }
@@ -101,6 +105,7 @@
         background: #555;
         /* Color del thumb al hacer hover */
     }
+
     .btn_enviar {
 
         position: absolute;

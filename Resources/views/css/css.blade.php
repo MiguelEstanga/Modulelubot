@@ -51,11 +51,19 @@
         font-weight: 400;
     }
 
-    #cerrar {
+    .cerrar {
         position: absolute;
-        top: 50px;
-        right: 100px;
+        top: -21px;
+        right: -10px;
+        background: #000;
+        width: 58px;
+        height: 58px;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
         cursor: pointer;
+        border-radius: 37px;
     }
 
     .header_lubot_logo {
@@ -130,6 +138,10 @@
         align-items: center;
     }
 
+    .font-family{
+        font-family: "Baloo 2";
+    }
+
     .text-layout {
         font-size: 20px;
         font-weight: 400;
@@ -161,7 +173,7 @@
         width: 100%;
         height: 1px;
         background-color: rgba(0, 0, 0, .5);
-        
+
     }
 
     .helper_container {
@@ -179,7 +191,7 @@
         height: auto;
         max-width: 1017px;
         background-color: #fff;
-      
+
     }
 
 
