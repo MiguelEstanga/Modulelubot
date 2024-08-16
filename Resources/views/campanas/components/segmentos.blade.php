@@ -4,7 +4,7 @@
         <div id="input-container">
             <div class="input-row row">
                 <div class="col-md-2 ">
-                    <select name="pais[]" onchange="loadciudad(this)" class="form-control selectpicker" data-live-search="true" data-live-search="true">
+                    <select name="pais[]" onchange="loadciudad(this)" class="form-control selectpicker"  data-live-search="true">
                         <option value="0">Todos</option>
                         @foreach ($paises as $pais)
                             <option value="{{ $pais['id'] }}">{{ $pais['nombre'] }}</option>

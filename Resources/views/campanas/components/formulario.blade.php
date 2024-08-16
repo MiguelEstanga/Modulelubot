@@ -195,8 +195,7 @@
 
     // Función para añadir una nueva fila en el formulario (duplicar)
     function addRow(button) {
-        alert(conten_barrios_dinamicos.childElementCount)
-        console.log(conten_barrios_dinamicos.childElementCount)
+       
         var newRow = `
 <div class="input-row row" style='margin-top:10px;'>
     <div class="col-md-2">
@@ -222,8 +221,8 @@
         <input type="number" class="form-control" style="width: 71px!important; height:37px!important;" placeholder="Cantidad" name="cantidad[]">
     </div>
     <div class="col-md-2" style="position:relative; right: -40px;">
-        <button class="btn " type="button" onclick="removeRow(this)">-</button>
-        <button class="btn " type="button" onclick="addRow(this)">+</button>
+        <button class="btn btn-danger" type="button" onclick="removeRow(this)">-</button>
+        <button class="btn btn-success" type="button" onclick="addRow(this)">+</button>
     </div>
 </div>`;
 
@@ -258,104 +257,63 @@
         updateFormData();
     }
 
-    function loadciudad(ciudadSelect) {
-        const ciudadId = ciudadSelect.value;
+    function loadOptions(selectElement, endpoint, nextSelectName, allOptionText = "Todos") {
+        const id = selectElement.value;
+        const parentRow = selectElement.closest('.input-row');
+        const nextSelect = parentRow.querySelector(`select[name="${nextSelectName}[]"]`);
 
-        // Encuentra el barrio-select correspondiente en la misma fila
-        const parentRow = ciudadSelect.closest('.input-row');
-        const barrioSelect = parentRow.querySelector('select[name="ciudad[]"]');
-        
-        if (ciudadId) {
-            let fetchUrl;
-            if (parseInt(ciudadId) === 0) {
-                fetchUrl = `https://lubot.healtheworld.com.co/api/ciudades`;
-                alert('todos')
-            } else {
-                fetchUrl = `https://lubot.healtheworld.com.co/api/ciudades/${ciudadId}`;
-            }
-            fetch(fetchUrl)
+        if (id === '0') {
+            // Seleccionó "Todos"
+            nextSelect.innerHTML = `<option value="0">${allOptionText}</option>`;
+            nextSelect.disabled = true;
+            $(nextSelect).selectpicker('refresh');
+        } else {
+            // Cargar opciones basadas en el ID seleccionado
+            fetch(`${endpoint}/${id}`)
                 .then(response => response.json())
                 .then(data => {
-                    // Limpiar el select de barrios actual
-                    barrioSelect.innerHTML = '';
-                    barrioSelect.innerHTML = '<option value="0">Todos</option>';
+                    nextSelect.innerHTML = `<option value="0">${allOptionText}</option>`;
+                    nextSelect.disabled = false;
 
-                    // Agregar una opción por defecto
-                    const defaultOption = document.createElement('option');
-                    barrioSelect.appendChild(defaultOption);
-                    // Agregar las nuevas opciones de barrios
-                    data.forEach(ciudad => {
+                    data.forEach(item => {
                         const option = document.createElement('option');
-                        option.value = ciudad.id;
-                        option.textContent = ciudad.nombre;
-                        barrioSelect.appendChild(option);
+                        option.value = item.id;
+                        option.textContent = item.nombre;
+                        nextSelect.appendChild(option);
                     });
 
-                    // Refrescar el selectpicker si estás usando bootstrap-select
-                    $(barrioSelect).selectpicker('refresh');
-
-                    // Actualizar el storage después de cargar los barrios
-                    updateFormData();
+                    $(nextSelect).selectpicker('refresh');
                 })
                 .catch(error => {
-                    console.error('Error al cargar los barrios:', error);
+                    console.error(`Error al cargar opciones desde ${endpoint}:`, error);
                 });
-        } else {
-            // Si no hay ciudad seleccionada, limpiar el select de barrios
-            barrioSelect.innerHTML = '<option value="">Seleccione un barrio</option>';
+        }
+
+        updateFormData(); // Actualizar el almacenamiento después de cargar las opciones
+    }
+
+    function loadciudad(paisSelect) {
+        loadOptions(paisSelect, 'https://lubot.healtheworld.com.co/api/ciudades', 'ciudad');
+        const parentRow = paisSelect.closest('.input-row');
+        const barrioSelect = parentRow.querySelector('select[name="barrio[]"]');
+
+        if (paisSelect.value === '0') {
+            // Si selecciona "Todos" en país, también selecciona "Todos" en barrio y lo bloquea
+            barrioSelect.innerHTML = `<option value="0">Todos</option>`;
+            barrioSelect.disabled = true;
             $(barrioSelect).selectpicker('refresh');
-            updateFormData(); // Actualizar el storage si se selecciona una ciudad vacía
+        } else {
+            barrioSelect.innerHTML = ''; // Limpiar barrios cuando se selecciona un nuevo país
+            barrioSelect.disabled = false; // Habilitar el select de barrios
+            $(barrioSelect).selectpicker('refresh');
         }
     }
 
     function loadBarrios(ciudadSelect) {
-        const ciudadId = ciudadSelect.value;
-
-        // Encuentra el barrio-select correspondiente en la misma fila
-        const parentRow = ciudadSelect.closest('.input-row');
-        const barrioSelect = parentRow.querySelector('select[name="barrio[]"]');
-        console.log(ciudadId)
-        if (ciudadId) {
-            let fetchUrl;
-            if (parseInt(ciudadId) === 0) {
-                fetchUrl = `https://lubot.healtheworld.com.co/api/barrios`;
-                alert('todos')
-            } else {
-                fetchUrl = `https://lubot.healtheworld.com.co/api/barrios/${ciudadId}`;
-            }
-            fetch(fetchUrl)
-                .then(response => response.json())
-                .then(data => {
-                    // Limpiar el select de barrios actual
-                    barrioSelect.innerHTML = '';
-                    barrioSelect.innerHTML = '<option value="0">Todos</option>';
-                    // Agregar una opción por defecto
-                    const defaultOption = document.createElement('option');
-                    barrioSelect.appendChild(defaultOption);
-                    // Agregar las nuevas opciones de barrios
-                    data.forEach(barrio => {
-                        const option = document.createElement('option');
-                        option.value = barrio.id;
-                        option.textContent = barrio.nombre;
-                        barrioSelect.appendChild(option);
-                    });
-
-                    // Refrescar el selectpicker si estás usando bootstrap-select
-                    $(barrioSelect).selectpicker('refresh');
-
-                    // Actualizar el storage después de cargar los barrios
-                    updateFormData();
-                })
-                .catch(error => {
-                    console.error('Error al cargar los barrios:', error);
-                });
-        } else {
-            // Si no hay ciudad seleccionada, limpiar el select de barrios
-            barrioSelect.innerHTML = '<option value="">Seleccione un barrio</option>';
-            $(barrioSelect).selectpicker('refresh');
-            updateFormData(); // Actualizar el storage si se selecciona una ciudad vacía
-        }
+        loadOptions(ciudadSelect, 'https://lubot.healtheworld.com.co/api/barrios', 'barrio');
     }
+
+
 
 
     // Funciones para agregar y eliminar filas de preguntas y respuestas

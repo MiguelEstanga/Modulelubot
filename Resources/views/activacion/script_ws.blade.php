@@ -9,6 +9,42 @@
     setTimeout(() => {
               container_loader.style.display ='none'
     }, 3000);
+
+    function estado()
+    {
+        fetch(`{{route('estatus_estado')}}`)
+        .then(response => response.json())
+        .then(response => {
+            if(response.estado_ws === 1 && response.code_ws === null)
+            {
+                display.style.display = 'block';
+            }
+         
+         
+            
+          
+          
+        })
+    }
+
+    function resetear_estado()
+    {   
+        fetch(`{{route('reseteo')}}`)
+        .then(response => response.json())
+        .then(response => {
+            console.log(response)
+        })
+    }
+    cancelar_btn.addEventListener('click' , function(){
+        resetear_estado()
+        
+        container_loader.style.display = 'none' 
+        abra_cadabra.style.display = 'none'
+        abra_cadabra_listo.style.display = 'none'
+        clearInterval(pollingInterval)
+       
+    })
+
     function code_ws() {
        
         fetch(`{{ route('lubot.default_compania') }}`)
@@ -20,6 +56,9 @@
                 if ( data.estado_ws === 0 )  container_loader.style.display = 'flex' ;
                 if(( data.estado_ws === 1 || data.estado_ws === 2) && data.code_ws !=null ) abra_cadabra.style.display = 'flex'
                 if ( data.estado_ws === 2)  container_loader.style.display = 'none' ;
+                if( data.estado_ws === 1 ) {
+                    contador_espera.style.display = 'block'
+                }
                 if (data.estado_ws === 2) {
                     abra_cadabra_listo.style.display = 'flex'
                     crear_campana.innerHTML = `
@@ -69,7 +108,7 @@
                         // Insertar el carácter en el contenedor
                         codeContainer.appendChild(codePart);
                     }
-                   
+                    
                   
                 }
 
@@ -122,13 +161,13 @@
             })
             .catch(error => {
                 console.error('Error en la solicitud:', error);
-                document.getElementById('iniciar').innerText = "Error de comunicación";
+                //document.getElementById('iniciar').innerText = "Error de comunicación";
             })
             .finally(function() {
-                alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
+             
             });
         
-        cuentaRegresiva(0);
+        cuentaRegresiva(1);
 
         // Iniciar polling para verificar el estado_ws
         pollingInterval = setInterval(code_ws, 1000);

@@ -39,8 +39,9 @@ Route::prefix('lubot')->group(function() {
     Route::get('seleciona-el-tipo-de-campanas/', 'CampanasController@tipo_campana_view')->name('tipo_de_campanas'); 
 
     
-   
-
+    //para resetear el estado de configuracion de lubot
+    Route::get('/resetear_configuracion', 'LubotController@resetear_configuracion')->name('reseteo');
+    Route::get('status_estado' , 'LubotController@estado_lubot')->name('estatus_estado');
 
     // base de datos artificiales 
     Route::get('/bd', 'BaseDeDatosController@index')->name('Lubot.db');

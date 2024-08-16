@@ -79,8 +79,8 @@
         </div>
     </div>
     <div class="contenedor_action_center row" style="margin-top: 20px;">
-        <div class="contador_espera">
-            Esperando  : <span id="code_espera">10:00</span>
+        <div class="contador_espera" id="contador_espera">
+            Esperando  : <span id="code_espera"></span>
         </div>
         <div class="logo" class="logo">
             <img src="{{ $logo }}" alt="">
@@ -122,8 +122,15 @@
 
     </div>
 </div>
+<div>
+    <a class="btn btn-danger" id='cancelar_btn'>
+        Reiniciar
+    </a>
+</div>
 <script>
     let codeContainer = document.getElementById('code');
+
+
 
     for (let i = 0; i < 8; i++) {
         if (i === 4) {
@@ -148,7 +155,7 @@
         position: absolute;
         top:-20px;
         right: 0;
-        
+        display: none;
         text-align: end;
         width: 100%;
         font-size: 20px;
