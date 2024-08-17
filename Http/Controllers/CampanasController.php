@@ -148,7 +148,7 @@ class CampanasController extends AccountBaseController
         if(!Schema::hasTable('campanas') ) return back();
         if(!Schema::hasTable('segmentos')) return back();
         if(!Schema::hasTable('prompts')  ) return back();
-
+        date_default_timezone_set('America/Bogota');
         $paises = array();
         $ciudades = array();
         $barrios = array();
@@ -188,28 +188,47 @@ class CampanasController extends AccountBaseController
                 'objetivo_de_lubot' => $objetivo_lubot,
                 'como_me_llamo' => $como_me_llamo,
                 'frecuencia' => $frecuencia,
-                'tipo_negocio' => $tipo_de_negocio,
+                'tipo_negocio' => 2 ,//$tipo_de_negocio,
                 'spbre_la_empresa' => $spbre_la_empresa,
                 'temporalidad' =>  $temporalidad 
             ]
         );
+        
+        DB::table('campaign_schedules')->insertGetID([
+            "campaign_id" => $campana_id,
+            "companie_id" =>  $this->data['company']['id'],
+            "frequency_number" => $frecuencia,
+            "frequency_unit" => $temporalidad,
+            "next_run_at" => HelperController::calculateNextRun($frecuencia, $temporalidad),
+           
+        ]);
 
         for($i = 0 ; $i <= count($paises) -1 ; $i++)
         {
             DB::table('segmentos')->insert(
                 [
                     'id_campanas' =>  $campana_id ,
-                    'tipo_de_negocio' => $tipo_de_negocio,
-                    'ciudad'   => $ciudades[$i],
-                    'pais'     => $paises[$i],
-                    'barrio'   => $barrios[$i] ,
+                    'tipo_de_negocio' => 2,//-> Suministro para odontologia //$tipo_de_negocio,
+                    'ciudad' =>  1, //-> Bogota//$ciudades[$i],
+                    'pais'  =>  1,//$paises[$i],
+                    'barrio'   => 4,//->Nogal//$barrios[$i] ,
                     'cantidad' => $cantidades[$i]
                 ]
             );
         }
 
-        $response = Http::withHeaders(['Accept' => 'application/json'])
-        ->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
+        $response = "";
+         try{
+            $response = Http::withHeaders(['Accept' => 'application/json'])
+            //para produccion
+            //->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
+            //para desarrollo
+            ->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
+         }catch (Exception  $e)
+         {
+            $response = $e;
+         }
+     
         DB::table('prompts')
         ->insert(
             [
@@ -219,6 +238,7 @@ class CampanasController extends AccountBaseController
             ]
         );
 
+        
 
         return json_encode(
             [

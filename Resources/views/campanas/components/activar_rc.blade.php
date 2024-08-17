@@ -1,4 +1,4 @@
-<div id="container_codigo_rc" class="alert" style="display: flex;">
+<div id="container_codigo_rc" class="alert" style="display: none;">
     <div class="__container-action">
         @include('lubot::campanas.components.conde_rc_verficacion')
         <div id="cerrar" class="cerrar">

@@ -39,4 +39,27 @@ class HelperController extends Controller
     ];
     return  $data[$key];
   }
+
+  public static function calculateNextRun($frequencyNumber, $frequencyUnit)
+  {
+    date_default_timezone_set('America/Bogota');
+      $nextRun = now();
+
+      switch ($frequencyUnit) {
+          case 'minutes':
+              $nextRun->addMinutes($frequencyNumber);
+              break;
+          case 'hours':
+              $nextRun->addHours($frequencyNumber);
+              break;
+          case 'days':
+              $nextRun->addDays($frequencyNumber);
+              break;
+          case 'weeks':
+              $nextRun->addWeeks($frequencyNumber);
+              break;
+      }
+
+      return $nextRun;
+  }
 }

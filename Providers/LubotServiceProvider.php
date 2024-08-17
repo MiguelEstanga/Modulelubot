@@ -4,6 +4,8 @@ namespace Modules\Lubot\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Lubot\Console\ActivarCampana;
+use Illuminate\Console\Scheduling\Schedule;
 
 class LubotServiceProvider extends ServiceProvider
 {
@@ -22,12 +24,19 @@ class LubotServiceProvider extends ServiceProvider
      *
      * @return void
      */
+
+
     public function boot()
     {
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
+        $this->registerCommands();
+
+        $this->app->booted(function () {
+            $this->scheduleCommands();
+        });
     }
 
     /**
@@ -38,8 +47,21 @@ class LubotServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        
+       
     }
+    private function registerCommands()
+    {
+        $this->commands([
+           ActivarCampana::class,
+        ]);
+    }
+    public function scheduleCommands()
+    {
+        $schedule = $this->app->make(Schedule::class);
 
+        $schedule->command('lubot_campanas_encendidas_corn')->everyMinute();
+    }
     /**
      * Register config.
      *

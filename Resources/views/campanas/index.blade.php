@@ -74,7 +74,7 @@
                     .then(response => response.json())
                     .then(response => {
                         console.log(response)
-                        //if(response.estado_rc === 0 ) activar_bot();
+                        
                         if (response.estado_rc === 0 || response.estado_rc === 2) conten_loader_rc.style
                             .display = 'flex';
                         if (response.code_rc != null) {
@@ -128,17 +128,20 @@
             }
 
             $("#__activar_rc").on('click', function() {
-               
+                let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
+                let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
+                if (code_bd_rc == 1 && estado_bd_rc == 2) {
+                    console.log('aqui activo a lubot')
+                    storeCampana()
+                }
                 if (!start_rc) {
-                    let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
-                    let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
-                    if(parseInt(estado_bd_rc) === 2 && parseInt(code_bd_rc) === 1) storeCampana()
                     if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {
                         // activar_bot() //aqui se activa el bot rc
+                        console.log('aqui esta la activacion del bot ')
                     }
                     // container_codigo_rc.style.display = 'flex'
                     modal_preguntas_y_respuesta.style.display = 'none'
-                     container_codigo_rc.style.display = 'flex'
+                    container_codigo_rc.style.display = 'flex'
                     start_rc = true;
                     intervalId = setInterval(code_rc, 1000);
                     startCountdown();

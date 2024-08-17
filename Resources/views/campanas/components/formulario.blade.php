@@ -33,7 +33,10 @@
                 <div class="col-md-2">
                     <select name="temporalidad" class="form-control selectpicker">
 
-                        <option value="dia"> dia</option>
+                        <option value="minutes">Minutos Solo para desarrollo</option>
+                        <option value="hours"> Horas</option>
+                        <option value="days">Dia</option>
+                        <option value="weeks">Semanas</option>
 
                     </select>
                 </div>
@@ -48,8 +51,8 @@
 
 
             </div>
-            <div class="btn_container" onclick="modal_preguntas_respuest()">
-                <button type="submit" class="btn btn-envio">Pagar y Enviar Campaña</button>
+            <div class="btn_container">
+                <button  onclick="modal_preguntas_respuest()" type="submit" class="btn btn-envio">Pagar y Enviar Campaña</button>
             </div>
         </div>
 
