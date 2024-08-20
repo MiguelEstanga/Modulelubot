@@ -23,7 +23,8 @@ class ChatGptController extends AccountBaseController
     }
     public function index()
     {
-        return 0;
+        $this->data['pageTitle'] = 'Prueba tu promp';
+        return view('lubot::chatgpt.index' ,  $this->data);
     }
 
  

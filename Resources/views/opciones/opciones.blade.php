@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    @include('lubot::css.css')
+    @include('lubot::css.css') 
     <div class="content-wrapper opciones">
         <a class="cart_url" href="{{route('tipo_de_campanas')}}">
             <div class="_container-action c-hover">

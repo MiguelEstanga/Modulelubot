@@ -50,9 +50,8 @@ Route::prefix('lubot')->group(function() {
     Route::get('/bd/delete/{id}', 'BaseDeDatosController@delete')->name('bd.delete');
 
     //
-
-    Route::get('/lubot_pusher/estado_ws/{user_id}/{codigo}' , 'ChatGptController@cambiar_estado' )->name('cambiar_estado_ws');
-   
+    
+    Route::get('pre-promp-entrena-lubot' , 'ChatGptController@index')->name('chatGpt.index');
 });
 
-Route::get('test-de-entrenamiento' , 'CampanasController@index' )->name('cambiar_estado_ws');
+Route::get('lubot_pusher/estado_ws/{user_id}/{codigo}' , 'CampanasController@cambiar_estado' )->name('cambiar_estado_ws');
