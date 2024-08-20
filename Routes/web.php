@@ -52,7 +52,7 @@ Route::prefix('lubot')->group(function() {
     //
     
     Route::get('pre-promp-entrena-lubot' , 'ChatGptController@index')->name('chatGpt.index');
-    Route::post('pre-promp-entrena-lubot_ejet' , 'ChatGptController@openia')->name('chatGpt.openia');
+    Route::get('pre-promp-entrena-lubot_ejet' , 'ChatGptController@openia')->name('chatGpt.openia');
 });
 
 Route::get('lubot_pusher/estado_ws/{user_id}/{codigo}' , 'CampanasController@cambiar_estado' )->name('cambiar_estado_ws');

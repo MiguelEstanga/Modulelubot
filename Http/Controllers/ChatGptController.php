@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use  Modules\Lubot\Http\Controllers\HelperController;
 use App\Http\Controllers\AccountBaseController;
-
+use Illuminate\Support\Facades\Http;
 class ChatGptController extends AccountBaseController
 {
     public function __construct()
@@ -30,30 +30,31 @@ class ChatGptController extends AccountBaseController
 
     public function openia()
     {
-        $curl = curl_init();
+        
         $api_key = env('OPENAI_API_KEY');
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.openai.com/v1/chat/completions',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-                    CURLOPT_POSTFIELDS => '{
-            "model": "gpt-4o",
-            "messages": [{"role":"system","content":"You are a helpful assistant."},{"role":"user","content":"Who won the world series in 2020?"},{"role":"assistant","content":"The Los Angeles Dodgers won the World Series in 2020."},{"role":"user","content":"Where was it played?"}] 
-        }',
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json',
-                "Authorization: Bearer {$api_key}"
-            ),
-        ));
+        
 
-        $response = curl_exec($curl);
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $api_key,
+            'Content-Type' => 'application/json',
+        ])->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-4', // Puedes usar 'gpt-3.5-turbo' o el modelo que prefieras
+            'messages' => [
+                [
+                    'role' => 'system',
+                    'content' => 'You are a helpful assistant.'
+                ],
+                [
+                    'role' => 'user',
+                    'content' => 'hola' // Mensaje del usuario
+                ]
+            ],
+            'max_tokens' => 150, // Ajusta según tus necesidades
+            'temperature' => 0.7, // Ajusta la creatividad de la respuesta
+        ]);
 
-        curl_close($curl);
-        return  $response;
+        $data = json_decode($response->getBody(), true);
+
+        return response()->json($data);
     }
 }
