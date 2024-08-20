@@ -26,7 +26,7 @@
         const _chatForm = document.getElementById('chat-form');
         const _chatInput = document.getElementById('chat-input');
 
-        const apiKey = 'TU_API_KEY_AQUI'; // Reemplaza esto con tu API Key
+      
 
         _chatForm.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -51,18 +51,17 @@
                     content: element.pregunta
                 });
                 trainingExamples.push({
-                    role: "assistant",
+                    role: "system",
                     content: element.respuesta
                 });
             });
-
+            console.log(trainingExamples)
             // Hacer la solicitud al backend
             try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                const response = await fetch( `{{route('chatGpt.openia')}}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
                     },
                     body: JSON.stringify({
                         model: "gpt-4",
@@ -81,9 +80,9 @@
                 }
 
                 const data = await response.json();
-
+                console.log(data)
                 // Añadir respuesta del bot al chat
-                addMessageToChat(data.choices[0].message.content, 'bot');
+               // addMessageToChat(data.choices[0].message.content, 'bot');
             } catch (error) {
                 // Mostrar mensaje de error en el chat
                 addMessageToChat(`Error: ${error.message}`, 'error');
