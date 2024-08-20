@@ -58,27 +58,14 @@
             console.log(trainingExamples)
             // Hacer la solicitud al backend
             try {
-                const response = await fetch( `{{route('chatGpt.openia')}}`, {
+                const response = await fetch( `https://miagencia.healtheworld.com.co/lubot/pre-promp-entrena-lubot_ejet`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        model: "gpt-4",
-                        messages: [
-                            ...trainingExamples, // Incluye los ejemplos
-                            {
-                                role: "user",
-                                content: userMessage
-                            }
-                        ]
-                    })
+                    }
                 });
 
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud a la API.');
-                }
-
+             
                 const data = await response.json();
                 console.log(data)
                 // Añadir respuesta del bot al chat
