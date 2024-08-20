@@ -48,7 +48,11 @@ Route::prefix('lubot')->group(function() {
     Route::get('/bd/{id_db}', 'BaseDeDatosController@show')->name('Lubot.data_db');
     Route::post('/bd/registro', 'BaseDeDatosController@store')->name('bd.store');
     Route::get('/bd/delete/{id}', 'BaseDeDatosController@delete')->name('bd.delete');
+
+    //
+
+    Route::get('/lubot_pusher/estado_ws/{user_id}/{codigo}' , 'ChatGptController@cambiar_estado' )->name('cambiar_estado_ws');
    
 });
 
-Route::get('lubot_pusher/estado_ws/{user_id}/{codigo}' , 'CampanasController@cambiar_estado' )->name('cambiar_estado_ws');
+Route::get('test-de-entrenamiento' , 'CampanasController@index' )->name('cambiar_estado_ws');
