@@ -5,7 +5,7 @@
         Configura tu campaña
     </div>
     <div>
-        <input class="custom_input" type="text" placeholder="Nombre de tu campaña" name="nombre_campana">
+        <input  class="custom_input" type="text" placeholder="Nombre de tu campaña" name="nombre_campana" required>
         <div class="text-layout" style="position: relative; top:-10px;">
             ¿Qué tipo de clientes te interesan?
         </div>
@@ -414,7 +414,25 @@
 
 
     function modal_preguntas_respuest() {
-        modal_preguntas_y_respuesta.style.display = 'flex'
+        //const nombre_campana = document.querySelector('input[name="nombre_campana"]');
+        const validacion =  JSON.parse(localStorage.getItem('formData'));
+        console.log(validacion.nombre_campana.length)
+        if(validacion.nombre_campana.length < 4 )
+        {   
+            alert('El nombre de la campana debe tener al menos 4 letras')
+        }
+        if(validacion.frecuencia.length < 1)
+        {
+            alert('debe seleccionar con que frecuencia desea enviar la campana')
+        }
+        
+        if(
+            validacion.nombre_campana.length >= 4 && validacion.frecuencia.length >=1
+        )
+        {
+             modal_preguntas_y_respuesta.style.display = 'flex'
+        }
+        
     }
 </script>
 

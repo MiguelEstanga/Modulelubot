@@ -69,12 +69,12 @@
             }
 
             function code_rc() {
-            
+
                 fetch(`{{ route('lubot.default_compania') }}`)
                     .then(response => response.json())
                     .then(response => {
                         console.log(response)
-                        
+
                         if (response.estado_rc === 0 || response.estado_rc === 2) conten_loader_rc.style
                             .display = 'flex';
                         if (response.code_rc != null) {
@@ -98,10 +98,10 @@
 
                                     // Insertar el carácter en el contenedor
                                     codeContainer.appendChild(codePart);
-                                    code_verificacion_rc.style.display ='grid'
+                                    code_verificacion_rc.style.display = 'grid'
                                 }
                             }
-                           
+
                         }
                         if (response.code_rc != null && response.estado_rc == 2) {
                             clearInterval(intervalId);
@@ -128,27 +128,48 @@
             }
 
             $("#__activar_rc").on('click', function() {
-                let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
-                let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
-                if (code_bd_rc == 1 && estado_bd_rc == 2) {
-                    console.log('aqui activo a lubot')
-                    storeCampana()
-                }
-                if (!start_rc) {
-                    if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {
-                        // activar_bot() //aqui se activa el bot rc
-                        console.log('aqui esta la activacion del bot ')
+
+                const validacion = JSON.parse(localStorage.getItem('formData'));
+                const preguntas_respuesta = JSON.parse(validacion.preguntas_respuestas)
+
+                if (validacion.como_me_llamo.length < 4) alert('Debe colocar un nombre a Lubot')
+                if (validacion.spbre_la_empresa.length < 4) alert(
+                    'Debes dar una descripcion de lo que buscas')
+                preguntas_respuesta.forEach(element => {
+                    if (element.pregunta.length < 3) alert('hay una pregunta con menos de 3 letras')
+                    if (element.respuesta.length < 3) alert(
+                        'hay una respuesta con menos de 3 letras')
+                });
+
+                if (
+                    validacion.como_me_llamo.length >= 4 &&
+                    validacion.spbre_la_empresa.length >= 4 &&
+                    preguntas_respuesta.every(element => element.pregunta.length >= 3) &&
+                    preguntas_respuesta.every(element => element.respuesta.length >= 3)
+                ) {
+                    let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
+                    let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
+                    if (code_bd_rc == 1 && estado_bd_rc == 2) {
+                        console.log('aqui activo a lubot')
+                        storeCampana()
                     }
-                    // container_codigo_rc.style.display = 'flex'
-                    modal_preguntas_y_respuesta.style.display = 'none'
-                    container_codigo_rc.style.display = 'flex'
-                    start_rc = true;
-                    intervalId = setInterval(code_rc, 1000);
-                    startCountdown();
+                    if (!start_rc) {
+                        if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {
+                            // activar_bot() //aqui se activa el bot rc
+                            console.log('aqui esta la activacion del bot ')
+                        }
+                        // container_codigo_rc.style.display = 'flex'
+                        modal_preguntas_y_respuesta.style.display = 'none'
+                        container_codigo_rc.style.display = 'flex'
+                        start_rc = true;
+                        intervalId = setInterval(code_rc, 1000);
+                        startCountdown();
+                    }
                 }
+
             })
 
-          
+
 
             $('#cerrar').on('click', function() {
                 console.log(container_codigo_rc)
