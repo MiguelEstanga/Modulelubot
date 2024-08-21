@@ -26,8 +26,6 @@
         const _chatForm = document.getElementById('chat-form');
         const _chatInput = document.getElementById('chat-input');
 
-        let conversationContext = [];
-
         _chatForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
@@ -43,9 +41,9 @@
             // Cargar ejemplos de entrenamiento desde localStorage
             const estorage = JSON.parse(localStorage.getItem('formData'));
             const promp = JSON.parse(estorage.preguntas_respuestas);
+            let combersacion = JSON.parse(localStorage.getItem('combersacion')) || []
             let campana = [];
             let trainingExamples = [];
-            let conversationContext = JSON.parse(localStorage.getItem('conversationContext')) || [];
 
             promp.forEach(element => {
                 trainingExamples.push({
@@ -61,10 +59,7 @@
             campana.push(estorage.objetivo_lubot)
             campana.push(estorage.spbre_la_empresa)
             // Añadir el mensaje del usuario al final del array
-            conversationContext.push({
-                role: "user",
-                content: userMessage
-            });
+
 
             trainingExamples.push({
                 role: "user",
@@ -76,15 +71,19 @@
                 menssage: JSON.stringify(trainingExamples),
                 campana: JSON.stringify(campana),
                 promp: JSON.stringify(promp),
-                user_message: userMessage,
-                conversationContext: JSON.stringify(conversationContext)
+                user_message: userMessage
             });
+
+            combersacion.push({
+                role: "user",
+                content: userMessage
+            })
             console.log(trainingExamples)
             console.log(promp)
             console.log(userMessage)
             console.log(campana)
-            console.log('conversacion almacenada') 
-            console.log(conversationContext)
+            console.log('combersacion')
+            console.log(combersacion)
             try {
                 const response = await fetch(`{{ route('chatGpt.openia') }}`, {
                     method: 'POST',
@@ -97,20 +96,20 @@
                 });
 
                 const data = await response.json();
-                console.log('respuesta del servidor');
                 console.log(data);
 
                 // Añadir respuesta del bot al chat
-                if ( data.choices[0].message.content ) {
+                if (data.choices && data.choices.length > 0) {
                     addMessageToChat(data.choices[0].message.content, 'bot');
-                    conversationContext.push({
+                    combersacion.push({
                         role: "system",
-                        content: botMessage
+                        content: data.choices[0].message.content
                     });
+                    localStorage.setItem('combersacion', JSON.stringify(combersacion));
                 } else {
                     addMessageToChat('No se recibió respuesta del bot.', 'error');
+                    localStorage.setItem('combersacion', JSON.stringify(combersacion));
                 }
-                localStorage.setItem('conversationContext', JSON.stringify(conversationContext));
             } catch (error) {
                 // Mostrar mensaje de error en el chat
                 addMessageToChat(`Error: ${error.message}`, 'error');

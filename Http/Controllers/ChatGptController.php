@@ -38,8 +38,7 @@ class ChatGptController extends AccountBaseController
         $campana = json_decode($request->input('campana'));
         $menssage = json_decode($request->input('menssage') , true);
         $prompts = json_decode($request->input('promp') , true);
-        $conversationContext = json_decode($request->input('conversationContext') , true);
-
+       // $conversationContext = json_decode($request->input('conversationContext') , true);
         //return json_encode($conversationContext);
         $objetivo = DB::table('objetivos_lubot')->where('id' , $campana[1])->first();
         //return json_encode ($prompts);
@@ -120,26 +119,6 @@ class ChatGptController extends AccountBaseController
         return $response;
         //Log::info($response);
 
-        // Extraer la respuesta del asistente
-        $assistantMessage = $response['choices'][0]['message']['content'];
-
-        return response()->json([
-            'message' => $assistantMessage
-        ]);
-        $api_key = env('OPENAI_API_KEY');
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $api_key,
-            'Content-Type' => 'application/json',
-        ])->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-4', 
-            'messages' => json_decode($request->input('menssage')), // Decodificar el mensaje del request
-            'max_tokens' => 150, 
-            'temperature' => 0.7,
-        ]);
-    
-        $data = json_decode($response->getBody(), true);
-    
-        return response()->json($data);
     }
 
  
