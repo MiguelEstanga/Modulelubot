@@ -26,20 +26,23 @@
         const _chatForm = document.getElementById('chat-form');
         const _chatInput = document.getElementById('chat-input');
 
-      
+
 
         _chatForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
             const userMessage = _chatInput.value.trim();
             if (!userMessage) return;
+
             // Añadir mensaje del usuario al chat
             addMessageToChat(userMessage, 'user');
+
             // Limpiar el input
             _chatInput.value = '';
+
             // Cargar ejemplos de entrenamiento desde localStorage
-            var estorage = JSON.parse(localStorage.getItem('formData'));
-            var promp = JSON.parse(estorage.preguntas_respuestas);
+            const estorage = JSON.parse(localStorage.getItem('formData'));
+            const promp = JSON.parse(estorage.preguntas_respuestas);
             let trainingExamples = [];
 
             promp.forEach(element => {
@@ -53,27 +56,37 @@
                 });
             });
 
-            const formData = new FormData();
-            formData.append('menssage' , JSON.stringify(trainingExamples))
+            // Preparar el cuerpo de la solicitud
+            const body = JSON.stringify({
+                menssage: JSON.stringify(trainingExamples)
+            });
 
-            console.log(trainingExamples)
-            // Hacer la solicitud al backend
             try {
-                const response = await fetch( `https://miagencia.healtheworld.com.co/lubot/pre-promp-entrena-lubot_ejet`, {
+                const response = await fetch(`{{ route('chatGpt.openia') }}`, {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
                     },
-                    body:body
+                    body: body
                 });
+
                 const data = await response.json();
-                console.log(data)
+                console.log(data);
+
                 // Añadir respuesta del bot al chat
-               // addMessageToChat(data.choices[0].message.content, 'bot');
+                if (data.choices && data.choices.length > 0) {
+                    addMessageToChat(data.choices[0].message.content, 'bot');
+                } else {
+                    addMessageToChat('No se recibió respuesta del bot.', 'error');
+                }
             } catch (error) {
                 // Mostrar mensaje de error en el chat
                 addMessageToChat(`Error: ${error.message}`, 'error');
             }
         });
+
         function addMessageToChat(message, sender) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender === 'user' ? 'user' : sender === 'bot' ? 'bot' : 'error');
@@ -99,7 +112,7 @@
 
         .chat-container {
             width: 100%;
-             max-width: 758px;
+            max-width: 758px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
