@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="btn_enviar">
-            <button class="btn btn-envio" type="submit">Prueba mis respuestas </button>
+            <a href="{{route('chatGpt.index')}}" class="btn btn-envio" type="submit">Prueba mis respuestas </a>
             <button 
                 class="btn btn-envio" 
                 type="submit" 
