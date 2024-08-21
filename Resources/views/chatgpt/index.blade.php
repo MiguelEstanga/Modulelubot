@@ -26,7 +26,7 @@
         const _chatForm = document.getElementById('chat-form');
         const _chatInput = document.getElementById('chat-input');
 
-
+        let conversationContext = [];
 
         _chatForm.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -40,49 +40,51 @@
             // Limpiar el input
             _chatInput.value = '';
 
-            // Obtener la conversación previa y otros datos almacenados en localStorage
-            let storedData = JSON.parse(localStorage.getItem('formData')) || {};
+            // Cargar ejemplos de entrenamiento desde localStorage
+            const estorage = JSON.parse(localStorage.getItem('formData'));
+            const promp = JSON.parse(estorage.preguntas_respuestas);
+            let campana = [];
+            let trainingExamples = [];
             let conversationContext = JSON.parse(localStorage.getItem('conversationContext')) || [];
 
-            // Cargar ejemplos de entrenamiento desde localStorage
-            const promp = JSON.parse(storedData.preguntas_respuestas || '[]');
-            let campana = storedData.campana || [];
-
-            // Concatenar el nuevo mensaje del usuario al contexto de la conversación
+            promp.forEach(element => {
+                trainingExamples.push({
+                    role: "user",
+                    content: element.pregunta
+                });
+                trainingExamples.push({
+                    role: "system",
+                    content: element.respuesta
+                });
+            });
+            campana.push(estorage.como_me_llamo)
+            campana.push(estorage.objetivo_lubot)
+            campana.push(estorage.spbre_la_empresa)
+            // Añadir el mensaje del usuario al final del array
             conversationContext.push({
                 role: "user",
                 content: userMessage
             });
 
-            // Concatenar el mensaje del usuario al array `trainingExamples`
-            promp.forEach(element => {
-                conversationContext.push({
-                    role: "user",
-                    content: element.pregunta
-                });
-                conversationContext.push({
-                    role: "system",
-                    content: element.respuesta
-                });
+            trainingExamples.push({
+                role: "user",
+                content: userMessage
             });
-
-            campana.push(storedData.como_me_llamo);
-            campana.push(storedData.objetivo_lubot);
-            campana.push(storedData.spbre_la_empresa);
 
             // Preparar el cuerpo de la solicitud
             const body = JSON.stringify({
-                menssage: JSON.stringify(conversationContext),
+                menssage: JSON.stringify(trainingExamples),
                 campana: JSON.stringify(campana),
                 promp: JSON.stringify(promp),
-                user_message: userMessage
+                user_message: userMessage,
+                conversationContext: JSON.stringify(conversationContext)
             });
-
-            console.log(conversationContext);
-            console.log(promp);
-            console.log(userMessage);
-            console.log(campana);
-
+            console.log(trainingExamples)
+            console.log(promp)
+            console.log(userMessage)
+            console.log(campana)
+            console.log('conversacion almacenada')
+            console.log(conversationContext)
             try {
                 const response = await fetch(`{{ route('chatGpt.openia') }}`, {
                     method: 'POST',
@@ -95,43 +97,24 @@
                 });
 
                 const data = await response.json();
+                console.log('respuesta del servidor');
                 console.log(data);
 
-                // Añadir respuesta del bot al chat y al contexto
+                // Añadir respuesta del bot al chat
                 if (data.choices && data.choices.length > 0) {
-                    const botMessage = data.choices[0].message.content;
-                    addMessageToChat(botMessage, 'bot');
-
-                    // Concatenar la respuesta del bot al contexto de la conversación
+                    addMessageToChat(data.choices[0].message.content, 'bot');
                     conversationContext.push({
                         role: "system",
                         content: botMessage
                     });
-
-                    // Actualizar `formData` en localStorage
-                    storedData.preguntas_respuestas = JSON.stringify(promp);
-                    storedData.campana = campana;
-                    storedData.conversationContext = conversationContext;
-
-                    localStorage.setItem('formData', JSON.stringify(storedData));
                 } else {
                     addMessageToChat('No se recibió respuesta del bot.', 'error');
                 }
+                localStorage.setItem('conversationContext', JSON.stringify(conversationContext));
             } catch (error) {
                 // Mostrar mensaje de error en el chat
                 addMessageToChat(`Error: ${error.message}`, 'error');
             }
-        });
-
-        // Al cargar la página, restaurar el contexto de la conversación
-        document.addEventListener('DOMContentLoaded', () => {
-            const storedData = JSON.parse(localStorage.getItem('formData')) || {};
-            const conversationContext = storedData.conversationContext || [];
-
-            // Restaura la conversación previa en el chat (si existe)
-            conversationContext.forEach(message => {
-                addMessageToChat(message.content, message.role === 'user' ? 'user' : 'bot');
-            });
         });
 
 
