@@ -38,7 +38,7 @@ class ChatGptController extends AccountBaseController
         $campana = json_decode($request->input('campana'));
         $menssage = json_decode($request->input('menssage') , true);
         $prompts = json_decode($request->input('promp') , true);
-       // $conversationContext = json_decode($request->input('conversationContext') , true);
+        $contexto_c = json_decode($request->input('combersacion') , true);
         //return json_encode($conversationContext);
         $objetivo = DB::table('objetivos_lubot')->where('id' , $campana[1])->first();
         //return json_encode ($prompts);
@@ -82,7 +82,17 @@ class ChatGptController extends AccountBaseController
             "role" => "system",
             "content" => $content
         ];
-       
+        if(count($contexto_c) > 0)
+        {
+            foreach($contexto_c as $items )
+            {
+                $conversation[] =[
+                    "role" => $items['role'],
+                    "content" => $items['content']
+                ];
+            }
+        }
+    
         foreach ($menssage as $message){
             $conversation[] =[
                 "role" => $message['role'],

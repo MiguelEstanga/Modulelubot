@@ -72,6 +72,7 @@
                 campana: JSON.stringify(campana),
                 promp: JSON.stringify(promp),
                 user_message: userMessage
+                combersacion:JSON.stringify(combersacion)
             });
 
             combersacion.push({
