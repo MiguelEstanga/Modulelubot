@@ -60,7 +60,8 @@
             const body = JSON.stringify({
                 menssage: JSON.stringify(trainingExamples)
             });
-
+            console.log(trainingExamples)
+            console.log(body)
             try {
                 const response = await fetch(`{{ route('chatGpt.openia') }}`, {
                     method: 'POST',
