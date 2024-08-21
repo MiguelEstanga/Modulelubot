@@ -32,6 +32,7 @@ class HelperController extends Controller
     $data = [
         'ejecutable_inicio_sesion' => "{$web_hook}/activar_inicio_session",
         'activar_ejecutable_ws' => "{$web_hook}/activar_ejecutable_ws",
+        'activar_ejecutable_ryc' => "{$web_hook}/activar_ejecutable_ryc",
         'paises'  => "{$lubot_master}/paises",
         'segmentos'  => "{$lubot_master}/tipos_negocios",
         'barrios'  => "{$lubot_master}/barrios",
