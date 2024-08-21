@@ -71,7 +71,7 @@
                 menssage: JSON.stringify(trainingExamples),
                 campana: JSON.stringify(campana),
                 promp: JSON.stringify(promp),
-                user_message: userMessage
+                user_message: userMessage,
                 combersacion:JSON.stringify(combersacion)
             });
 
