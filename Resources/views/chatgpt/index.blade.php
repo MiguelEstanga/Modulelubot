@@ -83,7 +83,7 @@
             console.log(promp)
             console.log(userMessage)
             console.log(campana)
-            console.log('conversacion almacenada')
+            console.log('conversacion almacenada') 
             console.log(conversationContext)
             try {
                 const response = await fetch(`{{ route('chatGpt.openia') }}`, {
@@ -101,7 +101,7 @@
                 console.log(data);
 
                 // Añadir respuesta del bot al chat
-                if (data.choices && data.choices.length > 0) {
+                if ( data.choices[0].message.content) {
                     addMessageToChat(data.choices[0].message.content, 'bot');
                     conversationContext.push({
                         role: "system",
