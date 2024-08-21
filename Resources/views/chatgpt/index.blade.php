@@ -26,7 +26,11 @@
         const _chatForm = document.getElementById('chat-form');
         const _chatInput = document.getElementById('chat-input');
 
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 1d2fbd6 (api-key)
 
         _chatForm.addEventListener('submit', async (event) => {
             event.preventDefault();

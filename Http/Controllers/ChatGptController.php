@@ -30,6 +30,7 @@ class ChatGptController extends AccountBaseController
 
     public function openia(Request $request)
     {
+<<<<<<< HEAD
         
         $api_key = env('OPENAI_API_KEY');
 
@@ -47,4 +48,50 @@ class ChatGptController extends AccountBaseController
     
         return response()->json($data);
     }
+=======
+        // $messages = $request->input('messages');
+        response()->json( $request->all() );
+        // Hacer la solicitud a la API de OpenAI
+        $key = env('OPENAI_API_KEY');
+        $response = Http::withToken($key)
+            ->post('https://api.openai.com/v1/chat/completions', [
+                'model' => 'gpt-4', // Puedes ajustar el modelo según tus necesidades
+                'messages' => ['user' => "hola"]
+            ]);
+
+        // Devolver la respuesta de OpenAI al frontend
+        return response()->json($response->json());
+    } 
+    public function completions(Request $request)
+    {
+        //return  response()->json($request->all());
+        try {
+            // Obtener el modelo y los mensajes desde la solicitud
+           $model    = $request->input('model');
+           $messages = $request->input('messages');
+           $key = env('OPENAI_API_KEY');
+            // Realizar la solicitud a la API de OpenAI
+            $response = Http::withToken($key)
+                ->post('https://api.openai.com/v1/chat/completions', [
+                    'model' => $model, // Usa el modelo recibido en la solicitud
+                    'messages' => $messages // Usa los mensajes recibidos en la solicitud
+                ]);
+    
+            if ($response->failed()) {
+                return response()->json([
+                    'error' => 'Failed to communicate with OpenAI API',
+                    'details' => $response->body()
+                ], $response->status());
+            }
+    
+            return response()->json($response->json());
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Server error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
+>>>>>>> 1d2fbd6 (api-key)
 }
