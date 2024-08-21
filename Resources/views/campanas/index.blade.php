@@ -141,12 +141,7 @@
                         'hay una respuesta con menos de 3 letras')
                 });
 
-                if (
-                    validacion.como_me_llamo.length >= 4 &&
-                    validacion.spbre_la_empresa.length >= 4 &&
-                    preguntas_respuesta.every(element => element.pregunta.length >= 3) &&
-                    preguntas_respuesta.every(element => element.respuesta.length >= 3)
-                ) {
+             
                     let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
                     let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
                     if (code_bd_rc == 1 && estado_bd_rc == 2) {
@@ -155,7 +150,7 @@
                     }
                     if (!start_rc) {
                         if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {
-                            // activar_bot() //aqui se activa el bot rc
+                            activar_bot() //aqui se activa el bot rc
                             console.log('aqui esta la activacion del bot ')
                         }
                         // container_codigo_rc.style.display = 'flex'
@@ -165,7 +160,7 @@
                         intervalId = setInterval(code_rc, 1000);
                         startCountdown();
                     }
-                }
+                
 
             })
 
