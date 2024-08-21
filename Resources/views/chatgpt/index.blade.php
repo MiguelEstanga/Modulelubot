@@ -55,7 +55,10 @@
                     content: element.respuesta
                 });
             });
-
+            trainingExamples.push({
+                    role: "user",
+                    content: _chatInput.value
+                });
             // Preparar el cuerpo de la solicitud
             const body = JSON.stringify({
                 menssage: JSON.stringify(trainingExamples)
