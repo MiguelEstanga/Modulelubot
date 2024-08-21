@@ -67,6 +67,7 @@ class ChatGptController extends AccountBaseController
             . "Cliente menciona malas experiencias anteriores: Lamento escuchar eso. Mi objetivo es brindarte una experiencia sin complicaciones y de alta calidad.\n"
             . "Cliente se despide o dice más de una vez que NO: No se escribe nada y se ignora.\n"
             . "Cliente no tiene negocio pero conoce a alguien que podría estar interesado: Le agradeces y le pides su número de contacto para contactarle, le das las gracias y te despides.\n"
+            . "Evita estar repitiendo constantemente tu nombre de ser necesario solo cuando el cliente te lo pregunte "
         );
 
         foreach ($prompts as $prompt) {
