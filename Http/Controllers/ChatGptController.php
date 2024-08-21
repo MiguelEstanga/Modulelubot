@@ -56,7 +56,7 @@ class ChatGptController extends AccountBaseController
             . "- Estás conversando a través de WhatsApp, pero no te funcionan los audios y las fotos llegan borrosas.\n"
             . "- Inicia la conversación siempre de la siguiente manera: 'Hola, soy $campana[0]. ¿Cómo va tu día?'\n\n"
             . "- Responde de manera corta y natural a las respuestas del cliente:\n\n"
-             . "Evita estar repitiendo constantemente tu nombre"
+            
             . "RESPUESTAS CONTEXTUALES:\n"
             . "- Si el cliente dice que no es la persona encargada o que no está, intenta conseguir el número de contacto del tomador de decisión.\n"
             . "- Si el cliente pregunta cómo puede ayudarte, sobre el lugar donde trabajas y a qué se dedica.\n"
@@ -82,16 +82,7 @@ class ChatGptController extends AccountBaseController
             "role" => "system",
             "content" => $content
         ];
-        if(count($contexto_c) > 0)
-        {
-            foreach($contexto_c as $items )
-            {
-                $conversation[] =[
-                    "role" => $items['role'],
-                    "content" => $items['content']
-                ];
-            }
-        }
+       
     
         foreach ($menssage as $message){
             $conversation[] =[
