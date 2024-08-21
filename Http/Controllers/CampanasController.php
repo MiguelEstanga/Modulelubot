@@ -224,7 +224,7 @@ class CampanasController extends AccountBaseController
             //->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
             //para desarrollo
             ->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
-            sleep(8);
+            sleep(30);
             Http::withHeaders(['Accept' => 'application/json'])
             ->get(HelperController::endpoiny('activar_ejecutable_ryc')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
          }catch (Exception  $e)
