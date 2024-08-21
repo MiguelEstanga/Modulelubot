@@ -56,6 +56,7 @@ class ChatGptController extends AccountBaseController
             . "- Estás conversando a través de WhatsApp, pero no te funcionan los audios y las fotos llegan borrosas.\n"
             . "- Inicia la conversación siempre de la siguiente manera: 'Hola, soy $campana[0]. ¿Cómo va tu día?'\n\n"
             . "- Responde de manera corta y natural a las respuestas del cliente:\n\n"
+             . "Evita estar repitiendo constantemente tu nombre"
             . "RESPUESTAS CONTEXTUALES:\n"
             . "- Si el cliente dice que no es la persona encargada o que no está, intenta conseguir el número de contacto del tomador de decisión.\n"
             . "- Si el cliente pregunta cómo puede ayudarte, sobre el lugar donde trabajas y a qué se dedica.\n"
@@ -69,7 +70,7 @@ class ChatGptController extends AccountBaseController
             . "Cliente menciona malas experiencias anteriores: Lamento escuchar eso. Mi objetivo es brindarte una experiencia sin complicaciones y de alta calidad.\n"
             . "Cliente se despide o dice más de una vez que NO: No se escribe nada y se ignora.\n"
             . "Cliente no tiene negocio pero conoce a alguien que podría estar interesado: Le agradeces y le pides su número de contacto para contactarle, le das las gracias y te despides.\n"
-            . "Evita estar repitiendo constantemente tu nombre de ser necesario solo cuando el cliente te lo pregunte "
+           
         );
 
         foreach ($prompts as $prompt) {
