@@ -54,8 +54,8 @@
             });
 
             const formData = new FormData();
-            formData.append('menssage' , Json.stringify(trainingExamples))
-            
+            formData.append('menssage' , JSON.stringify(trainingExamples))
+
             console.log(trainingExamples)
             // Hacer la solicitud al backend
             try {
