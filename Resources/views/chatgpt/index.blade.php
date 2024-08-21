@@ -40,44 +40,25 @@
             // Limpiar el input
             _chatInput.value = '';
 
-            // Cargar ejemplos de entrenamiento desde localStorage
-            const estorage = JSON.parse(localStorage.getItem('formData'));
-            const promp = JSON.parse(estorage.preguntas_respuestas);
-            let campana = [];
-            let trainingExamples = [];
+            // Obtener el contexto previo almacenado en localStorage
+            let conversationContext = JSON.parse(localStorage.getItem('conversationContext')) || [];
+            let campana = JSON.parse(localStorage.getItem('campanaContext')) || [];
+            let userMessages = JSON.parse(localStorage.getItem('userMessages')) || [];
 
-            promp.forEach(element => {
-                trainingExamples.push({
-                    role: "user",
-                    content: element.pregunta
-                });
-                trainingExamples.push({
-                    role: "system",
-                    content: element.respuesta
-                });
-            });
-            campana.push(estorage.como_me_llamo)
-            campana.push(estorage.objetivo_lubot)
-            campana.push(estorage.spbre_la_empresa)
-            // Añadir el mensaje del usuario al final del array
-
-           
-            trainingExamples.push({
+            // Añadir el nuevo mensaje del usuario al contexto y al almacenamiento de mensajes del usuario
+            conversationContext.push({
                 role: "user",
                 content: userMessage
             });
 
+            userMessages.push(userMessage);
+
             // Preparar el cuerpo de la solicitud
             const body = JSON.stringify({
-                menssage: JSON.stringify(trainingExamples),
-                campana: JSON.stringify(campana),
-                promp : JSON.stringify(promp),
-                user_message:userMessage
+                menssage: JSON.stringify(conversationContext),
+                campana: JSON.stringify(campana)
             });
-            console.log(trainingExamples)
-            console.log(promp)
-            console.log(userMessage)
-            console.log(campana)
+
             try {
                 const response = await fetch(`{{ route('chatGpt.openia') }}`, {
                     method: 'POST',
@@ -90,19 +71,46 @@
                 });
 
                 const data = await response.json();
-                console.log(data);
 
-                // Añadir respuesta del bot al chat
+                // Añadir respuesta del bot al chat y al contexto
                 if (data.choices && data.choices.length > 0) {
-                    addMessageToChat(data.choices[0].message.content, 'bot');
+                    const botMessage = data.choices[0].message.content;
+                    addMessageToChat(botMessage, 'bot');
+
+                    // Añadir el mensaje del bot al contexto
+                    conversationContext.push({
+                        role: "system",
+                        content: botMessage
+                    });
+
+                    // Actualizar el contexto en localStorage
+                    localStorage.setItem('conversationContext', JSON.stringify(conversationContext));
                 } else {
                     addMessageToChat('No se recibió respuesta del bot.', 'error');
                 }
+
+                // Actualizar los mensajes del usuario en localStorage
+                localStorage.setItem('userMessages', JSON.stringify(userMessages));
+
             } catch (error) {
                 // Mostrar mensaje de error en el chat
                 addMessageToChat(`Error: ${error.message}`, 'error');
             }
         });
+
+        // Inicializar la campaña en localStorage si no existe
+        if (!localStorage.getItem('campanaContext')) {
+            const estorage = JSON.parse(localStorage.getItem('formData'));
+            if (estorage) {
+                const campana = [
+                    estorage.como_me_llamo,
+                    estorage.objetivo_lubot,
+                    estorage.spbre_la_empresa
+                ];
+                localStorage.setItem('campanaContext', JSON.stringify(campana));
+            }
+        }
+
 
 
         function addMessageToChat(message, sender) {
