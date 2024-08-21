@@ -208,10 +208,10 @@ class CampanasController extends AccountBaseController
             DB::table('segmentos')->insert(
                 [
                     'id_campanas' =>  $campana_id ,
-                    'tipo_de_negocio' => 2,//-> Suministro para odontologia //$tipo_de_negocio,
-                    'ciudad' =>  1, //-> Bogota//$ciudades[$i],
-                    'pais'  =>  1,//$paises[$i],
-                    'barrio'   => 4,//->Nogal//$barrios[$i] ,
+                    'tipo_de_negocio' =>$tipo_de_negocio,
+                    'ciudad' =>  $ciudades[$i],
+                    'pais'  =>  $paises[$i],
+                    'barrio'   => $barrios[$i] ,
                     'cantidad' => $cantidades[$i]
                 ]
             );
