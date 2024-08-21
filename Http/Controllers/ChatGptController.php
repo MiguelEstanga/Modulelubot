@@ -94,15 +94,7 @@ class ChatGptController extends AccountBaseController
             "role" => "user",
             "content" => $request->input('user_message')
         ];
-        if(count($conversationContext ) > 0)
-        {
-            foreach ($conversationContext as $contex){
-                $conversation[] =[
-                    "role" => $contex['role'],
-                    "content" => $contex['content']
-                ];
-            }
-        }
+      
         $data = [
             "model" => $model,
             "messages" => $conversation,
