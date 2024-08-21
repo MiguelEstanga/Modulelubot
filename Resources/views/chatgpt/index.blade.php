@@ -67,6 +67,7 @@
                 menssage: JSON.stringify(trainingExamples)
             });
             console.log(trainingExamples)
+            console.log(promp)
             try {
                 const response = await fetch(`{{ route('chatGpt.openia') }}`, {
                     method: 'POST',
