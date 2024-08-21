@@ -43,6 +43,7 @@
             // Cargar ejemplos de entrenamiento desde localStorage
             const estorage = JSON.parse(localStorage.getItem('formData'));
             const promp = JSON.parse(estorage.preguntas_respuestas);
+            let campana = [];
             let trainingExamples = [];
 
             promp.forEach(element => {
@@ -55,8 +56,12 @@
                     content: element.respuesta
                 });
             });
-
+            campana.push(estorage.como_me_llamo)
+            campana.push(estorage.objetivo_lubot)
+            campana.push(estorage.spbre_la_empresa)
             // Añadir el mensaje del usuario al final del array
+
+           
             trainingExamples.push({
                 role: "user",
                 content: userMessage
@@ -64,10 +69,15 @@
 
             // Preparar el cuerpo de la solicitud
             const body = JSON.stringify({
-                menssage: JSON.stringify(trainingExamples)
+                menssage: JSON.stringify(trainingExamples),
+                campana: JSON.stringify(campana),
+                promp : JSON.stringify(promp),
+                user_message:userMessage
             });
             console.log(trainingExamples)
             console.log(promp)
+            console.log(userMessage)
+            console.log(campana)
             try {
                 const response = await fetch(`{{ route('chatGpt.openia') }}`, {
                     method: 'POST',
