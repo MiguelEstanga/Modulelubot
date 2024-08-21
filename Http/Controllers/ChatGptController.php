@@ -28,7 +28,7 @@ class ChatGptController extends AccountBaseController
         return view('lubot::chatgpt.index',  $this->data);
     }
 
-    public function openia()
+    public function openia(Request $request)
     {
         
         $api_key = env('OPENAI_API_KEY');
@@ -38,17 +38,8 @@ class ChatGptController extends AccountBaseController
             'Authorization' => 'Bearer ' . $api_key,
             'Content-Type' => 'application/json',
         ])->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-4', // Puedes usar 'gpt-3.5-turbo' o el modelo que prefieras
-            'messages' => [
-                [
-                    'role' => 'system',
-                    'content' => 'You are a helpful assistant.'
-                ],
-                [
-                    'role' => 'user',
-                    'content' => 'hola' // Mensaje del usuario
-                ]
-            ],
+            'model' => 'gpt-4', 
+            'messages' => $request->menssage,
             'max_tokens' => 150, // Ajusta según tus necesidades
             'temperature' => 0.7, // Ajusta la creatividad de la respuesta
         ]);

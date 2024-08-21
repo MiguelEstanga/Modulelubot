@@ -33,13 +33,10 @@
 
             const userMessage = _chatInput.value.trim();
             if (!userMessage) return;
-
             // Añadir mensaje del usuario al chat
             addMessageToChat(userMessage, 'user');
-
             // Limpiar el input
             _chatInput.value = '';
-
             // Cargar ejemplos de entrenamiento desde localStorage
             var estorage = JSON.parse(localStorage.getItem('formData'));
             var promp = JSON.parse(estorage.preguntas_respuestas);
@@ -55,17 +52,18 @@
                     content: element.respuesta
                 });
             });
+
+            const formData = new FormData();
+            formData.append('menssage' , Json.stringify(trainingExamples)
             console.log(trainingExamples)
             // Hacer la solicitud al backend
             try {
                 const response = await fetch( `https://miagencia.healtheworld.com.co/lubot/pre-promp-entrena-lubot_ejet`, {
-                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    }
+                    },
+                    body:body
                 });
-
-             
                 const data = await response.json();
                 console.log(data)
                 // Añadir respuesta del bot al chat
@@ -75,7 +73,6 @@
                 addMessageToChat(`Error: ${error.message}`, 'error');
             }
         });
-
         function addMessageToChat(message, sender) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender === 'user' ? 'user' : sender === 'bot' ? 'bot' : 'error');
