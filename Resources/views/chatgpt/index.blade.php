@@ -55,16 +55,18 @@
                     content: element.respuesta
                 });
             });
+
+            // Añadir el mensaje del usuario al final del array
             trainingExamples.push({
-                    role: "user",
-                    content: _chatInput.value
-                });
+                role: "user",
+                content: userMessage
+            });
+
             // Preparar el cuerpo de la solicitud
             const body = JSON.stringify({
                 menssage: JSON.stringify(trainingExamples)
             });
             console.log(trainingExamples)
-            console.log(body)
             try {
                 const response = await fetch(`{{ route('chatGpt.openia') }}`, {
                     method: 'POST',
@@ -90,6 +92,7 @@
                 addMessageToChat(`Error: ${error.message}`, 'error');
             }
         });
+
 
         function addMessageToChat(message, sender) {
             const messageElement = document.createElement('div');
