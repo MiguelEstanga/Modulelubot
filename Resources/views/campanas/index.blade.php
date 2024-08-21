@@ -25,7 +25,7 @@
             setTimeout(() => {
                 conten_loader_rc.style.display = 'none'
             }, 3000);
-            code_rc();
+            
 
             let codeContainer = document.getElementById('_codigo_rc');
 
@@ -64,7 +64,7 @@
 
                     })
                     .finally(function() {
-                        alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
+                        //alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
                     });
             }
 
@@ -98,7 +98,7 @@
 
                                     // Insertar el carácter en el contenedor
                                     codeContainer.appendChild(codePart);
-                                    code_verificacion_rc.style.display = 'grid'
+                                  
                                 }
                             }
 
@@ -107,8 +107,8 @@
                             clearInterval(intervalId);
                             clearInterval(countdownIntervalId);
                             conten_loader_rc.style.display = 'none';
-
-
+                              code_verificacion_rc.style.display = 'grid'
+                              storeCampana()
                         }
                     });
             }
@@ -147,6 +147,7 @@
                     if (code_bd_rc == 1 && estado_bd_rc == 2) {
                         console.log('aqui activo a lubot')
                         storeCampana()
+                        return 
                     }
                     if (!start_rc) {
                         if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {

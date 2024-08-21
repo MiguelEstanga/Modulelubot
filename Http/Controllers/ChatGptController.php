@@ -30,20 +30,23 @@ class ChatGptController extends AccountBaseController
 
     public function openia(Request $request)
     {
+        $api_key = env('OPENAI_API_KEY');
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $api_key,
+            'Content-Type' => 'application/json',
+        ])->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-4', 
+            'messages' => json_decode($request->input('menssage')), // Decodificar el mensaje del request
+            'max_tokens' => 150, 
+            'temperature' => 0.7,
+        ]);
+    
+        $data = json_decode($response->getBody(), true);
+    
+        return response()->json($data);
+    }
 
-        // $messages = $request->input('messages');
-        response()->json( $request->all() );
-        // Hacer la solicitud a la API de OpenAI
-        $key = env('OPENAI_API_KEY');
-        $response = Http::withToken($key)
-            ->post('https://api.openai.com/v1/chat/completions', [
-                'model' => 'gpt-4', // Puedes ajustar el modelo según tus necesidades
-                'messages' => ['user' => "hola"]
-            ]);
-
-        // Devolver la respuesta de OpenAI al frontend
-        return response()->json($response->json());
-    } 
+ 
     public function completions(Request $request)
     {
         //return  response()->json($request->all());
@@ -74,4 +77,6 @@ class ChatGptController extends AccountBaseController
             ], 500);
         }
     }
+    
+
 }
