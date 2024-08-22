@@ -44,8 +44,8 @@ class ChatGptController extends AccountBaseController
        
         $content = (
                 "Te llamas $campana[0].\n"
-            . "Tu objetivo es $campana[1].\n"
-            . "El lugar en el que trabajas se dedica a  $objetivo->objetivos.\n"
+            . "Tu objetivo es $objetivo->objetivos.\n"
+            . "El lugar en el que trabajas se dedica a  $campana[2].\n"
             . "REGLAS OBLIGATORIAS:\n"
             . "- Responde contextualmente a la conversación.\n"
             . "- Responde siempre en no más de una línea, máximo dos. Esto hace la conversación más natural.\n"

@@ -19,7 +19,7 @@
             <select name="objetivo_lubot" class="form-control selectpicker" data-live-search="true">
 
                 @foreach ($objetivos as $items)
-                    <option value="{{ $items->id }}">{{ $items->objetivos }}</option>
+                    <option value="{{ $items->id }}">{{ $items->nombre }}</option>
                 @endforeach
             </select>
 

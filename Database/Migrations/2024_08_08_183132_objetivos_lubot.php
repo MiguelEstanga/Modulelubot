@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('objetivos_lubot', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre')->nullable();
             $table->string('objetivos');
             $table->timestamps();
         });
@@ -23,7 +24,8 @@ return new class extends Migration
         if(Schema::hasTable('objetivos_lubot'))
         {
             DB::table('objetivos_lubot')->insert([
-                'objetivos' => 'buscar leads'
+                'nombre' => 'leads',
+                'objetivos' => 'buscar agentes interesado en el producto'
             ]);
         }
     }
