@@ -18,6 +18,11 @@
                 <button type="submit">Enviar</button>
             </form>
         </div>
+        <div>
+            <button class="btn btn-danger" onclick="limpiar_cache()">
+                Limipiar cache
+            </button>
+        </div>
     </div>
 
 
@@ -26,6 +31,11 @@
         const _chatForm = document.getElementById('chat-form');
         const _chatInput = document.getElementById('chat-input');
 
+        function limpiar_cache() {
+            // Supongamos que tienes un objeto almacenado con la clave "miObjeto"
+            localStorage.removeItem('conversacion');
+
+        }
         _chatForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
@@ -41,7 +51,7 @@
             // Cargar ejemplos de entrenamiento desde localStorage
             const estorage = JSON.parse(localStorage.getItem('formData'));
             const promp = JSON.parse(estorage.preguntas_respuestas);
-            let combersacion = JSON.parse(localStorage.getItem('combersacion')) || []
+            let conversacion = JSON.parse(localStorage.getItem('conversacion')) || []
             let campana = [];
             let trainingExamples = [];
 
@@ -72,19 +82,21 @@
                 campana: JSON.stringify(campana),
                 promp: JSON.stringify(promp),
                 user_message: userMessage,
-                combersacion:JSON.stringify(combersacion)
+                conversacion: JSON.stringify(conversacion)
             });
 
-            combersacion.push({
+            conversacion.push({
                 role: "user",
                 content: userMessage
             })
-            console.log(trainingExamples)
-            console.log(promp)
-            console.log(userMessage)
-            console.log(campana)
-            console.log('combersacion')
-            console.log(combersacion)
+            //console.log(trainingExamples)
+            //console.log(promp)
+            // console.log(userMessage)
+            //console.log(campana)
+            console.log('conversacion')
+            console.log(conversacion)
+            localStorage.setItem('conversacion', JSON.stringify(conversacion));
+
             try {
                 const response = await fetch(`{{ route('chatGpt.openia') }}`, {
                     method: 'POST',
@@ -97,19 +109,21 @@
                 });
 
                 const data = await response.json();
-                console.log(data);
-
+                console.log(data)
+                console.log(JSON.parse(data.propmp))
+                console.log(data.bot)
                 // Añadir respuesta del bot al chat
+                
                 if (data.choices && data.choices.length > 0) {
                     addMessageToChat(data.choices[0].message.content, 'bot');
-                    combersacion.push({
+                    conversacion.push({
                         role: "system",
-                        content: data.choices[0].message.content
+                        content: data.bot.choices[0].message.content
                     });
-                    localStorage.setItem('combersacion', JSON.stringify(combersacion));
+                    localStorage.setItem('conversacion', JSON.stringify(conversacion));
                 } else {
                     addMessageToChat('No se recibió respuesta del bot.', 'error');
-                    localStorage.setItem('combersacion', JSON.stringify(combersacion));
+                    // localStorage.setItem('conversacion', JSON.stringify(conversacion));
                 }
             } catch (error) {
                 // Mostrar mensaje de error en el chat

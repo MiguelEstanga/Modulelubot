@@ -38,10 +38,10 @@ class ChatGptController extends AccountBaseController
         $campana = json_decode($request->input('campana'));
         $menssage = json_decode($request->input('menssage') , true);
         $prompts = json_decode($request->input('promp') , true);
-        $contexto_c = json_decode($request->input('combersacion') , true);
+        $contexto_c = json_decode($request->input('conversacion') , true);
         //return json_encode($conversationContext);
         $objetivo = DB::table('objetivos_lubot')->where('id' , $campana[1])->first();
-        //return json_encode ($prompts);
+       
         $content = (
                 "Te llamas $campana[0].\n"
             . "Tu objetivo es $campana[1].\n"
@@ -74,15 +74,16 @@ class ChatGptController extends AccountBaseController
         );
 
         foreach ($prompts as $prompt) {
-            $content .= "Si te preguntan: {$prompt['pregunta']} - {$prompt['respuesta']}\n";
+            $content .= "Si te preguntan: {$prompt['pregunta']} - repondes: {$prompt['respuesta']}\n";
         }
-
-        $contexto = [];
+        
+        
         $conversation[] =[
             "role" => "system",
             "content" => $content
         ];
        
+      
     
         foreach ($menssage as $message){
             $conversation[] =[
@@ -90,19 +91,31 @@ class ChatGptController extends AccountBaseController
                 "content" => $message['content']
             ];
         }
+        
+        if(count($contexto_c) > 0 && isset($contexto_c))
+        {
+            foreach($contexto_c as $contexto)
+            {
+                $conversation[] =[
+                    "role" => $contexto['role'],
+                    "content" => $contexto['content']
+                ];
+            }
+        }
 
         $conversation[] =[
             "role" => "user",
             "content" => $request->input('user_message')
         ];
-      
+     
         $data = [
             "model" => $model,
             "messages" => $conversation,
             "max_tokens" => 150,
             "temperature" => 0.7,
         ];
-
+      
+       // return json_encode($data);
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, 'https://api.openai.com/v1/chat/completions');
@@ -118,7 +131,7 @@ class ChatGptController extends AccountBaseController
         curl_close($ch);
 
         $response = json_decode($result, true);
-        return $response;
+        return json_encode([ "bot" => $response , 'propmp' => json_encode($conversation) ]);
         //Log::info($response);
 
     }
