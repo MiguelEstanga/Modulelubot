@@ -34,6 +34,7 @@
         function limpiar_cache() {
             // Supongamos que tienes un objeto almacenado con la clave "miObjeto"
             localStorage.removeItem('conversacion');
+            init_chat()
             alert('Se a limpiado la cache de la conversación ')
 
         }
@@ -136,7 +137,8 @@
         {
             let conversacion = JSON.parse(localStorage.getItem('conversacion')) || []
             conversacion.forEach(items => {
-                addMessageToChat(data.bot.choices[0].message.content, items.role);
+                addMessageToChat(items.content, items.role);
+                //console.log()
             })
         }
         function addMessageToChat(message, sender) {
