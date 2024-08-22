@@ -132,7 +132,13 @@
             }
         });
 
-
+        function init_chat()
+        {
+            let conversacion = JSON.parse(localStorage.getItem('conversacion')) || []
+            conversacion.forEach(items => {
+                addMessageToChat(data.bot.choices[0].message.content, items.role);
+            })
+        }
         function addMessageToChat(message, sender) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender === 'user' ? 'user' : sender === 'bot' ? 'bot' : 'error');
