@@ -114,7 +114,7 @@
                 console.log(data.bot)
                 // Añadir respuesta del bot al chat
                 
-                if (data.choices && data.choices.length > 0) {
+                if (data.bot.choices && data.bot.choices.length > 0) {
                     addMessageToChat(data.bot.choices[0].message.content, 'bot');
                     conversacion.push({
                         role: "system",
