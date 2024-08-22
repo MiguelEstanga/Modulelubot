@@ -148,6 +148,8 @@
             // Desplazar el chat hacia abajo
             _chatBox.scrollTop = _chatBox.scrollHeight;
         }
+
+        init_chat()
     </script>
     <style>
         .container_chat {
