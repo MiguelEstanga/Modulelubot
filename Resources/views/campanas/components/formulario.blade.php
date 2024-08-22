@@ -402,19 +402,7 @@
                 if (responseData.status === 200) {
                     modal_preguntas_y_respuesta.style.display = 'none'
                     //pisa papeles aqui finaliza preguntas y respuesta 
-                    //alert('listo')
-                    //const cantidad = document.querySelector('input[name="cantidad"]')
-                    const nombre_campana = document.querySelector('input[name="nombre_campana"]');
-                    const frecuencia = document.querySelector('input[name="frecuencia"]');
-                    const como_me_llamo = document.querySelector('input[name="como_me_llamo"]');
-                   // const spbre_la_empresa = document.querySelector('input[name="spbre_la_empresa"]');
-                    nombre_campana.value = "";
-                    frecuencia.value = "";
-                    como_me_llamo.value = "";
-                  //  cantidad.value = "";
-                    //spbre_la_empresa.value = "";
                    
-                    localStorage.removeItem("formData");
                     location.reload();
                 }
                 console.log(responseData);
