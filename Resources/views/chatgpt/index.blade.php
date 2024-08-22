@@ -115,7 +115,7 @@
                 // Añadir respuesta del bot al chat
                 
                 if (data.choices && data.choices.length > 0) {
-                    addMessageToChat(data.choices[0].message.content, 'bot');
+                    addMessageToChat(data.bot.choices[0].message.content, 'bot');
                     conversacion.push({
                         role: "system",
                         content: data.bot.choices[0].message.content
