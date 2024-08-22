@@ -34,6 +34,7 @@
         function limpiar_cache() {
             // Supongamos que tienes un objeto almacenado con la clave "miObjeto"
             localStorage.removeItem('conversacion');
+            alert('Se a limpiado la cache de la conversación ')
 
         }
         _chatForm.addEventListener('submit', async (event) => {
