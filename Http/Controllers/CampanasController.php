@@ -220,7 +220,7 @@ class CampanasController extends AccountBaseController
             DB::table('consumo_creditos')->insert(
                 [
                     'id_campana' =>  $campana_id ,
-                    'tipo_de_negocio' => $segmento_id,
+                    'id_segmento' => $segmento_id,
                     'creditos_consumidos' =>  0,
                     'creditos_restantes' => 30
                 ]

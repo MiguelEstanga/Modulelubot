@@ -423,7 +423,7 @@
     //function campana store 
     function storeCampana() {
         // Asegúrate de que la ruta sea interpolada correctamente en el Blade.
-
+        console.log('STORECAMPANA')
         const url = `{{ route('campanas.stores') }}`;
         console.log('form')
         const data = JSON.parse(localStorage.getItem('formData'))
