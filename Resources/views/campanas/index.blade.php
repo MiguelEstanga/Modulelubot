@@ -129,7 +129,7 @@
                         clearInterval(intervalId);
                         //activar_rc.disabled = false;
                         //activar_rc.style.color = "";
-                        loader_rc.style.display = 'none';
+                        //loader_rc.style.display = 'none';
                     }
                 }, 1000);
             }
