@@ -45,26 +45,21 @@ class ActivarCampana extends Command
     {
         date_default_timezone_set('America/Bogota');
 
-        $schedules = DB::table('campaign_schedules')->where('next_run_at', '<=', now())->get();
-
+        $schedules = DB::table('campaign_schedules')
+            ->where('estado', 1)
+            ->where('next_run_at', '<=', now())->get();
+        $contador = 0;
         foreach ($schedules as $schedule) {
-            // Aquí puedes agregar la lógica para enviar los mensajes de la campaña
-            $this->notifyViaApi($schedule->campaign_id, $schedule->companie_id);
-          
-            // Actualizar el `next_run_at` basado en la frecuencia configurada
+            //$this->notifyViaApi($schedule->campaign_id, $schedule->companie_id);
             
-            DB::table('campaign_schedules')->where('id' , $schedule->id)
+            DB::table('campaign_schedules')->where('id', $schedule->id)
             ->update(['next_run_at' => $this->calculateNextRun($schedule)]);
-
-
-            DB::table('test')->insert([
-                'test' =>  $this->calculateNextRun($schedule)
-            ]);
            
         }
         $json = json_encode($schedules);
         $hora = now();
-        $this->info("El comando se ejecuta correctamente. {$json} hora {$hora}");
+        $this->info("numero $contador");   
+        $this->info("segmentos ejecutados $contador");
     }
 
     protected function calculateNextRun($schedule)
@@ -86,13 +81,13 @@ class ActivarCampana extends Command
         }
         return $nextRun;
     }
-  
-    private function notifyViaApi($companie_id , $campana_id)
+
+    private function notifyViaApi($companie_id, $campana_id)
     {
-       
+
         // Construir la URL de la API con los datos necesarios
-        
-        $url = HelperController::endpoiny('activar_ejecutable_ws')."/{$companie_id}/{$campana_id}/{$companie_id}";
+
+        $url = HelperController::endpoiny('activar_ejecutable_ws') . "/{$companie_id}/{$campana_id}/{$companie_id}";
 
         // Llamar a la API para notificar
         $response = Http::withHeaders(['Accept' => 'application/json'])->get($url);
@@ -100,7 +95,7 @@ class ActivarCampana extends Command
         // Comprobar la respuesta de la API
         if ($response->successful()) {
             // Actualizar la última notificación en la campaña
-          
+
             Log::info("Notificación enviada correctamente para la campaña ID: ");
         } else {
             Log::error("Error al enviar la notificación para la campaña ID: ");
@@ -115,7 +110,7 @@ class ActivarCampana extends Command
     protected function getArguments()
     {
         return [
-          //  ['example', InputArgument::REQUIRED, 'An example argument.'],
+            //  ['example', InputArgument::REQUIRED, 'An example argument.'],
         ];
     }
 

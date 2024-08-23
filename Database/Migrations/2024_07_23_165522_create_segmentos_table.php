@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('pais');
             $table->string('ciudad');
             $table->integer('cantidad');
-      
+            
+            $table->integer('cantidad_consumida')->default(0);
+            $table->integer('estaod')->default(1);
             $table->unsignedBigInteger('id_campanas')->nullable();
             $table->timestamps();
         });

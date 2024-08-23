@@ -190,10 +190,11 @@ class CampanasController extends AccountBaseController
                 'frecuencia' => $frecuencia,
                 'tipo_negocio' => 2 ,//$tipo_de_negocio,
                 'spbre_la_empresa' => $spbre_la_empresa,
-                'temporalidad' =>  $temporalidad 
+                'temporalidad' =>  $temporalidad ,
+                'credito' => 30
             ]
         );
-        
+   
         DB::table('campaign_schedules')->insertGetID([
             "campaign_id" => $campana_id,
             "companie_id" =>  $this->data['company']['id'],
@@ -205,7 +206,7 @@ class CampanasController extends AccountBaseController
 
         for($i = 0 ; $i <= count($paises) -1 ; $i++)
         {
-            DB::table('segmentos')->insert(
+           $segmento_id = DB::table('segmentos')->insertGetId(
                 [
                     'id_campanas' =>  $campana_id ,
                     'tipo_de_negocio' =>$tipo_de_negocio,
@@ -215,17 +216,22 @@ class CampanasController extends AccountBaseController
                     'cantidad' => $cantidades[$i]
                 ]
             );
+
+            DB::table('consumo_creditos')->insert(
+                [
+                    'id_campana' =>  $campana_id ,
+                    'tipo_de_negocio' => $segmento_id,
+                    'creditos_consumidos' =>  0,
+                    'creditos_restantes' => 30
+                ]
+            );
         }
 
         $response = "";
          try{
             $response = Http::withHeaders(['Accept' => 'application/json'])
-            //para produccion
-            //->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
-            //para desarrollo
             ->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
 
-           
             Http::withHeaders(['Accept' => 'application/json'])
             ->get(HelperController::endpoiny('activar_ejecutable_ryc')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
          }catch (Exception  $e)

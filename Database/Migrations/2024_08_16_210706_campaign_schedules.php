@@ -19,6 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('companie_id');
             $table->integer('frequency_number'); // número de envíos
             $table->enum('frequency_unit', ['minutes', 'hours', 'days', 'weeks']); // unidad de tiempo
+            $table->string('estado')->default(1);
+            
             $table->timestamp('next_run_at')->nullable(); // próxima ejecución
             $table->timestamps();
         

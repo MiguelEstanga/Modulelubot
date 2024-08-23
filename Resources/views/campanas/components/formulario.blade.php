@@ -5,7 +5,7 @@
         Configura tu campaña
     </div>
     <div>
-        <input  class="custom_input" type="text" placeholder="Nombre de tu campaña" name="nombre_campana" required>
+        <input class="custom_input" type="text" placeholder="Nombre de tu campaña" name="nombre_campana" required>
         <div class="text-layout" style="position: relative; top:-10px;">
             ¿Qué tipo de clientes te interesan?
         </div>
@@ -52,7 +52,8 @@
 
             </div>
             <div class="btn_container">
-                <button  onclick="modal_preguntas_respuest()" type="submit" class="btn btn-envio">Pagar y Enviar Campaña</button>
+                <button onclick="modal_preguntas_respuest()" type="submit" class="btn btn-envio">Pagar y Enviar
+                    Campaña</button>
             </div>
         </div>
 
@@ -193,39 +194,50 @@
 
     // Llamar a la función una vez para capturar los valores iniciales (si los hay)
     updateFormData();
-
+    let totalCredits = 0;
+    const maxCredits = 30;
     // Función para añadir una nueva fila en el formulario (duplicar)
     function addRow(button) {
+        // Sumar las cantidades existentes
+        totalCredits = 0;
+        document.querySelectorAll('input[name="cantidad[]"]').forEach(input => {
+            totalCredits += parseInt(input.value) || 0;
+        });
+
+        if (totalCredits >= maxCredits) {
+            alert('No puedes agregar más filas porque se ha alcanzado el máximo de 30 créditos.');
+            return;
+        }
 
         var newRow = `
-<div class="input-row row" style='margin-top:10px;'>
-    <div class="col-md-2">
-        <select name="pais[]"   onchange="loadciudad(this)" class="form-control selectpicker" data-live-search="true">
-            <option value="0">Todos</option>
-            @foreach ($paises as $pais)
-                <option value="{{ $pais['id'] }}">{{ $pais['nombre'] }}</option>
-            @endforeach
-        </select>
-    </div>
-    <div class="col-md-2">
-        <select name="ciudad[]" onchange="loadBarrios(this)" class="form-control selectpicker" data-live-search="true">
-             <option value="0">Todos</option>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <select name="barrio[]" class="form-control selectpicker barrio-select" data-live-search="true">
-               <option value="0">Todos</option>
-        </select>
-    </div>
-    <div class="col-md-4 cantidad">
-        <span>Cantidad: </span>
-        <input type="number" class="form-control" style="width: 71px!important; height:37px!important;" placeholder="Cantidad" name="cantidad[]">
-    </div>
-    <div class="col-md-2" style="position:relative; right: -40px;">
-        <button class="btn btn-danger" type="button" onclick="removeRow(this)">-</button>
-        <button class="btn btn-success" type="button" onclick="addRow(this)">+</button>
-    </div>
-</div>`;
+            <div class="input-row row" style='margin-top:10px;'>
+                <div class="col-md-2">
+                    <select name="pais[]"   onchange="loadciudad(this)" class="form-control selectpicker" data-live-search="true">
+                        <option value="0">Todos</option>
+                        @foreach ($paises as $pais)
+                            <option value="{{ $pais['id'] }}">{{ $pais['nombre'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="ciudad[]" onchange="loadBarrios(this)" class="form-control selectpicker" data-live-search="true">
+                        <option value="0">Todos</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="barrio[]" class="form-control selectpicker barrio-select" data-live-search="true">
+                        <option value="0">Todos</option>
+                    </select>
+                </div>
+                <div class="col-md-4 cantidad">
+                    <span>Cantidad: </span>
+                    <input type="number" class="form-control" style="width: 71px!important; height:37px!important;" placeholder="Cantidad" name="cantidad[]" onchange="validateCredits(this)">
+                </div>
+                <div class="col-md-2" style="position:relative; right: -40px;">
+                    <button class="btn btn-danger" type="button" onclick="removeRow(this)">-</button>
+                    <button class="btn btn-success" type="button" onclick="addRow(this)">+</button>
+                </div>
+            </div>`;
 
         // Añadir la nueva fila al contenedor
         const newFieldsContainer = document.createElement('div');
@@ -243,20 +255,59 @@
         $(button).remove();
     }
 
-    function removeRow(button) {
-        // Eliminar la fila correspondiente
-        $(button).closest('.input-row').remove();
 
-        // Asegurar que siempre haya un botón de agregar en la última fila
-        var lastRow = $('#input-container .input-row:last');
-        if (!lastRow.find('.btn-success').length) {
-            lastRow.find('.col-md-1').append(
-                '<button class="btn btn-success" type="button" onclick="addRow(this)">+</button>');
+    function validateCredits(input) {
+        // Sumar todas las cantidades actuales
+        totalCredits = 0;
+        document.querySelectorAll('input[name="cantidad[]"]').forEach(input => {
+            totalCredits += parseInt(input.value) || 0;
+        });
+
+        if (totalCredits > maxCredits) {
+            const availableCredits = maxCredits - (totalCredits - parseInt(input.value || 0));
+            if (availableCredits < 0) {
+                input.value = '';
+                alert('No puedes agregar más créditos. Solo te quedan ' + (maxCredits - totalCredits + parseInt(input
+                    .value || 0)) + ' créditos disponibles.');
+            } else {
+                input.value = availableCredits;
+                alert('Solo te quedan ' + availableCredits + ' créditos disponibles.');
+            }
         }
 
-        // Actualizar el FormData después de eliminar la fila
+        // Actualizar el total de créditos
+        totalCredits = 0;
+        document.querySelectorAll('input[name="cantidad[]"]').forEach(input => {
+            totalCredits += parseInt(input.value) || 0;
+        });
+
+        if (totalCredits >= maxCredits) {
+            // Desactivar todos los botones de agregar si se alcanzan los 30 créditos
+            document.querySelectorAll('.btn-success').forEach(btn => {
+                btn.disabled = true;
+            });
+        }
+    }
+
+    function removeRow(button) {
+        const row = button.closest('.input-row');
+
+        // Restar la cantidad eliminada del total de créditos
+        const cantidad = row.querySelector('input[name="cantidad[]"]').value;
+        totalCredits -= parseInt(cantidad) || 0;
+
+        // Eliminar la fila
+        row.remove();
+
+        // Reactivar los botones de agregar si es posible
+        if (totalCredits < maxCredits) {
+            document.querySelectorAll('.btn-success').forEach(btn => {
+                btn.disabled = false;
+            });
+        }
         updateFormData();
     }
+
 
     function loadOptions(selectElement, endpoint, nextSelectName, allOptionText = "Todos") {
         const id = selectElement.value;
@@ -372,7 +423,7 @@
     //function campana store 
     function storeCampana() {
         // Asegúrate de que la ruta sea interpolada correctamente en el Blade.
-        
+
         const url = `{{ route('campanas.stores') }}`;
         console.log('form')
         const data = JSON.parse(localStorage.getItem('formData'))
@@ -402,7 +453,7 @@
                 if (responseData.status === 200) {
                     modal_preguntas_y_respuesta.style.display = 'none'
                     //pisa papeles aqui finaliza preguntas y respuesta 
-                   
+
                     location.reload();
                 }
                 console.log(responseData);
@@ -416,24 +467,20 @@
 
     function modal_preguntas_respuest() {
         //const nombre_campana = document.querySelector('input[name="nombre_campana"]');
-        const validacion =  JSON.parse(localStorage.getItem('formData'));
+        const validacion = JSON.parse(localStorage.getItem('formData'));
         console.log(validacion.nombre_campana.length)
-        if(validacion.nombre_campana.length < 4 )
-        {   
+        if (validacion.nombre_campana.length < 4) {
             alert('El nombre de la campana debe tener al menos 4 letras')
         }
-        if(validacion.frecuencia.length < 1)
-        {
+        if (validacion.frecuencia.length < 1) {
             alert('debe seleccionar con que frecuencia desea enviar la campana')
         }
-        
-        if(
-            validacion.nombre_campana.length >= 4 && validacion.frecuencia.length >=1
-        )
-        {
-             modal_preguntas_y_respuesta.style.display = 'flex'
+
+        if (
+            validacion.nombre_campana.length >= 4 && validacion.frecuencia.length >= 1
+        ) {
+            modal_preguntas_y_respuesta.style.display = 'flex'
         }
-        
+
     }
 </script>
-

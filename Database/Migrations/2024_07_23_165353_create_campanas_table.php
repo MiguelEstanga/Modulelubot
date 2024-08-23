@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('tipo_negocio');
             $table->string('spbre_la_empresa');
             $table->string('temporalidad');
+            $table->string('credito')->default(30);
             $table->integer('contador')->default(1);
             $table->integer('encendido')->default(0);
             $table->timestamps();
