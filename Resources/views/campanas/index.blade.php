@@ -128,10 +128,12 @@
             }
 
             $("#__activar_rc").on('click', function() {
+                __activar_rc.disabled = true 
+                __activar_rc.innerHTML = 'cargando ...'
 
                 const validacion = JSON.parse(localStorage.getItem('formData'));
                 const preguntas_respuesta = JSON.parse(validacion.preguntas_respuestas)
-
+           
                 if (validacion.como_me_llamo.length < 4) alert('Debe colocar un nombre a Lubot')
                 if (validacion.spbre_la_empresa.length < 4) alert(
                     'Debes dar una descripcion de lo que buscas')

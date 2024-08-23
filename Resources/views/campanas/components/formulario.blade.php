@@ -450,6 +450,7 @@
                 return response.json();
             })
             .then(responseData => {
+                if(responseData?.status === 'error') alert(`${responseData.message}`)
                 if (responseData.status === 200) {
                     modal_preguntas_y_respuesta.style.display = 'none'
                     //pisa papeles aqui finaliza preguntas y respuesta 
@@ -459,7 +460,17 @@
                 console.log(responseData);
                 // Aquí puedes manejar la respuesta del servidor
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error =>{
+                 console.error('Error:', error)
+                 __activar_rc.disabled = false ;
+                 __activar_rc.innerHTML='Enviar Campaña'
+                 alert('Asegurece de llenar los campos en especial los de segmentos, si se refresco la pagina en el transcurso deseleccione y vuelva a seleccioar los selectores ')
+            })
+            .finally(()=>{
+                __activar_rc.disabled = false ;
+                
+
+            })
     }
 
 

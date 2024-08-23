@@ -148,6 +148,22 @@ class CampanasController extends AccountBaseController
         if(!Schema::hasTable('campanas') ) return back();
         if(!Schema::hasTable('segmentos')) return back();
         if(!Schema::hasTable('prompts')  ) return back();
+        if(count($request->barrios) === 0 ) return json_encode([
+            'status' => 'error',
+            'message' => 'No hay barrios para seleccionar'
+        ]);
+        if(count($request->ciudades) === 0 ) return json_encode([
+            'status' => 'error',
+            'message' => 'No hay ciudades para seleccionar'
+        ]);
+        if(count($request->paises) === 0 ) return json_encode([
+            'status' => 'error',
+            'message' => 'No hay paises para seleccionar'
+        ]);
+        if($request->frecuencia < 0 || $request->frecuencia === null ) return json_encode(['status' => 'error' , 'message' => 'Digite una Frecuencia correcta']);
+        if($request->spbre_la_empresa === null ) return json_encode(['status' => 'error' , 'message' => 'spbre_la_empresa no puede ser un campo vacio']);
+        if($request->como_me_llamo === "" || $request->como_me_llamo === null ) return json_encode(['status' => 'error' , 'message' => 'Elija un nombre para su Lubot']);
+   
         date_default_timezone_set('America/Bogota');
         $paises = array();
         $ciudades = array();

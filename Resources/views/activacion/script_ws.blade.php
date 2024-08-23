@@ -142,7 +142,8 @@
 
     document.getElementById('activar_ws').addEventListener('click', function(e) {
         start = true;
-        
+        activar_ws.innerHTML = "cargando ..."
+        activar_ws.disabled  = true
         
       //  document.getElementById('iniciar').innerText = "Procesando...";
         console.log(container_loader);
@@ -164,7 +165,7 @@
                 //document.getElementById('iniciar').innerText = "Error de comunicación";
             })
             .finally(function() {
-             
+                ctivar_ws.disabled  = false
             });
         
         cuentaRegresiva(1);
