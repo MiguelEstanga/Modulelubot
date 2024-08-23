@@ -74,12 +74,17 @@
                     .then(response => response.json())
                     .then(response => {
                         console.log(response)
-
-                        if (response.estado_rc === 0 || response.estado_rc === 2) conten_loader_rc.style
-                            .display = 'flex';
+                        console.log('sin condicion')
+                        if (response.estado_rc === 0 || response.estado_rc === 2) {
+                            conten_loader_rc.style.display = 'flex';
+                            console.log('response.estado_rc === 0 || response.estado_rc === 2 linea80')
+                        }
                         if (response.code_rc != null) {
+                            console.log('response.code_rc != null')
                             if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc !=
                                 null) {
+                                    console.log('(response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc !=
+                                null')
                                 _codigo_rc.innerHTML = '';
                                 let code = response.code_rc;
                                 let codeContainer = _codigo_rc;
@@ -108,6 +113,7 @@
                             clearInterval(countdownIntervalId);
                             conten_loader_rc.style.display = 'none';
                             code_verificacion_rc.style.display = 'grid'
+                            console.log('response.code_rc != null && response.estado_rc == 2')
                             storeCampana()
                         }
                     });
