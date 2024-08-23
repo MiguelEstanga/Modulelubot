@@ -25,7 +25,7 @@
             setTimeout(() => {
                 conten_loader_rc.style.display = 'none'
             }, 3000);
-            
+
 
             let codeContainer = document.getElementById('_codigo_rc');
 
@@ -98,7 +98,7 @@
 
                                     // Insertar el carácter en el contenedor
                                     codeContainer.appendChild(codePart);
-                                  
+
                                 }
                             }
 
@@ -107,8 +107,8 @@
                             clearInterval(intervalId);
                             clearInterval(countdownIntervalId);
                             conten_loader_rc.style.display = 'none';
-                              code_verificacion_rc.style.display = 'grid'
-                              storeCampana()
+                            code_verificacion_rc.style.display = 'grid'
+                            storeCampana()
                         }
                     });
             }
@@ -128,12 +128,12 @@
             }
 
             $("#__activar_rc").on('click', function() {
-                __activar_rc.disabled = true 
+                __activar_rc.disabled = true
                 __activar_rc.innerHTML = 'cargando ...'
 
                 const validacion = JSON.parse(localStorage.getItem('formData'));
                 const preguntas_respuesta = JSON.parse(validacion.preguntas_respuestas)
-           
+
                 if (validacion.como_me_llamo.length < 4) alert('Debe colocar un nombre a Lubot')
                 if (validacion.spbre_la_empresa.length < 4) alert(
                     'Debes dar una descripcion de lo que buscas')
@@ -143,27 +143,28 @@
                         'hay una respuesta con menos de 3 letras')
                 });
 
-             
-                    let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
-                    let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
-                    if (code_bd_rc == 1 && estado_bd_rc == 2) {
-                        console.log('aqui activo a lubot')
-                        storeCampana()
-                        return 
+
+                let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
+                let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
+                if (code_bd_rc == 1 && estado_bd_rc == 2) {
+                    console.log('aqui activo a lubot')
+                    storeCampana()
+                    return
+                }
+                if (!start_rc) {
+                    if (code_bd_rc == 1 && estado_bd_rc == 2) return ;
+                    if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {
+                        activar_bot() //aqui se activa el bot rc
+                        console.log('aqui esta la activacion del bot ')
                     }
-                    if (!start_rc) {
-                        if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {
-                            activar_bot() //aqui se activa el bot rc
-                            console.log('aqui esta la activacion del bot ')
-                        }
-                        // container_codigo_rc.style.display = 'flex'
-                        modal_preguntas_y_respuesta.style.display = 'none'
-                        container_codigo_rc.style.display = 'flex'
-                        start_rc = true;
-                        intervalId = setInterval(code_rc, 1000);
-                        startCountdown();
-                    }
-                
+                    // container_codigo_rc.style.display = 'flex'
+                    modal_preguntas_y_respuesta.style.display = 'none'
+                    container_codigo_rc.style.display = 'flex'
+                    start_rc = true;
+                    intervalId = setInterval(code_rc, 1000);
+                    startCountdown();
+                }
+
 
             })
 
@@ -174,6 +175,8 @@
                 container_codigo_rc.style.display = 'none'
             });
         });
+
+
     </script>
     <style>
         .input-row {
