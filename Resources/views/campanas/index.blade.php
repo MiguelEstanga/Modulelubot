@@ -61,6 +61,7 @@
                     })
                     .catch(error => {
                         console.error('Error en la solicitud:', error);
+                        
 
                     })
                     .finally(function() {
@@ -83,8 +84,7 @@
                             console.log('response.code_rc != null')
                             if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc !=
                                 null) {
-                                    console.log('(response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc !=
-                                null')
+                                    console.log('(response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null')
                                 _codigo_rc.innerHTML = '';
                                 let code = response.code_rc;
                                 let codeContainer = _codigo_rc;
