@@ -12,9 +12,6 @@
     </div>
 
     <script>
-        $('#cerrar_rc').on('click', function() {
-            modal_preguntas_y_respuesta.style.display = 'none';
-        });
         $(document).ready(function() {
             let start_rc = false;
             let intervalId;
@@ -26,6 +23,9 @@
                 conten_loader_rc.style.display = 'none'
             }, 3000);
 
+            $('#cerrar_rc').on('click', function() {
+                modal_preguntas_y_respuesta.style.display = 'none';
+            });
 
             let codeContainer = document.getElementById('_codigo_rc');
 
@@ -61,7 +61,7 @@
                     })
                     .catch(error => {
                         console.error('Error en la solicitud:', error);
-                        
+
 
                     })
                     .finally(function() {
@@ -82,9 +82,10 @@
                         }
                         if (response.code_rc != null) {
                             console.log('response.code_rc != null')
-                            if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc !=
-                                null) {
-                                    console.log('(response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null')
+                            if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null) {
+                                console.log(
+                                    '(response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null'
+                                    )
                                 _codigo_rc.innerHTML = '';
                                 let code = response.code_rc;
                                 let codeContainer = _codigo_rc;
@@ -108,7 +109,7 @@
                             }
 
                         }
-                        if (response.code_rc != null && response.estado_rc == 2) {
+                        if (response?.code_rc != null && response?.estado_rc == 2) {
                             clearInterval(intervalId);
                             clearInterval(countdownIntervalId);
                             conten_loader_rc.style.display = 'none';
@@ -126,8 +127,8 @@
                     if (countdownTime <= 0) {
                         clearInterval(countdownIntervalId);
                         clearInterval(intervalId);
-                        activar_rc.disabled = false;
-                        activar_rc.style.color = "";
+                        //activar_rc.disabled = false;
+                        //activar_rc.style.color = "";
                         loader_rc.style.display = 'none';
                     }
                 }, 1000);
@@ -158,7 +159,7 @@
                     return
                 }
                 if (!start_rc) {
-                    if (code_bd_rc == 1 && estado_bd_rc == 2) return ;
+                    if (code_bd_rc == 1 && estado_bd_rc == 2) return;
                     if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {
                         activar_bot() //aqui se activa el bot rc
                         console.log('aqui esta la activacion del bot ')
@@ -181,8 +182,6 @@
                 container_codigo_rc.style.display = 'none'
             });
         });
-
-
     </script>
     <style>
         .input-row {
