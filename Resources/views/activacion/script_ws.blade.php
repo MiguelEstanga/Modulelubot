@@ -19,11 +19,6 @@
             {
                 display.style.display = 'block';
             }
-         
-         
-            
-          
-          
         })
     }
 
@@ -165,7 +160,7 @@
                 //document.getElementById('iniciar').innerText = "Error de comunicación";
             })
             .finally(function() {
-                ctivar_ws.disabled  = false
+                activar_ws.disabled  = false
             });
         
         cuentaRegresiva(1);
