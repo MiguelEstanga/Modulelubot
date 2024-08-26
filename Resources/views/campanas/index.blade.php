@@ -133,6 +133,12 @@
                     }
                 }, 1000);
             }
+            
+            $('#activar_campana').on('click' , function (){
+                    console.log('aqui activo a lubot')
+                    storeCampana()
+                    return
+            })
 
             $("#__activar_rc").on('click', function() {
                 __activar_rc.disabled = true
@@ -153,11 +159,7 @@
 
                 let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
                 let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
-                if (code_bd_rc == 1 && estado_bd_rc == 2) {
-                    console.log('aqui activo a lubot')
-                    storeCampana()
-                    return
-                }
+             
                 if (!start_rc) {
                     if (code_bd_rc == 1 && estado_bd_rc == 2) return;
                     if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {

@@ -58,7 +58,7 @@
                 class="btn btn-envio" 
                 type="submit" 
               
-                id="__activar_rc"
+                id="{{$config_lubot->code_rc != null && $config_lubot->estado_rc === 2 ? 'activar_campana' : "__activar_rc"}}"
             > Enviar Campaña </button>
         </div>
     </div>

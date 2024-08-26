@@ -253,7 +253,7 @@ class CampanasController extends AccountBaseController
          }catch (Exception  $e)
          {
             $response = $e;
-         }
+         } 
      
         DB::table('prompts')
         ->insert(

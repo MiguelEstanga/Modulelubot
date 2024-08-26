@@ -85,7 +85,7 @@
 <script>
     // Crea un nuevo objeto FormData
     const formData = new FormData();
-
+    console.log( 'form data en local',localStorage.getItem('formData'))
     // Función para actualizar el FormData
     function updateFormData() {
         // Limpiar el formData antes de agregar nuevos valores
@@ -172,11 +172,9 @@
 
         // Guardar el objeto en localStorage
         localStorage.setItem('formData', JSON.stringify(formDataObject));
-
-        console.log('FormData actualizado y guardado en localStorage:',
-            formDataObject); // Mostrar el FormData actualizado
+        
+        console.log('FormData actualizado y guardado en localStorage:', formDataObject);
     }
-
 
     // Función para agregar event listeners a los nuevos campos
     function addEventListenersToNewFields(fields) {
@@ -373,19 +371,19 @@
     function addForm(button) {
         // Crear una nueva fila con los mismos elementos que la original
         var newForm = `
-    <div class="preguntas_respuesta">
-        <div class="col-md-5">
-            <input type="text" class="custom_input margin-none" placeholder="Si el cliente dice:" name="pregunta[]">
-        </div>
-        <div class="col-md-5">
-            <input type="text" class="custom_input margin-none" placeholder="ubot debería responder:" name="respuesta[]">
-        </div>
-        <div class="">
-            <button class="btn btn-success" type="button" onclick="addForm(this)">+</button>
-            <button class="btn btn-danger" type="button" onclick="removeForm(this)">-</button>
-        </div>
-    </div>
-    `;
+            <div class="preguntas_respuesta">
+                <div class="col-md-5">
+                    <input type="text" class="custom_input margin-none" placeholder="Si el cliente dice:" name="pregunta[]">
+                </div>
+                <div class="col-md-5">
+                    <input type="text" class="custom_input margin-none" placeholder="ubot debería responder:" name="respuesta[]">
+                </div>
+                <div class="">
+                    <button class="btn btn-success" type="button" onclick="addForm(this)">+</button>
+                    <button class="btn btn-danger" type="button" onclick="removeForm(this)">-</button>
+                </div>
+            </div>
+     `;
 
         // Añadir la nueva fila al contenedor
         const formContainer = document.getElementById('form-container');
@@ -450,7 +448,7 @@
                 return response.json();
             })
             .then(responseData => {
-                if(responseData?.status === 'error') alert(`${responseData.message}`)
+                if (responseData?.status === 'error') alert(`${responseData.message}`)
                 if (responseData.status === 200) {
                     modal_preguntas_y_respuesta.style.display = 'none'
                     //pisa papeles aqui finaliza preguntas y respuesta 
@@ -460,15 +458,17 @@
                 console.log(responseData);
                 // Aquí puedes manejar la respuesta del servidor
             })
-            .catch(error =>{
-                 console.error('Error:', error)
-                 __activar_rc.disabled = false ;
-                 __activar_rc.innerHTML='Enviar Campaña'
-                 alert('Asegurece de llenar los campos en especial los de segmentos, si se refresco la pagina en el transcurso deseleccione y vuelva a seleccioar los selectores ')
+            .catch(error => {
+                console.error('Error:', error)
+                __activar_rc.disabled = false;
+                __activar_rc.innerHTML = 'Enviar Campaña'
+                alert(
+                    'Asegurece de llenar los campos en especial los de segmentos, si se refresco la pagina en el transcurso deseleccione y vuelva a seleccioar los selectores '
+                )
             })
-            .finally(()=>{
-                __activar_rc.disabled = false ;
-                
+            .finally(() => {
+                __activar_rc.disabled = false;
+
 
             })
     }
@@ -494,4 +494,51 @@
         }
 
     }
+
+    function loadFormDataFromLocalStorage() {
+        const storedFormData = JSON.parse(localStorage.getItem('formData'));
+        if (storedFormData) {
+            // Rellenar los campos individuales
+            document.querySelector('input[name="nombre_campana"]').value = storedFormData.nombre_campana || '';
+            document.querySelector('select[name="segmento"]').value = storedFormData.segmento || '';
+            document.querySelector('input[name="frecuencia"]').value = storedFormData.frecuencia || '';
+            document.querySelector('select[name="temporalidad"]').value = storedFormData.temporalidad || '';
+            document.querySelector('select[name="plan"]').value = storedFormData.plan || '';
+            document.querySelector('input[name="como_me_llamo"]').value = storedFormData.como_me_llamo || '';
+            document.querySelector('select[name="objetivo_lubot"]').value = storedFormData.objetivo_lubot || '';
+            document.querySelector('textarea[name="spbre_la_empresa"]').value = storedFormData.spbre_la_empresa || '';
+
+            // Rellenar los arrays de objetos
+            const paisesArray = JSON.parse(storedFormData.paises) || [];
+            paisesArray.forEach((pais, index) => {
+                if (index > 0) addRow(); // Añadir nuevas filas si hay más de un país
+                document.querySelectorAll('select[name="pais[]"]')[index].value = pais.id;
+            });
+
+            const ciudadesArray = JSON.parse(storedFormData.ciudades) || [];
+            ciudadesArray.forEach((ciudad, index) => {
+                document.querySelectorAll('select[name="ciudad[]"]')[index].value = ciudad.id;
+            });
+
+            const barriosArray = JSON.parse(storedFormData.barrios) || [];
+            barriosArray.forEach((barrio, index) => {
+                document.querySelectorAll('select[name="barrio[]"]')[index].value = barrio.id;
+            });
+
+            const cantidadesArray = JSON.parse(storedFormData.cantidades) || [];
+            cantidadesArray.forEach((cantidad, index) => {
+                document.querySelectorAll('input[name="cantidad[]"]')[index].value = cantidad.cantidad;
+            });
+
+            const preguntasRespuestasArray = JSON.parse(storedFormData.preguntas_respuestas) || [];
+            preguntasRespuestasArray.forEach((item, index) => {
+                if (index > 0) addForm(document.querySelector('#form-container .btn-success:last-child'));
+                document.querySelectorAll('input[name="pregunta[]"]')[index].value = item.pregunta;
+                document.querySelectorAll('input[name="respuesta[]"]')[index].value = item.respuesta;
+            });
+        }
+    }
+
+
+    loadFormDataFromLocalStorage()
 </script>
