@@ -451,9 +451,10 @@
                 if (responseData?.status === 'error') alert(`${responseData.message}`)
                 if (responseData.status === 200) {
                     modal_preguntas_y_respuesta.style.display = 'none'
+                    
                     //pisa papeles aqui finaliza preguntas y respuesta 
-
-                    location.reload();
+                    console.log('antes del reload ')
+                    //location.reload();
                 }
                 console.log(responseData);
                 // Aquí puedes manejar la respuesta del servidor
