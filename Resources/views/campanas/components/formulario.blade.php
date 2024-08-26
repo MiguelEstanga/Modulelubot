@@ -453,7 +453,7 @@
                     modal_preguntas_y_respuesta.style.display = 'none'
                     //pisa papeles aqui finaliza preguntas y respuesta 
                     console.log('antes del reload ')
-                    //location.reload();
+                    location.reload();
                 }
                 console.log(responseData);
                 // Aquí puedes manejar la respuesta del servidor

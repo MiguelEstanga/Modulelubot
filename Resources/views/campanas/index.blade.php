@@ -123,6 +123,8 @@
             }
             
             $('#activar_campana').on('click' , function (){
+                    activar_campana.style.display = 'none';
+                    activar_campana.innerHTML = "cargando...";
                     console.log('aqui activo a lubot')
                     storeCampana()
                     
