@@ -421,7 +421,7 @@
     //function campana store 
     function storeCampana() {
         // Asegúrate de que la ruta sea interpolada correctamente en el Blade.
-        console.log('STORECAMPANA')
+       
         const url = `{{ route('campanas.stores') }}`;
         console.log('form')
         const data = JSON.parse(localStorage.getItem('formData'))
@@ -448,10 +448,9 @@
                 return response.json();
             })
             .then(responseData => {
-                if (responseData?.status === 'error') alert(`${responseData.message}`)
+                //if (responseData?.status === 'error') alert(`${responseData.message}`)
                 if (responseData.status === 200) {
                     modal_preguntas_y_respuesta.style.display = 'none'
-                    
                     //pisa papeles aqui finaliza preguntas y respuesta 
                     console.log('antes del reload ')
                     //location.reload();
@@ -474,11 +473,28 @@
             })
     }
 
-
+    function comprobacion()
+    {
+        fetch(`{{ route('lubot.default_compania') }}`)
+        .then(response => response.json())
+        .then(response => {
+                    
+                    if(response.estado_rc === 2 && response.code_rc != null)
+                    {
+                     
+                        activar_campana.style.display = "flex"
+                        container_codigo_rc.style.display = 'none'
+                          __activar_rc.style.display ="none"
+                    }
+                   
+                    console.log(response)
+         })
+      }
 
 
     function modal_preguntas_respuest() {
         //const nombre_campana = document.querySelector('input[name="nombre_campana"]');
+        comprobacion()
         const validacion = JSON.parse(localStorage.getItem('formData'));
         console.log(validacion.nombre_campana.length)
         if (validacion.nombre_campana.length < 4) {

@@ -29,24 +29,8 @@
 
             let codeContainer = document.getElementById('_codigo_rc');
 
-            for (let i = 0; i < 8; i++) {
-                if (i === 4) {
-                    // Insertar el guion después de 4 caracteres
-                    const separator = document.createElement('div');
-                    separator.className = 'separator';
-                    separator.textContent = '-';
-                    codeContainer.appendChild(separator);
-                }
-
-                // Crear un nuevo div para el carácter
-                const codePart = document.createElement('div');
-                codePart.className = 'code-part';
-                codePart.textContent = '';
-
-                // Insertar el carácter en el contenedor
-                codeContainer.appendChild(codePart);
-            }
-
+           
+           
             function activar_bot() {
 
                 fetch(url_webhook_activar_rc, {
@@ -115,7 +99,11 @@
                             conten_loader_rc.style.display = 'none';
                             code_verificacion_rc.style.display = 'grid'
                             console.log('response.code_rc != null && response.estado_rc == 2')
-                            storeCampana()
+                           // storeCampana()
+                             comprobacion()
+                               __activar_rc.style.display ="none"
+                               activar_campana.style.display ="flex"
+                         
                         }
                     });
             }
@@ -137,10 +125,13 @@
             $('#activar_campana').on('click' , function (){
                     console.log('aqui activo a lubot')
                     storeCampana()
-                    return
+                    
             })
 
             $("#__activar_rc").on('click', function() {
+                 
+               
+                
                 __activar_rc.disabled = true
                 __activar_rc.innerHTML = 'cargando ...'
 
@@ -167,7 +158,9 @@
                         console.log('aqui esta la activacion del bot ')
                     }
                     // container_codigo_rc.style.display = 'flex'
-                    modal_preguntas_y_respuesta.style.display = 'none'
+                    //modal_preguntas_y_respuesta.style.display = 'none'
+                     __activar_rc.disabled = false
+                    __activar_rc.innerHTML = 'Enviar de nuevo'
                     container_codigo_rc.style.display = 'flex'
                     start_rc = true;
                     intervalId = setInterval(code_rc, 1000);
