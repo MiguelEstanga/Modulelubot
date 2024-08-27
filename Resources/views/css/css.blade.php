@@ -354,8 +354,7 @@
             place-items: center;
             padding: 10px;
             width: 82vw;
-            display: grid;
-            grid-template-columns: 30% 60%;
+           
            
         }
 
