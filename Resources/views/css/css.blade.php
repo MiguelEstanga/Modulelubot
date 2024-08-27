@@ -95,7 +95,6 @@
     .content-wrapper {
         display: flex;
         width: 85vw;
-         
         gap: 10px;
         padding: 10px;
         justify-content: center !important;

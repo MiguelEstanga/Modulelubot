@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @include('lubot::css.css')
-    <div class="content-wrapper">
+    <div class="container-crear-campana">
 
         @include('lubot::component.vamos-hacer-magia-juntos')
 
@@ -182,6 +182,15 @@
         });
     </script>
     <style>
+        .container-crear-campana {
+            display: flex;
+            width: 85vw;
+            gap: 10px;
+            padding: 10px;
+            justify-content: center !important;
+            align-items: flex-start !important;
+        }
+
         .input-row {
             padding: 0 !important;
             margin-top: 30px;
@@ -239,12 +248,37 @@
         }
 
         @media (max-width: 1400px) {
-            .helper_container {
-              
-                width: 900px!important;
-                margin-left: 300px;
+            .btn_container {
+                margin-top: 20px;
             }
-        }
+
+            .helper_container {
+
+                width: 900px !important;
+
+            }
+
+            .container_info {
+                max-width: 600px;
+                position: relative;
+                left: -34px;
+            }
+
+            .container-crear-campana {
+                gap: 0;
+               
+                width: 78vw;
+                padding-left: 20px;
+            }
+
+            .helper_container {
+               
+                    border-radius: 10px;
+                    padding: 2px;
+                    position: relative;
+                    left: 20px;
+
+            }
     </style>
     </div>
 @endsection
