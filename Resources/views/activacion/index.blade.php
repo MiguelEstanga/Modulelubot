@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @include('lubot::css.css')
-    <div class="content-wrapper row">
+    <div class="content-wrapper row ">
         @include('lubot::activacion.component.container-video')
         <div class="container-action">
             @include('lubot::activacion.component.activacion-lubot')
@@ -11,10 +11,10 @@
 
     @include('lubot::activacion.script_ws')
     <style>
+    
         .container-action {
-        
+            
             display: grid;
-           
             gap: 20px;
             margin-left: 50px;
         }

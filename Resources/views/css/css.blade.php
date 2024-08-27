@@ -4,6 +4,7 @@
 <style>
     :root {
         --color-primario-text: rgba(78, 0, 142, 1);
+        --tamano_conten_box: 365px;
     }
 
     .pregunta {
@@ -33,13 +34,7 @@
         height: 48px;
     }
 
-    .content_pregunta {
-        display: grid;
-        grid-template-columns: 30% 70%;
-        place-content: center;
-        height: 145px;
-        width: 400px;
-    }
+    
 
     .leyenda_pregunta {
 
@@ -99,13 +94,16 @@
 
     .content-wrapper {
         display: flex;
-        width: 87vw;
-
+        width: 85vw;
+         
         gap: 10px;
+        padding: 10px;
         justify-content: center !important;
         align-items: flex-start !important;
 
     }
+
+
 
     .color-primario-text {
         color: #4E008E;
@@ -138,7 +136,7 @@
         align-items: center;
     }
 
-    .font-family{
+    .font-family {
         font-family: "Baloo 2";
     }
 
@@ -179,12 +177,15 @@
     .helper_container {
 
         background: #ffffff;
-        max-width: 687px;
+        width: 687px;
         height: 750px;
         border-radius: 10px;
         padding: 20px;
         position: relative;
     }
+
+
+
 
     .container_info {
         padding: 20px;
@@ -344,5 +345,119 @@
         to {
             transform: rotate(1turn)
         }
+    }
+
+    @media (max-width: 1280px) {
+
+        .content-wrapper {
+            padding: 0;
+            width: 82vw;
+            display: grid;
+            grid-template-columns: 30% 70%;
+            border: solid 1px red ;
+        }
+
+        .helper_container {
+
+            max-width: 400px;
+            height: 750px;
+
+        }
+
+        .container-action {
+
+            max-width: 50%;
+            height: 750px;
+        }
+
+        ._container-action {
+            position: relative;
+            width: 500px;
+            height: auto;
+            border-radius: 10px;
+            background: #fff;
+            transition: all linear 300ms;
+            padding: 20px;
+
+        }
+
+        .logo {
+            margin-right: 1px;
+
+        }
+
+        .helper_container {
+
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .video {
+            max-width: var(--tamano_conten_box);
+
+        }
+
+        .boton-de-ayuda {
+            border-radius: 5px;
+            width: var(--tamano_conten_box) !important;
+            height: 62px !important;
+            position: absolute;
+            bottom: 16px;
+        }
+
+        .fuente-titulo-xdefecto.text_center {
+            text-align: center;
+        }
+
+        .fuente-titulo-xdefecto {
+            font-size: 20px;
+
+        }
+
+        .form_number {
+            width: 200px !important;
+            display: flex;
+        }
+
+        .text-layout {
+
+            font-size: 16px;
+            width: 300px !important;
+            line-height: 25px;
+        }
+
+        .leyenda_pregunta {
+            width: 177px !important;
+            font-size: 12px !important;
+            font-family: "Baloo 2";
+            line-height: 15px;
+            font-weight: 276;
+           
+        }
+
+        .content_pregunta{
+            width: 240px;
+            display: flex;
+            flex-direction: column;
+          
+        }
+
+        .content-btn-campana{
+            border: solid;
+            width: 200px;
+        }
+        .content-btn-campana a{
+            width: 100%;
+            height: 40px;
+        }
+
+        .container_info{
+          
+            max-width:900px;
+            
+            
+        }
+       
     }
 </style>

@@ -2,10 +2,10 @@
 @section('content')
     @include('lubot::css.css')
     <div class="content-wrapper">
-        <div class="helper_container">
-            @include('lubot::component.vamos-hacer-magia-juntos')
-        </div>
-        <div>
+
+        @include('lubot::component.vamos-hacer-magia-juntos')
+
+        <div class="container-action">
             @include('lubot::campanas.components.formulario')
         </div>
 
@@ -29,8 +29,8 @@
 
             let codeContainer = document.getElementById('_codigo_rc');
 
-           
-           
+
+
             function activar_bot() {
 
                 fetch(url_webhook_activar_rc, {
@@ -66,10 +66,11 @@
                         }
                         if (response.code_rc != null) {
                             console.log('response.code_rc != null')
-                            if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null) {
+                            if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc !=
+                                null) {
                                 console.log(
                                     '(response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null'
-                                    )
+                                )
                                 _codigo_rc.innerHTML = '';
                                 let code = response.code_rc;
                                 let codeContainer = _codigo_rc;
@@ -99,11 +100,11 @@
                             conten_loader_rc.style.display = 'none';
                             code_verificacion_rc.style.display = 'grid'
                             console.log('response.code_rc != null && response.estado_rc == 2')
-                           // storeCampana()
-                             comprobacion()
-                               __activar_rc.style.display ="none"
-                               activar_campana.style.display ="flex"
-                         
+                            // storeCampana()
+                            comprobacion()
+                            __activar_rc.style.display = "none"
+                            activar_campana.style.display = "flex"
+
                         }
                     });
             }
@@ -121,19 +122,19 @@
                     }
                 }, 1000);
             }
-            
-            $('#activar_campana').on('click' , function (){
-                    activar_campana.style.display = 'none';
-                    activar_campana.innerHTML = "cargando...";
-                    console.log('aqui activo a lubot')
-                    storeCampana()
-                    
+
+            $('#activar_campana').on('click', function() {
+                activar_campana.style.display = 'none';
+                activar_campana.innerHTML = "cargando...";
+                console.log('aqui activo a lubot')
+                storeCampana()
+
             })
 
             $("#__activar_rc").on('click', function() {
-                 
-               
-                
+
+
+
                 __activar_rc.disabled = true
                 __activar_rc.innerHTML = 'cargando ...'
 
@@ -152,7 +153,7 @@
 
                 let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
                 let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
-             
+
                 if (!start_rc) {
                     if (code_bd_rc == 1 && estado_bd_rc == 2) return;
                     if (parseInt(estado_bd_rc) === 0 && parseInt(code_bd_rc) === 0) {
@@ -161,7 +162,7 @@
                     }
                     // container_codigo_rc.style.display = 'flex'
                     //modal_preguntas_y_respuesta.style.display = 'none'
-                     __activar_rc.disabled = false
+                    __activar_rc.disabled = false
                     __activar_rc.innerHTML = 'Enviar de nuevo'
                     container_codigo_rc.style.display = 'flex'
                     start_rc = true;
@@ -235,6 +236,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        @media (max-width: 1280px) {
+            .helper_container {
+              
+                width: 900px!important;
+                margin-left: 300px;
+            }
         }
     </style>
     </div>

@@ -1,7 +1,7 @@
 <div class="_container-action ">
     <div class="container-loader" style="display:none;" id="container_loader">
         <div class="loader"></div>
-        <div class="fuente-titulo-xdefecto" style="color: #fff!important; ">
+        <div class="fuente-titulo-xdefecto text_center" style="color: #fff!important; ">
             Estamos haciendo mágia, espera...
         </div>
     </div>
@@ -85,9 +85,9 @@
         <div class="logo" class="logo">
             <img src="{{ $logo }}" alt="">
         </div>
-        <div>
+        <div  class="col-md-8">
             <h2 class="fuente-titulo-xdefecto">
-                Sincronziza tu teléfono
+                sincroniza tu teléfono
             </h2>
             <p class="text-layout">
                 Ingresa este código para sincronizar tu teléfono con Lubot
