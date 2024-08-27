@@ -351,9 +351,11 @@
 
         .content-wrapper {
             padding: 0;
+            place-items: center;
+            padding: 10px;
             width: 82vw;
             display: grid;
-            grid-template-columns: 30% 70%;
+            grid-template-columns: 30% 60%;
            
         }
 
@@ -365,14 +367,18 @@
         }
 
         .container-action {
-
-            max-width: 50%;
+            
+            max-width: 70%;
+            display: grid;
+            gap: 10px;
+            place-items: center;
+            margin-left: 50px;
             height: 750px;
         }
 
         ._container-action {
             position: relative;
-            width: 500px;
+            width: 520px;
             height: auto;
             border-radius: 10px;
             background: #fff;

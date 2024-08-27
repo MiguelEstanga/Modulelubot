@@ -12,12 +12,7 @@
     @include('lubot::activacion.script_ws')
     <style>
     
-        .container-action {
-            
-            display: grid;
-            gap: 20px;
-          
-        }
+        
 
         .content_custom {
             height: 300px !important;
