@@ -16,7 +16,7 @@
             
             display: grid;
             gap: 20px;
-            margin-left: 50px;
+          
         }
 
         .content_custom {

@@ -276,7 +276,7 @@
         font-size: 20px;
         padding: 10px;
         margin: 0 2px;
-        border: 2px solid #085837;
+       
         border-radius: 5px;
         text-align: center;
         background-color: #fff;
@@ -347,14 +347,14 @@
         }
     }
 
-    @media (max-width: 1280px) {
+    @media (max-width: 1400px) {
 
         .content-wrapper {
             padding: 0;
             width: 82vw;
             display: grid;
             grid-template-columns: 30% 70%;
-            border: solid 1px red ;
+           
         }
 
         .helper_container {
@@ -454,7 +454,7 @@
 
         .container_info{
           
-            max-width:900px;
+            max-width:700px;
             
             
         }

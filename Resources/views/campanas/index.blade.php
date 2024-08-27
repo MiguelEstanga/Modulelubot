@@ -238,7 +238,7 @@
             align-items: center;
         }
 
-        @media (max-width: 1280px) {
+        @media (max-width: 1400px) {
             .helper_container {
               
                 width: 900px!important;
