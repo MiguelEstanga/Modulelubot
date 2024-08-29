@@ -1,47 +1,10 @@
 @extends('layouts.app')
 @section('content')
     <div class="containt-wrapper">
-        <div class="container">
-            <table class="table table-string">
-                <thead>
-                    <tr>
-                        <td>id</td>
-                        <td>nombre</td>
-                        <td>direccion</td>
-                        <td>telefono</td>
-                        <td>url_web </td>
-                        <td>rating</td>
-                        <td>descripcion </td>
-                        <td>mensage_inicial_enviado </td>
-                        <td>tipo_de_negocio_id</td>
-                        <td>pai_id</td>
-                        <td>ciudad_id</td>
-                        <td>barrio_id</td>
-    
-    
-                    </tr>
-                </thead>
-                <tbody>
-                   @foreach($db_data as $items )
-                        <tr>
-                            <td>{{$items['id']}}</td>
-                            <td>{{$items['nombre']}}</td>
-                            <td>{{$items['direccion ']}}</td>
-                            <td>{{$items['telefono']}}</td>
-                            <td>{{$items['url_web ']}}</td>
-                            <td>{{$items['rating']}}</td>
-                            <td>{{$items['descripcion ']}}</td>
-                            <td>{{$items['mensage_inicial_enviado ']}}</td>
-                            <td>{{$items['tipo_de_negocio_id']}}</td>
-                            <td>{{$items['pai_id']}}</td>
-                            <td>{{$items['ciudad_id']}}</td>
-                            <td>{{$items['barrio_id']}}</td>
-    
-    
-                        </tr>
-                   @endforeach
-                </tbody>
-            </table>
+        <div class="d-flex flex-column w-tables rounded mt-3 bg-white" style="margin: 20px;">
+
+            {!! $dataTable->table(['class' => 'table table-hover border-0']) !!}
+
         </div>
     </div>
     <style>
@@ -54,3 +17,113 @@
         }
     </style>
 @endsection
+@push('scripts')
+    @include('sections.datatable_js')
+
+    <script>
+        $('#assets-table').on('preXhr.dt', function (e, settings, data) {
+
+            var asset_type = $('#asset_type').val();
+            var user_id = $('#user_id').val();
+            var status = $('#filter_status').val();
+            var searchText = $('#search-text-field').val();
+            data['asset_type'] = asset_type;
+            data['user_id'] = user_id;
+            data['status'] = status;
+            data['searchText'] = searchText;
+        });
+        const showTable = () => {
+            window.LaravelDataTables["assets-table"].draw(false);
+        }
+
+        $('#asset_type, #filter_status, #user_id, #search-text-field').on('change keyup',
+            function () {
+                if ($('#filter_status').val() != "all") {
+                    $('#reset-filters').removeClass('d-none');
+                    showTable();
+                } else if ($('#user_id').val() != "all") {
+                    $('#reset-filters').removeClass('d-none');
+                    showTable();
+                } else if ($('#asset_type').val() != "all") {
+                    $('#reset-filters').removeClass('d-none');
+                    showTable();
+                } else if ($('#search-text-field').val() != "") {
+                    $('#reset-filters').removeClass('d-none');
+                    showTable();
+                } else {
+                    $('#reset-filters').addClass('d-none');
+                    showTable();
+                }
+            });
+
+        $('#reset-filters').click(function () {
+            $('#filter-form')[0].reset();
+
+            $('.filter-box .select-picker').selectpicker("refresh");
+            $('#reset-filters').addClass('d-none');
+            showTable();
+        });
+
+        $('body').on('click', '.delete-table-row', function () {
+            var id = $(this).data('asset-id');
+            Swal.fire({
+                title: "@lang('messages.sweetAlertTitle')",
+                text: "@lang('messages.recoverRecord')",
+                icon: 'warning',
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: "@lang('messages.confirmDelete')",
+                cancelButtonText: "@lang('app.cancel')",
+                customClass: {
+                    confirmButton: 'btn btn-primary mr-3',
+                    cancelButton: 'btn btn-secondary'
+                },
+                showClass: {
+                    popup: 'swal2-noanimation',
+                    backdrop: 'swal2-noanimation'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var url = "{{ route('assets.destroy', ':id') }}";
+                    url = url.replace(':id', id);
+
+                    var token = "{{ csrf_token() }}";
+
+                    $.easyAjax({
+                        type: 'POST',
+                        url: url,
+                        blockUI: true,
+                        data: {
+                            '_token': token,
+                            '_method': 'DELETE'
+                        },
+                        success: function (response) {
+                            if (response.status == "success") {
+                                window.LaravelDataTables["assets-table"].draw(false);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $('body').on('click', '.lend', function () {
+            let id = $(this).data('asset-id');
+            let url = "{{ route('history.create', ':id') }}";
+            url = url.replace(':id', id);
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        });
+
+        $('body').on('click', '.returnAsset', function () {
+            let id = $(this).data('asset-id');
+            let historyId = $(this).data('history-id');
+            let url = "{{ route('assets.return', [':asset', ':history']) }}";
+            url = url.replace(':asset', id);
+            url = url.replace(':history', historyId);
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        });
+    </script>
+@endpush

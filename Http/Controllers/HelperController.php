@@ -5,17 +5,53 @@ namespace Modules\Lubot\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 class HelperController extends Controller
 {
+  public static function db_name($id)
+  {
+    $bd = DB::table('user_db')->where('id_companies' , $id)->first();
+    return $bd->nombre;
+  }
   public static function url($key)
   {
     $data = [
+        'lubot_master_url' => 'https://lubot.healtheworld.com.co/',
         'WEB_HOOK_RUL' => "https://2c09-186-112-18-249.ngrok-free.app/api", 
         'lubot_master' => "https://lubot.healtheworld.com.co/api" 
     ];
     return  $data[$key];
   }
+  // filtro de paises 
+  public static function con_pais($nombre)
+  {
+      $response = Http::withHeaders(['Accept' => 'application/json'])->get( self::url('lubot_master_url')."pais/{$nombre}");
+      $data = json_decode($response ,true );
+      return $data['id'] ?? 0;
+  }
+
+  public static function con_ciudad($nombre)
+  {
+      $response = Http::withHeaders(['Accept' => 'application/json'])->get( self::url('lubot_master_url')."ciudad/{$nombre}");
+      $data = json_decode($response ,true );
+      return $data['id'] ?? 0;
+  }
+
+  public static function con_barrios($nombre)
+  {
+      $response = Http::withHeaders(['Accept' => 'application/json'])->get( self::url('lubot_master_url')."barrios/{$nombre}");
+      $data = json_decode($response ,true );
+      return $data['id'] ?? 0;
+  }
+
+  public static function con_tipo_negocio($nombre)
+  {
+      $response = Http::withHeaders(['Accept' => 'application/json'])->get( self::url('lubot_master_url')."tipo_negocio/{$nombre}");
+      $data = json_decode($response ,true );
+      return $data['id'] ?? 0;
+  }
+
   public static function public($key)
   {
     $data =  [

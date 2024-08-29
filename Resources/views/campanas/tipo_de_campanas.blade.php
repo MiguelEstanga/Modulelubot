@@ -179,7 +179,7 @@
             height: 354px;
         }
 
-        @media (max-width: 1400px) {
+        @media (max-width: 1600px) {
             .lubot_ , .contenedor_tipo_de_campana{
                 width: 60%;
             }

@@ -48,6 +48,8 @@ Route::prefix('lubot')->group(function() {
     Route::get('/bd/{id_db}', 'BaseDeDatosController@show')->name('Lubot.data_db');
     Route::post('/bd/registro', 'BaseDeDatosController@store')->name('bd.store');
     Route::get('/bd/delete/{id}', 'BaseDeDatosController@delete')->name('bd.delete');
+    Route::get('/bd/activar/{id}', 'BaseDeDatosController@activar_campana')->name('bd.activar_campana');
+    Route::get('/bd/segmentos/{id}', 'BaseDeDatosController@segmentos')->name('bd.segmentos');
 
     //
     

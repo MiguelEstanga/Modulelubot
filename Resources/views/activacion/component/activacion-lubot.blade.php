@@ -36,24 +36,19 @@
 
                     <div class="form_number">
 
-                        <select class="form-control selectpicker selec_code" data-live-search="true" name="codigo">
+                        <select class="form-control selectpicker selec_code" data-live-search="true" id="codigo_region" name="codigo">
                             @foreach ($codigos as $codigo)
                                 <option value="{{ $codigo->id }}">{{ $codigo->codigos }}</option>
                             @endforeach
                         </select>
-                        <input type="text" class="form-control" value="{{ $numero }}" name="numero">
+                        <input type="text" class="form-control" value="{{ $numero }}" id="numero_telefono" name="numero">
                     </div>
                     <div class="col-md-6">
 
                     </div>
 
                 </div>
-                <div class="contenedor-boton-activar">
-                    <button class="btn btn-success">
-                        Activar
-                    </button>
-
-                </div>
+               
             </form>
             <div style="margin-top:10px; ">
                 <button class="btn btn-success" id="activar_ws">

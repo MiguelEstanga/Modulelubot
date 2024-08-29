@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('user_db', function (Blueprint $table) {
             $table->id();
-            $table->string('id_companies');
             $table->string('nombre');
-
+            $table->unsignedBigInteger('id_companies')->nullable();
             $table->timestamps();
         });
     }

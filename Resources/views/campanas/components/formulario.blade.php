@@ -128,7 +128,7 @@
         document.querySelectorAll('select[name="ciudad[]"]').forEach(select => {
             ciudadesArray.push({
                 id: select.value
-            });
+            }); 
         });
         formData.append('ciudades', JSON.stringify(ciudadesArray));
 

@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('credito')->default(30);
             $table->integer('contador')->default(1);
             $table->integer('encendido')->default(0);
+            $table->integer('db_externa')->default(0);
             $table->timestamps();
         });
 
@@ -46,16 +47,7 @@ return new class extends Migration
         // Filtrar las compañías que no tienen un registro en custom_link_settings
         $companiasSinLinks = $companias->diff($companiasConLinks);
         
-        // Preparar los datos para la inserción
-        $dataToInsert = $companiasSinLinks->map(function ($id) {
-            return [
-                'company_id' => $id,
-                'link_title' => "Lubut",
-                'url' => env('APP_URL').'/lubot/activacion',
-                'can_be_viewed_by' => '[1,2,3,4,5,6,7,8,9]',
-                'status' => 'active'
-            ];
-        })->toArray();
+        
         
         // Insertar los datos en la base de datos si hay compañías sin links
         if (!empty($dataToInsert)) {

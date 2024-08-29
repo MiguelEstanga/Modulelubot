@@ -3,7 +3,7 @@
     @include('lubot::css.css')
     <div class="content-wrapper row ">
         @include('lubot::activacion.component.container-video')
-        <div class="container-action">
+        <div class="container-action grid_gap">
             @include('lubot::activacion.component.activacion-lubot')
         </div>
     </div>
@@ -11,9 +11,6 @@
 
     @include('lubot::activacion.script_ws')
     <style>
-    
-        
-
         .content_custom {
             height: 300px !important;
             width: 100%;

@@ -17,7 +17,7 @@
         .then(response => {
             if(response.estado_ws === 1 && response.code_ws === null)
             {
-                display.style.display = 'block';
+                container_loader.style.display = 'block';
             }
         })
     }
@@ -137,8 +137,40 @@
 
     document.getElementById('activar_ws').addEventListener('click', function(e) {
         start = true;
-        activar_ws.innerHTML = "cargando ..."
+        let numero_de_telefono = numero_telefono.value
+        let codigo_de_region   = codigo_region.value
+
+        codigo_region.addEventListener('onchange' , function(event){
+            codigo_de_region = event.value
+        })
+        numero_telefono.addEventListener('input' , function (event){
+            numero_de_telefono = event.value
+        })
+
+        let metadata_telefono = new FormData();
+        metadata_telefono.append('numero' , numero_de_telefono)
+        metadata_telefono.append('codigo' , codigo_de_region)
+        
+        fetch(`{{route('lubot.activacion')}}`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        'content') // Añadir el token CSRF
+                },
+                body: JSON.stringify( {
+                    numero:numero_de_telefono,
+                    codigo:codigo_de_region
+                })
+            }) 
+            .then(response => response.json())
+            .then(response => console.log(response))
+
+       
+        
+        activar_ws.innerHTML = "cargando..."
         activar_ws.disabled  = true
+       
         
       //  document.getElementById('iniciar').innerText = "Procesando...";
         console.log(container_loader);

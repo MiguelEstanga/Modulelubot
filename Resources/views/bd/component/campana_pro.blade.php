@@ -47,6 +47,10 @@
 </div>
 <style>
    
-
+    .url_option{
+        margin-left:50px;
+        padding: 20px;
+        max-width: 800px;
+    }
    
 </style>

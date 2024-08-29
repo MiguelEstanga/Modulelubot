@@ -42,7 +42,7 @@ class LubotController extends AccountBaseController
     {
         DB::table('config_lubots')->insert([
             'estado' => 1,
-            'nombre_usuario' => $this->data['company']['name'],
+            //'nombre_usuario' => $this->data['company']['name'],
             'numero' => null,
             'id_companies' => $this->data['company']['id'],
             'code_ws' => null,
@@ -83,7 +83,7 @@ class LubotController extends AccountBaseController
 
     public function activacion_post(Request $request)
     {
-
+        //return json_encode($request->numero);
         if (Schema::hasTable('config_lubots')) {
             $existe = DB::table('config_lubots')->where('id_companies', $this->data['company']['id'])->exists();
             if ($existe) {
@@ -99,9 +99,13 @@ class LubotController extends AccountBaseController
                     'id_codigo' => $request->codigo
                 ]
             );
-
-            return back();
+            
+            
         }
+        return response()->json([
+            'success' => 200,
+            'response' => $activar
+        ]);
     }
 
     public function correr_bot($companie_id)
@@ -125,7 +129,6 @@ class LubotController extends AccountBaseController
     //para recetear la configuracion de lubot 
     public function resetear_configuracion()
     {
-
         DB::table('config_lubots')->where('id_companies',  $this->data['company']['id'])->update([
             'estado_rc' => 0, 
             'code_rc' => null,

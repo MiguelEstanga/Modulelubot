@@ -31,28 +31,38 @@ class CampanaTable extends BaseDataTable
                 
                 return $action;
             })
-            ->addColumn('responder_con_ia', function ($row) {
-                return $row->responder_con_ia ? __('Si') : __('No');
-            })
-            ->addColumn('campanas_activa', function ($row) {
-                return $row->campanas_activa ? __('Active') : __('Inactive');
-            })
+            
             ->addColumn('nombre', function ($row) {
                 return $row->nombre;
-            })
-            ->addColumn('activate_campaigns', function ($row) {
-                $checked = $row->campanas_activa ? 'checked' : '';
-                return '<input type="checkbox"  onClick="estado(this)" class=".activar_estado" id="' . $row->id . '" ' . $checked . '>';
-            })
+            }) 
             
-            ->rawColumns(['action' , 'activate_campaigns' , ]); // Permitir HTML en estas columnas
+            ->addColumn('como_me_llamo', function ($row) {
+                return $row->como_me_llamo;
+            })    
+
+            ->addColumn('sobre_la_empresa', function ($row) {
+                return $row->spbre_la_empresa;
+            }) 
+            
+            ->addColumn('temporalidad', function ($row) {
+                return $row->spbre_la_empresa;
+            })   
+
+            ->addColumn('credito', function ($row) {
+                return $row->credito;
+            })   
+
+            ->addColumn('objetivo_de_lubot', function ($row) {
+                return $row->credito;
+            })   
+            ->rawColumns(['action'  ]); // Permitir HTML en estas columnas
             
     }
  
     public function query()
     {
         $query = DB::table('campanas')
-            ->select(['id', 'nombre', 'responder_con_ia', 'campanas_activa' ])
+            ->select(['id', 'nombre' , 'como_me_llamo' ,'spbre_la_empresa' , 'temporalidad' , 'credito' , 'objetivo_de_lubot'])
             ;
         return $query;
     }
@@ -79,11 +89,11 @@ class CampanaTable extends BaseDataTable
         return [
             Column::make('id')->title(__('app.id'))->visible(false),
             Column::make('nombre')->title('Nombre'),
-            Column::make('responder_con_ia')->title('Responder con IA'),
-            Column::make('campanas_activa')->title('Estado'),
-            Column::make('activate_campaigns')->title('Activar'),
-           
-            
+            Column::make('como_me_llamo')->title('Como me llamo'),
+            Column::make('sobre_la_empresa')->title('Sobre la empresa'),
+            Column::make('temporalidad')->title('temporalidad'),
+            Column::make('credito')->title('credito'),
+            Column::make('objetivo_de_lubot')->title('Objetivo de lubot'),
             Column::computed('action')->exportable(false)->printable(false)->orderable(false)->searchable(false)->title(__('app.action'))
                 ->width(150)->addClass('text-right pr-20'),
           

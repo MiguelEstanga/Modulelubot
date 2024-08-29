@@ -3,7 +3,7 @@
         @csrf
 
         <div class="container">
-            <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldLabel="Nombre de la base de datos" fieldPlaceholder="Nombre de la campana" fieldName="bd_name"
+            <x-forms.text class="mr-0 mr-lg-2 mr-md-2" fieldLabel="Nombre de la base de datos" fieldPlaceholder="Nombre de la base de datos" fieldName="bd_name"
             fieldRequired="true" fieldId="contract_prefix" fieldValue="" />
         </div>
         

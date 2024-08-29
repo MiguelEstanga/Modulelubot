@@ -19,9 +19,9 @@ return new class extends Migration
             $table->id();
             $table->string('estado')->default(0);
             $table->string('code_ws')->nullable();
-            $table->string('code_rc')->nullable();
-            $table->string('estado_ws')->nullable()->default(null);
-            $table->string('estado_ws')->nullable()->default(null);
+            $table->integer('code_rc')->nullable();
+            $table->integer('estado_ws')->nullable()->default(null);
+            $table->string('estado_rc')->nullable()->default(null);
             $table->string('numero')->nullable();
             $table->unsignedBigInteger('id_codigo')->nullable();
             $table->unsignedBigInteger('id_companies')->nullable();

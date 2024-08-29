@@ -17,13 +17,15 @@ return new class extends Migration
         Schema::create('codigos', function (Blueprint $table) {
             $table->id();
             $table->string('codigos');
-            $table->string('codigo_compania')->default(null);
+            $table->string('logo')->default(null);
             $table->timestamps();
         });
 
         if(Schema::hasTable('codigos')){
             DB::table('codigos')->insert([
-                'codigos' => "+57"
+                ['codigos' => "+57"],
+                ['codigos' => "+58"]
+                
             ]);
         }
     }

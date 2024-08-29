@@ -16,8 +16,18 @@ return new class extends Migration
         Schema::create('data_db', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_companies')->nullable();
-            $table->unsignedBigInteger('id_db')->nullable();
-            $table->json('data');
+            $table->unsignedBigInteger('id_user_db')->nullable();
+            $table->string('nombre')->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('url_web')->nullable();
+            $table->string('rating')->nullable();
+            $table->string('descripcion')->nullable();
+            $table->string('mensaje_inicial_enviado')->nullable();
+            $table->string('tipo_negocio_id')->nullable();
+            $table->string('pais_id')->nullable();
+            $table->string('ciudad_id')->nullable();
+            $table->string('barrio_id')->nullable();
             $table->timestamps();
         });
     }

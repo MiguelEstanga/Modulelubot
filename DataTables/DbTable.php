@@ -2,17 +2,17 @@
 namespace Modules\Lubot\DataTables;
 
 use App\DataTables\BaseDataTable;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB; 
 use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Html\Column; 
 
 class DbTable extends BaseDataTable
 {
     
-    public $companie_id;
+    public $user_db;
     public function ConId($id)
     {
-        $this->companie_id = $id;
+        $this->user_db = $id;
         return $this;
     }
 
@@ -40,17 +40,67 @@ class DbTable extends BaseDataTable
             ->addColumn('Nombre', function ($row) {
                 return $row->nombre  ;
             })
+
+            ->addColumn('direccion', function ($row) {
+                return $row->direccion  ;
+            })
+
+            ->addColumn('telefono', function ($row) {
+                return $row->telefono  ;
+            })
+
+            ->addColumn('url_web', function ($row) {
+                return $row->url_web  ;
+            })
+
+            ->addColumn('rating', function ($row) {
+                return $row->rating  ;
+            })
+            
+            ->addColumn('descripcion', function ($row) {
+                return $row->descripcion  ;
+            })
            
+            ->addColumn('tipo_negocio_id', function ($row) {
+                return $row->tipo_negocio_id  ;
+            })
+
+            ->addColumn('pais_id', function ($row) {
+                return $row->pais_id  ;
+            })
+
+            ->addColumn('ciudad_id', function ($row) {
+                return $row->ciudad_id  ;
+            })
+
+            ->addColumn('barrio_id', function ($row) {
+                return $row->barrio_id  ;
+            })
+
             ->addColumn('Eliminar', function ($row) {
                 return  '<a href="' . route('bd.delete', [$row->id]) . '" class="dropdown-item"><i class="bi bi-trash-fill"></i>Eliminar</a>';;
             })
-            ->rawColumns(['action', 'Eliminar' ]); // Permitir HTML en estas columnas
+            ->rawColumns(['action', 'Eliminar' , 'nombre' , 'direccion' , 'telefono' , 'url_web' , 'rating' , 'descripcion' , 'tipo_negocio_id' , 'pais_id' , 'ciudad_id' , 'barrio_id']); // Permitir HTML en estas columnas
     }
  
     public function query()
     {
           // Obtener los datos desde la columna 'data' de la tabla 'db_user'
-          $query = DB::table('user_db')->select(['id' , 'nombre'])->where('id_companies' ,$this->companie_id );
+          $query = DB::table('data_db')
+            ->select(
+                [
+                    'id' , 
+                    'nombre' , 
+                    'direccion' , 
+                    'telefono' , 
+                    'url_web' , 
+                    'rating' , 
+                    'descripcion' , 
+                    'tipo_negocio_id' , 
+                    'pais_id' , 
+                    'ciudad_id' , 
+                    'barrio_id'
+                ])->where('id_user_db' ,$this->user_db );
           return $query; // Retor
     }
 
@@ -76,6 +126,21 @@ class DbTable extends BaseDataTable
         return [
             Column::make('id')->title(__('app.id'))->visible(false),
             Column::make('Nombre')->title('Nombre de la BD'),
+          
+            Column::make('nombre')->title('Nombre'),
+        
+            Column::make('direccion')->title('Dirección'),
+        
+            Column::make('telefono')->title('Telefono'),
+        
+            Column::make('url_web')->title('URL WEB'),
+        
+            Column::make('rating')->title('rating'),
+        
+            Column::make('tipo_negocio_id')->title('tipo_negocio_id'),
+            Column::make('pais_id')->title('pais_id'),
+            Column::make('ciudad_id')->title('ciudad_id'),
+            Column::make('barrio_id')->title('barrio_id'),
             Column::make('Eliminar')->title('Eliminar BD'),
         
           

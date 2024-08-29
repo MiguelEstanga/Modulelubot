@@ -154,9 +154,11 @@
         line-height: 51px;
         width: 517px;
     }
-
+    .grid_gap{
+        display: grid;
+        gap: 10px;
+    }
     ._container-action {
-
         position: relative;
         width: 757px;
         height: 251px;
@@ -346,7 +348,7 @@
         }
     }
 
-    @media (max-width: 1400px) {
+    @media (max-width: 1500px) {
 
         .content-wrapper {
             padding: 0;
