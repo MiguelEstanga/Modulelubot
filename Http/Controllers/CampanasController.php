@@ -12,6 +12,7 @@ use Modules\Lubot\DataTables\CampanaTable;
 use Modules\Lubot\DataTables\SegmentosTable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Exception;
 use  Modules\Lubot\Http\Controllers\HelperController;
 class CampanasController extends AccountBaseController
 {
@@ -130,8 +131,10 @@ class CampanasController extends AccountBaseController
         return $data;
      }
 
-    public function index()
+    public function index($bd_externar)
     {
+       
+         $this->data['campana_store'] = route('campanas.stores' , $bd_externar);
         $this->data['config_lubot'] = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->first(); 
         $this->data['companie'] =  $this->data['company']['id'];
         $this->data['segmentos'] = $this->tipo_de_negocio() ?? [];
@@ -143,7 +146,7 @@ class CampanasController extends AccountBaseController
         return view('lubot::campanas.index' , $this->data);
     }
 
-    public function campanas_stores(Request $request)
+    public function campanas_stores($bd_externar ,Request $request)
     {
         if(!Schema::hasTable('campanas') ) return back();
         if(!Schema::hasTable('segmentos')) return back();
@@ -207,7 +210,8 @@ class CampanasController extends AccountBaseController
                 'tipo_negocio' => 2 ,//$tipo_de_negocio,
                 'spbre_la_empresa' => $spbre_la_empresa,
                 'temporalidad' =>  $temporalidad ,
-                'credito' => 30
+                'credito' => 30,
+                'db_externa' => 'bd_externar'
             ]
         );
    

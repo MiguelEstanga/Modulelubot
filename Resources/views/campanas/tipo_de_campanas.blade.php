@@ -76,7 +76,7 @@
                                
                             </div>
                             <div class="btn_container" >
-                                <a href="{{ route('campanas.index') }}" style="color: #fff"
+                                <a href="{{ route('campanas.index' , 0) }}" style="color: #fff"
                                     class="btn content-btn-campana color-fondo-primario color-segundario-text">
                                     Campaña Pro
                                 </a>

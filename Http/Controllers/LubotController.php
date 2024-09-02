@@ -34,7 +34,7 @@ class LubotController extends AccountBaseController
      */
     public function index()
     {
-        $this->activeMenu = 'lubot';
+         $this->activeMenu = 'lubot';
         return view('lubot::index', $this->data);
     }
 
@@ -58,7 +58,6 @@ class LubotController extends AccountBaseController
      */
     public function Activacion()
     {
-
         $this->data['activar_ws_url'] = HelperController::endpoiny('ejecutable_inicio_sesion');
         $this->data['logo'] = HelperController::public('logo');
         $this->data['id_companie'] = $this->data['company']['id'];

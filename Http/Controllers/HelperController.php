@@ -17,9 +17,9 @@ class HelperController extends Controller
   public static function url($key)
   {
     $data = [
-        'lubot_master_url' => 'https://lubot.healtheworld.com.co/',
-        'WEB_HOOK_RUL' => "https://2c09-186-112-18-249.ngrok-free.app/api", 
-        'lubot_master' => "https://lubot.healtheworld.com.co/api" 
+        'lubot_master_url' => env('LUBOT_MASTER'),//'https://lubot.healtheworld.com.co/',
+        'WEB_HOOK_RUL' => env('NGROK_LUBOT_WEBHOOK'),//"https://2c09-186-112-18-249.ngrok-free.app/api", 
+        'lubot_master' =>env('LUBOT_MASTER_API'),// "https://lubot.healtheworld.com.co/api" 
     ];
     return  $data[$key];
   }

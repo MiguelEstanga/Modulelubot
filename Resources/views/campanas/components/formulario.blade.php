@@ -1,5 +1,8 @@
 @include('lubot::campanas.components.activar_rc')
 @include('lubot::campanas.components.preguntas_respuestas')
+@php 
+    use Modules\Lubot\Http\Controllers\HelperController;
+@endphp
 <div class="container_info container-auto">
     <div class="fuente-titulo-xdefecto">
         Configura tu campaña
@@ -343,7 +346,7 @@
     }
 
     function loadciudad(paisSelect) {
-        loadOptions(paisSelect, 'https://lubot.healtheworld.com.co/api/ciudades', 'ciudad');
+        loadOptions(paisSelect, `{{HelperController::url('lubot_master')}}/ciudades', 'ciudad`);
         const parentRow = paisSelect.closest('.input-row');
         const barrioSelect = parentRow.querySelector('select[name="barrio[]"]');
 
@@ -360,7 +363,7 @@
     }
 
     function loadBarrios(ciudadSelect) {
-        loadOptions(ciudadSelect, 'https://lubot.healtheworld.com.co/api/barrios', 'barrio');
+        loadOptions(ciudadSelect, '{{HelperController::url('lubot_master')}}/barrios', 'barrio');
     }
 
 
@@ -422,7 +425,7 @@
     function storeCampana() {
         // Asegúrate de que la ruta sea interpolada correctamente en el Blade.
        
-        const url = `{{ route('campanas.stores') }}`;
+        const url = `{{ $campana_store }}`;
         console.log('form')
         const data = JSON.parse(localStorage.getItem('formData'))
         if (data) {
