@@ -24,7 +24,7 @@ class CampanasController extends AccountBaseController
         $this->pageTitle = 'app.menu.balance_admin';
         $this->activeSettingMenu = 'front_theme_settings';
         $this->data['logo'] =  HelperController::public('logo');
-        $this->data['url_activar_rc'] = HelperController::endpoiny('ejecutable_inicio_sesion' , $this->data['company']['id']  );
+       
         $this->middleware(
             function ($request, $next) {
               //  abort_403(!in_array('balance', $this->user->modules));
@@ -134,7 +134,7 @@ class CampanasController extends AccountBaseController
 
     public function index($bd_externar)
     {
-       
+        $this->data['url_activar_rc'] = HelperController::endpoiny('ejecutable_inicio_sesion' , $this->data['company']['id']  );
         $this->data['campana_store'] = route('campanas.stores' , $bd_externar);
         $this->data['config_lubot'] = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->first(); 
         $this->data['companie'] =  $this->data['company']['id'];
