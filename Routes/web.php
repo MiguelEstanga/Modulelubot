@@ -55,6 +55,15 @@ Route::prefix('lubot')->group(function() {
     
     Route::get('pre-promp-entrena-lubot' , 'ChatGptController@index')->name('chatGpt.index');
     Route::post('pre-promp-entrena-lubot_ejet' , 'ChatGptController@openia')->name('chatGpt.openia');
+
+    //configuracion
+    Route::get('lubot-settings', 'ConfigLubotController@lubot_settings')->name('lubot.settings');
+    Route::post('lubot_settings_store', 'ConfigLubotController@lubot_settings_store')->name('lubot.settings_store');
+
 });
 
 Route::get('lubot_pusher/estado_ws/{user_id}/{codigo}' , 'CampanasController@cambiar_estado' )->name('cambiar_estado_ws');
+Route::get('lubot-test' , function(){
+    //manage_superadmin_app_settings
+    return 0;
+});

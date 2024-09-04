@@ -109,7 +109,7 @@ class LubotController extends AccountBaseController
 
     public function correr_bot($companie_id)
     {
-        $url_webhook = HelperController::url('WEB_HOOK_RUL');
+        $url_webhook = HelperController::url('WEB_HOOK_RUL' , $this->data['company']['id']);
         $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$url_webhook}/activar_ws/{$companie_id}");
         return json_encode(['ok' => 'ok',  $response]);
     }

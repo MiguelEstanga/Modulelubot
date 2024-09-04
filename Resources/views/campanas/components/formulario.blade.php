@@ -346,7 +346,8 @@
     }
 
     function loadciudad(paisSelect) {
-        loadOptions(paisSelect, `{{HelperController::url('lubot_master')}}/ciudades', 'ciudad`);
+      
+        loadOptions(paisSelect, '{{HelperController::url('lubot_master')}}/ciudades' , 'ciudad' );
         const parentRow = paisSelect.closest('.input-row');
         const barrioSelect = parentRow.querySelector('select[name="barrio[]"]');
 
@@ -482,7 +483,7 @@
         .then(response => response.json())
         .then(response => {
                     
-                    if(response.estado_rc === 2 && response.code_rc != null)
+                    if(parseInt(response.estado_rc) === 2 && response.code_rc != null)
                     {
                      
                         activar_campana.style.display = "flex"

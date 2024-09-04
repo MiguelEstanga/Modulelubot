@@ -54,12 +54,6 @@ return new class extends Migration
             DB::table('custom_link_settings')->insert($dataToInsert);
         }
            
-            
-            
-
-           
-       
-       
             $module = Module::create([
                 'module_name' => 'Lubot',
                 'description' => 'Lubot gestor de empresas',

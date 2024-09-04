@@ -134,13 +134,12 @@ class CampanasController extends AccountBaseController
     public function index($bd_externar)
     {
        
-         $this->data['campana_store'] = route('campanas.stores' , $bd_externar);
+        $this->data['campana_store'] = route('campanas.stores' , $bd_externar);
         $this->data['config_lubot'] = DB::table('config_lubots')->where('id_companies' ,$this->data['company']['id'] )->first(); 
         $this->data['companie'] =  $this->data['company']['id'];
         $this->data['segmentos'] = $this->tipo_de_negocio() ?? [];
         $this->data['objetivos'] =  DB::table('objetivos_lubot')->get() ?? [];
-      //  $this->data['ciudades'] =  $this->ciudades() ?? [];
-       // $this->data['barrios'] =  $this->barrios() ?? [];
+        $this->url_lubot_api = HelperController::url('lubot_master' ,$this->data['company']['id'] );
         $this->data['paises'] =  $this->paises() ?? [];
         $this->activeMenu = 'lubot';
         return view('lubot::campanas.index' , $this->data);

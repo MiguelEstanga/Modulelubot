@@ -60,17 +60,15 @@
                     .then(response => {
                         console.log(response)
                         console.log('sin condicion')
-                        if (response.estado_rc === 0 || response.estado_rc === 2) {
+                        if ( parseInt(response.estado_rc) === 0 ||  parseInt(response.estado_rc) === 2) {
                             conten_loader_rc.style.display = 'flex';
                             console.log('response.estado_rc === 0 || response.estado_rc === 2 linea80')
                         }
                         if (response.code_rc != null) {
                             console.log('response.code_rc != null')
-                            if ((response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc !=
+                            if (( parseInt(response.estado_rc) === 2 ||  parseInt(response.estado_rc) === 1) && response.code_rc !=
                                 null) {
-                                console.log(
-                                    '(response.estado_rc === 2 || response.estado_rc === 1) && response.code_rc != null'
-                                )
+                            
                                 _codigo_rc.innerHTML = '';
                                 let code = response.code_rc;
                                 let codeContainer = _codigo_rc;
@@ -94,7 +92,7 @@
                             }
 
                         }
-                        if (response?.code_rc != null && response?.estado_rc == 2) {
+                        if (response?.code_rc != null &&  parseInt(response.estado_rc) == 2) {
                             clearInterval(intervalId);
                             clearInterval(countdownIntervalId);
                             conten_loader_rc.style.display = 'none';
@@ -152,7 +150,7 @@
 
 
                 let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
-                let estado_bd_rc = `{{ $config_lubot->estado_rc }}`
+                let estado_bd_rc =  parseInt(`{{ $config_lubot->estado_rc }}`)
 
                 if (!start_rc) {
                     if (code_bd_rc == 1 && estado_bd_rc == 2) return;
