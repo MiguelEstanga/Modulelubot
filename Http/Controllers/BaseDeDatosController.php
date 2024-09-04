@@ -127,10 +127,10 @@ class BaseDeDatosController extends AccountBaseController
             DB::table('campanas')->where('id', $id)->update(['encendido' => 1]);
             try {
                 $response = Http::withHeaders(['Accept' => 'application/json'])
-                    ->get(HelperController::endpoiny('activar_ejecutable_ws') . "/{$this->data['company']['id']}/{$campanas->id}/{$this->data['company']['id']}");
+                    ->get(HelperController::endpoiny('activar_ejecutable_ws' ,$this->data['company']['id'] ) . "/{$this->data['company']['id']}/{$campanas->id}/{$this->data['company']['id']}");
 
                 Http::withHeaders(['Accept' => 'application/json'])
-                    ->get(HelperController::endpoiny('activar_ejecutable_ryc') . "/{$this->data['company']['id']}/{$campanas->id}/{$this->data['company']['id']}");
+                    ->get(HelperController::endpoiny('activar_ejecutable_ryc' , $this->data['company']['id']) . "/{$this->data['company']['id']}/{$campanas->id}/{$this->data['company']['id']}");
             } catch (Exception  $e) {
                 $response = $e;
             }

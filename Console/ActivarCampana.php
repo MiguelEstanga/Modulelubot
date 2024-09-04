@@ -87,7 +87,7 @@ class ActivarCampana extends Command
 
         // Construir la URL de la API con los datos necesarios
 
-        $url = HelperController::endpoiny('activar_ejecutable_ws') . "/{$companie_id}/{$campana_id}/{$companie_id}";
+        $url = HelperController::endpoiny('activar_ejecutable_ws' , $companie_id) . "/{$companie_id}/{$campana_id}/{$companie_id}";
 
         // Llamar a la API para notificar
         $response = Http::withHeaders(['Accept' => 'application/json'])->get($url);

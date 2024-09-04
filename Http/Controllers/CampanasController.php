@@ -19,7 +19,7 @@ class CampanasController extends AccountBaseController
     public function __construct()
     {
         parent::__construct();
-        $this->url_activar_rc = HelperController::endpoiny('ejecutable_inicio_sesion');
+        $this->url_activar_rc = HelperController::endpoiny('ejecutable_inicio_sesion' , $this->data['company']['id']);
       
         $this->pageTitle = 'app.menu.balance_admin';
         $this->activeSettingMenu = 'front_theme_settings';
@@ -108,25 +108,25 @@ class CampanasController extends AccountBaseController
 
     //returno de paises lubot_master
     public function paises(){
-       $response = Http::withHeaders(['Accept' => 'application/json'])->get(HelperController::endpoiny('paises'));
+       $response = Http::withHeaders(['Accept' => 'application/json'])->get(HelperController::endpoiny('paises' , $this->data['company']['id'])  );
        $data = json_decode($response ,true );
        return $data;
     }
 
     public function tipo_de_negocio(){
-        $response = Http::withHeaders(['Accept' => 'application/json'])->get( HelperController::endpoiny('segmentos'));
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get( HelperController::endpoiny('segmentos' , $this->data['company']['id']) );
         $data = json_decode($response ,true );
         return $data;
      }
 
      public function barrios(){
-        $response = Http::withHeaders(['Accept' => 'application/json'])->get( HelperController::endpoiny('barrios'));
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get( HelperController::endpoiny('barrios', $this->data['company']['id']));
         $data = json_decode($response ,true );
         return $data;
      }
  
      public function ciudades(){
-        $response = Http::withHeaders(['Accept' => 'application/json'])->get(HelperController::endpoiny('ciudades'));
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get( HelperController::endpoiny('ciudades' ,$this->data['company']['id']) );
         $data = json_decode($response ,true );
         return $data;
      }
@@ -249,10 +249,10 @@ class CampanasController extends AccountBaseController
         $response = "";
          try{
             $response = Http::withHeaders(['Accept' => 'application/json'])
-            ->get(HelperController::endpoiny('activar_ejecutable_ws')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
+            ->get(HelperController::endpoiny('activar_ejecutable_ws' , $this->data['company']['id'])."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
 
             Http::withHeaders(['Accept' => 'application/json'])
-            ->get(HelperController::endpoiny('activar_ejecutable_ryc')."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
+            ->get(HelperController::endpoiny('activar_ejecutable_ryc' , $this->data['company']['id'])."/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
          }catch (Exception  $e)
          {
             $response = $e;
@@ -357,7 +357,7 @@ class CampanasController extends AccountBaseController
             $this->data['segmentos'] = $segmentos;
             $this->data['campana'] = $campana;
             $this->data['id_companie'] =  $this->data['company']['id'];
-             $this->data['url_activar_bot'] = HelperController::endpoiny('activar_ejecutable_ws');
+             $this->data['url_activar_bot'] = HelperController::endpoiny('activar_ejecutable_ws' , $this->data['company']['id']);
             $dataTable->withId($id);
             return $dataTable->render('lubot::campanas.segmentos' ,  $this->data);
         }

@@ -81,11 +81,11 @@ class HelperController extends AccountBaseController
     ];
     return $data[$key];
   }
-  public static function endpoiny($key)
+  public static function endpoiny($key , $id)
   {
     //$web_hook = self::url('lubot_master'); produccion
-    $web_hook = self::url('WEB_HOOK_RUL'); // desarrollo
-    $lubot_master = self::url('lubot_master');
+    $web_hook = self::url('WEB_HOOK_RUL' , $id); // desarrollo
+    $lubot_master = self::url('lubot_master', $id);
     $data = [
       'ejecutable_inicio_sesion' => "{$web_hook}/activar_inicio_session",
       'activar_ejecutable_ws' => "{$web_hook}/activar_ejecutable_ws",
