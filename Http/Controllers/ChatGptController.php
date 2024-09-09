@@ -43,7 +43,7 @@ class ChatGptController extends AccountBaseController
         $objetivo = DB::table('objetivos_lubot')->where('id' , $campana[1])->first();
        
         $content = (
-                "Te llamas $campana[0].\n"
+              "Te llamas $campana[0].\n"
             . "Tu objetivo es $objetivo->objetivos.\n"
             . "El lugar en el que trabajas se dedica a  $campana[2].\n"
             . "REGLAS OBLIGATORIAS:\n"

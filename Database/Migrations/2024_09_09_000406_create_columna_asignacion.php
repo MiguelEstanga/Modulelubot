@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('prompts', function (Blueprint $table) {
-            $table->id();
-            $table->json('prompt');
-            $table->unsignedBigInteger('id_campanas')->nullable();
-            $table->timestamps();
+        Schema::table('segmentos', function (Blueprint $table) {
+            // Agregar la nueva columna aquí
+            $table->integer('asignacion')->default(0)->after('estado');
+          
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prompts');
+        Schema::dropIfExists('');
     }
 };

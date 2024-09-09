@@ -6,11 +6,12 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Http\Controllers\AccountBaseController;
+use App\View\Components\Auth;
 use Modules\Lubot\Http\Controllers\HelperController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Auth as Login;
 
 class LubotController extends AccountBaseController
 {
@@ -58,6 +59,11 @@ class LubotController extends AccountBaseController
      */
     public function Activacion()
     {
+        
+        //json_decode($this->data['company']->package['module_in_package'] , true);
+        $settings = DB::table('lubot_settings')->where('id_companie' , $this->data['company']['id'])->exists();
+        if (!$settings) return  redirect()->route('lubot.settings')->with('message' , 'Debe configurar lubot antes usarlo');
+
         $this->data['activar_ws_url'] = HelperController::endpoiny('ejecutable_inicio_sesion' , $this->data['company']['id']);
         $this->data['logo'] = HelperController::public('logo');
         $this->data['id_companie'] = $this->data['company']['id'];

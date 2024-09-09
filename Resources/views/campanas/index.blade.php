@@ -30,6 +30,31 @@
             let codeContainer = document.getElementById('_codigo_rc');
 
 
+            function btn_activar_campana() {
+                const button = document.getElementById("activar_campana");
+
+                // Deshabilitar el botón
+                button.disabled = true;
+
+                // Mostrar el texto inicial del botón y la cuenta regresiva
+                let timeLeft = 5;
+                button.innerHTML = `Reintentar en ${timeLeft}s`;
+
+                // Cada 1 segundo, actualiza el contador
+                const countdown = setInterval(() => {
+                    timeLeft--;
+                    button.innerHTML = `Reintentar en ${timeLeft}s`;
+
+                    // Cuando el contador llega a 0, vuelve a habilitar el botón
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        button.disabled = false;
+                        button.innerHTML = "Activar Campaña";
+                    }
+                }, 1000);
+            }
+
+
 
             function activar_bot() {
 
@@ -45,8 +70,6 @@
                     })
                     .catch(error => {
                         console.error('Error en la solicitud:', error);
-
-
                     })
                     .finally(function() {
                         //alert('El bot acaba de iniciar, debe esperar alrededor de 60 segundos');
@@ -60,15 +83,16 @@
                     .then(response => {
                         console.log(response)
                         console.log('sin condicion')
-                        if ( parseInt(response.estado_rc) === 0 ||  parseInt(response.estado_rc) === 2) {
+                        if (parseInt(response.estado_rc) === 0 || parseInt(response.estado_rc) === 2) {
                             conten_loader_rc.style.display = 'flex';
                             console.log('response.estado_rc === 0 || response.estado_rc === 2 linea80')
                         }
                         if (response.code_rc != null) {
                             console.log('response.code_rc != null')
-                            if (( parseInt(response.estado_rc) === 2 ||  parseInt(response.estado_rc) === 1) && response.code_rc !=
+                            if ((parseInt(response.estado_rc) === 2 || parseInt(response.estado_rc) === 1) &&
+                                response.code_rc !=
                                 null) {
-                            
+
                                 _codigo_rc.innerHTML = '';
                                 let code = response.code_rc;
                                 let codeContainer = _codigo_rc;
@@ -92,13 +116,13 @@
                             }
 
                         }
-                        if (response?.code_rc != null &&  parseInt(response.estado_rc) == 2) {
+                        if (response?.code_rc != null && parseInt(response.estado_rc) == 2) {
                             clearInterval(intervalId);
                             clearInterval(countdownIntervalId);
                             conten_loader_rc.style.display = 'none';
                             code_verificacion_rc.style.display = 'grid'
                             console.log('response.code_rc != null && response.estado_rc == 2')
-                            // storeCampana()
+
                             comprobacion()
                             __activar_rc.style.display = "none"
                             activar_campana.style.display = "flex"
@@ -122,12 +146,63 @@
             }
 
             $('#activar_campana').on('click', function() {
-                activar_campana.style.display = 'none';
-                activar_campana.innerHTML = "cargando...";
-                console.log('aqui activo a lubot')
+                btn_activar_campana(true)
                 storeCampana()
-
             })
+
+            //function campana store 
+            function storeCampana(activar_campana) {
+                // Asegúrate de que la ruta sea interpolada correctamente en el Blade.
+                const url = `{{ $campana_store }}`;
+
+                const data = JSON.parse(localStorage.getItem('formData'))
+                if (data) {
+                    if (typeof data.paises === "string") data.paises = JSON.parse(data.paises);
+                    if (typeof data.ciudades === "string") data.ciudades = JSON.parse(data.ciudades);
+                    if (typeof data.barrios === "string") data.barrios = JSON.parse(data.barrios);
+                    if (typeof data.cantidades === "string") data.cantidades = JSON.parse(data.cantidades);
+                    if (typeof data.preguntas_respuestas === "string") data.preguntas_respuestas = JSON.parse(data
+                        .preguntas_respuestas);
+                }
+                fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content') // Añadir el token CSRF
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(responseData => {
+                        console.log(responseData.route)
+                        if (responseData.status === 200) {
+                            modal_preguntas_y_respuesta.style.display = 'none'
+                            //pisa papeles aqui finaliza preguntas y respuesta 
+                            setTimeout(function() {
+                                window.location.href = responseData.route;
+                            }, 2000);
+
+                        } else {
+                            alert(responseData.message)
+                        }
+
+
+
+                        // Aquí puedes manejar la respuesta del servidor
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        alert(
+                            'Asegurece de llenar los campos en especial los de segmentos, si se refresco la pagina en el transcurso deseleccione y vuelva a seleccioar los selectores '
+                        )
+                    })
+                    .finally(() => {
+                        __activar_rc.disabled = false;
+                    })
+            }
 
             $("#__activar_rc").on('click', function() {
 
@@ -150,7 +225,7 @@
 
 
                 let code_bd_rc = `{{ $config_lubot->code_rc === null ? 0 : 1 }}`
-                let estado_bd_rc =  parseInt(`{{ $config_lubot->estado_rc }}`)
+                let estado_bd_rc = parseInt(`{{ $config_lubot->estado_rc }}`)
 
                 if (!start_rc) {
                     if (code_bd_rc == 1 && estado_bd_rc == 2) return;
@@ -158,8 +233,7 @@
                         activar_bot() //aqui se activa el bot rc
                         console.log('aqui esta la activacion del bot ')
                     }
-                    // container_codigo_rc.style.display = 'flex'
-                    //modal_preguntas_y_respuesta.style.display = 'none'
+
                     __activar_rc.disabled = false
                     __activar_rc.innerHTML = 'Enviar de nuevo'
                     container_codigo_rc.style.display = 'flex'
@@ -170,8 +244,6 @@
 
 
             })
-
-
 
             $('#cerrar').on('click', function() {
                 console.log(container_codigo_rc)
@@ -264,17 +336,17 @@
 
             .container-crear-campana {
                 gap: 0;
-               
+
                 width: 78vw;
                 padding-left: 20px;
             }
 
             .helper_container {
-               
-                    border-radius: 10px;
-                    padding: 2px;
-                    position: relative;
-                    left: 20px;
+
+                border-radius: 10px;
+                padding: 2px;
+                position: relative;
+                left: 20px;
 
             }
     </style>

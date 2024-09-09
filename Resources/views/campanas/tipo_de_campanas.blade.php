@@ -7,7 +7,7 @@
             @include('lubot::component.vamos-hacer-magia-juntos')
         </div>
 
-        <div class="contenedor_tipo_de_campana" style="gap: 10px;">
+        <div class="contenedor_tipo_de_campana" style="gap: 10px; margin-top:20px;">
 
             <div class="content_logo_helper row" >
                 <div class="lubot_">
@@ -179,7 +179,7 @@
             height: 354px;
         }
 
-        @media (max-width: 1600px) {
+        @media (max-width: 1700px) {
             .lubot_ , .contenedor_tipo_de_campana{
                 width: 60%;
             }

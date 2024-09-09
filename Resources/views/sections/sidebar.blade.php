@@ -1,4 +1,10 @@
-@if (in_array('admin', user_roles()))
+@php
+    
+    $paquete = json_decode($company->package['module_in_package'] , true);   
+    $indice = array_search("Lubot", $paquete);
+@endphp
+@if (in_array('admin', user_roles()) && $indice)
+
     <x-menu-item icon="camera-video" text="Lubot" :addon="App::environment('demo')">
         <x-slot name="iconPath">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
@@ -10,8 +16,6 @@
         <div class="accordionItemContent pb-2">
             <x-sub-menu-item :link="route('lubot.admin')" text="Activacion"/>
             <x-sub-menu-item :link="route('ver_campanas.todas')" text="Mis campañas"/>
-           
-            
         </div>
        
     </x-menu-item>

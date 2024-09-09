@@ -35,8 +35,7 @@
             // Supongamos que tienes un objeto almacenado con la clave "miObjeto"
             localStorage.removeItem('conversacion');
             init_chat()
-            alert('Se a limpiado la cache de la conversación ')
-
+            location.reload();
         }
         _chatForm.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -169,6 +168,7 @@
         .chat-container {
             width: 100%;
             max-width: 758px;
+
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -205,7 +205,7 @@
             border-radius: 8px;
             padding: 10px;
             max-width: 758px;
-            height: 835px;
+            height: 600px;
             overflow-y: auto;
         }
 

@@ -12,7 +12,7 @@
         <x-setting-card>
             <x-slot name="header">
                 <div class="s-b-n-header" id="tabs">
-                    <form action=""></form>
+
                     <nav class="tabs px-4 border-bottom-grey">
                         <div class="nav" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link f-15 zoom-setting active" id="configuracion" data-bs-toggle="tab"
@@ -26,7 +26,12 @@
                                     <!-- Pestaña Home -->
                                     <div class="tab-pane fade show active" id="configuracion" role="tabpanel"
                                         aria-labelledby="home-tab">
-                                        
+                                        @if (session()->has('message'))
+                                            <h2 class="alert-success" style="font-size: 18px!important; padding:10px; ">
+                                                {{ session('message') }}
+                                            </h2>
+                                        @endif
+
                                         <form id="lubotSettingsForm" action="{{ route('lubot.settings_store') }}"
                                             method="POST">
                                             @csrf
@@ -64,11 +69,13 @@
 
 
                                         </form>
-                                        <h2 class="alert-success" style="font-size: 18px!important; padding:10px; display:none" id="msm_success">
+                                        <h2 class="alert-success"
+                                            style="font-size: 18px!important; padding:10px; display:none" id="msm_success">
                                             Actulizacion exitosa!
                                         </h2>
-                                        <h2 class="alert-danger" style="font-size: 18px!important; padding:10px; display:none" id="msm_danger">
-                                           Ocurrio un  problema!
+                                        <h2 class="alert-danger"
+                                            style="font-size: 18px!important; padding:10px; display:none" id="msm_danger">
+                                            Ocurrio un problema!
                                         </h2>
                                     </div>
 
@@ -119,14 +126,14 @@
                         .then(data => {
                             console.log(data)
                             if (data.success === 200) {
-                                msm_success.style.display='grid'
+                                msm_success.style.display = 'grid'
                             }
-                           
+
                         })
                         .catch(error => {
                             console.error('Error:', error);
                             alert('Error al enviar la solicitud');
-                            msm_danger.display='grid'
+                            msm_danger.display = 'grid'
                         })
                         .finally(function() {
                             submitButton.innerHTML = "Guardar"

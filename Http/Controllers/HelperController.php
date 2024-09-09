@@ -33,43 +33,47 @@ class HelperController extends AccountBaseController
     return $bd->nombre;
   }
 
-  public static function url($key, $companie_id = 2)
+  public static function url($key)
   {
-    $config = DB::table('lubot_settings')->where('id_companie', $companie_id)->first() ?? [];
+    $config = DB::table('lubot_settings')->first() ?? [];
     $data = [
-      'lubot_master_url' => $config->LUBOT_MASTER ?? [], //'https://lubot.healtheworld.com.co/',
-      'WEB_HOOK_RUL' => $config->NGROK_LUBOT_WEBHOOK ?? [], //"https://2c09-186-112-18-249.ngrok-free.app/api", 
-      'lubot_master' => $config->LUBOT_MASTER_API ?? [], // "https://lubot.healtheworld.com.co/api" 
-      'BEARER_TOKEN' =>  $config->BEARER_LUBOT_MASTER ?? []
+      'lubot_master_url' => $config->LUBOT_MASTER ?? "", //'https://lubot.healtheworld.com.co/',
+      'WEB_HOOK_RUL' => $config->NGROK_LUBOT_WEBHOOK ?? "", //"https://2c09-186-112-18-249.ngrok-free.app/api", 
+      'lubot_master' => $config->LUBOT_MASTER_API ?? "", // "https://lubot.healtheworld.com.co/api" 
+      'BEARER_TOKEN' =>  $config->BEARER_LUBOT_MASTER ?? ""
     ];
     return  $data[$key];
   }
   // filtro de paises 
-  public static function con_pais($nombre)
+  public static function con_pais($nombre , $name = false )
   {
     $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::url('lubot_master_url') . "pais/{$nombre}");
     $data = json_decode($response, true);
+    if($name) return $data['nombre'] ??  "todas";
     return $data['id'] ?? 0;
   }
 
-  public static function con_ciudad($nombre)
+  public static function con_ciudad($nombre , $name = false )
   {
     $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::url('lubot_master_url') . "ciudad/{$nombre}");
     $data = json_decode($response, true);
+    if($name) return $data['nombre'] ?? "todas";
     return $data['id'] ?? 0;
   }
 
-  public static function con_barrios($nombre)
+  public static function con_barrios($nombre ,$name = false )
   {
     $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::url('lubot_master_url') . "barrios/{$nombre}");
     $data = json_decode($response, true);
+    if($name) return $data['nombre'] ??  "todas";
     return $data['id'] ?? 0;
   }
 
-  public static function con_tipo_negocio($nombre)
+  public static function con_tipo_negocio($nombre , $name = false )
   {
     $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::url('lubot_master_url') . "tipo_negocio/{$nombre}");
     $data = json_decode($response, true);
+    if($name) return $data['nombre'] ??  "todas";
     return $data['id'] ?? 0;
   }
 
@@ -81,11 +85,11 @@ class HelperController extends AccountBaseController
     ];
     return $data[$key];
   }
-  public static function endpoiny($key , $id)
+  public static function endpoiny($key, $id = 0)
   {
     //$web_hook = self::url('lubot_master'); produccion
-    $web_hook = self::url('WEB_HOOK_RUL' , $id); // desarrollo
-    $lubot_master = self::url('lubot_master', $id);
+    $web_hook = self::url('WEB_HOOK_RUL'); // desarrollo
+    $lubot_master = self::url('lubot_master');
     $data = [
       'ejecutable_inicio_sesion' => "{$web_hook}/activar_inicio_session",
       'activar_ejecutable_ws' => "{$web_hook}/activar_ejecutable_ws",
@@ -119,5 +123,34 @@ class HelperController extends AccountBaseController
     }
 
     return $nextRun;
+  }
+
+  //returno de paises lubot_master
+  public function paises()
+  {
+    $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::endpoiny('paises'));
+    $data = json_decode($response, true);
+    return $data;
+  }
+
+  public function tipo_de_negocio()
+  {
+    $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::endpoiny('segmentos'));
+    $data = json_decode($response, true);
+    return $data;
+  }
+
+  public function barrios()
+  {
+    $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::endpoiny('barrios'));
+    $data = json_decode($response, true);
+    return $data;
+  }
+
+  public function ciudades()
+  {
+    $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::endpoiny('ciudades'));
+    $data = json_decode($response, true);
+    return $data;
   }
 }

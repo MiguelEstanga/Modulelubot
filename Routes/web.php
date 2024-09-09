@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Modules\Lubot\Events\CodeWs;
 use Modules\Lubot\Http\Controllers\LubotController;
 use Modules\Lubot\Http\Controllers\BaseDeDatosController;
-
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -60,10 +61,25 @@ Route::prefix('lubot')->group(function() {
     Route::get('lubot-settings', 'ConfigLubotController@lubot_settings')->name('lubot.settings');
     Route::post('lubot_settings_store', 'ConfigLubotController@lubot_settings_store')->name('lubot.settings_store');
 
+    //reactivar camapana
+    Route::get('reactivar-campana/{id}' ,  'CampanasController@reactivar' )->name('reactivar');
+
+    //edit
+    Route::get('propmps/{id}' , 'EditController@propmps')->name('propmps');
+    Route::post('promps-update/{id}' , 'EditController@propmps_actualizar')->name('propmps_update');
 });
 
 Route::get('lubot_pusher/estado_ws/{user_id}/{codigo}' , 'CampanasController@cambiar_estado' )->name('cambiar_estado_ws');
-Route::get('lubot-test' , function(){
+
+
+
+Route::get('lubot-crear_columna_asignacion' , function(){
     //manage_superadmin_app_settings
-    return 0;
+    Schema::table('segmentos', function (Blueprint $table) {
+        // Agregar la nueva columna aquí
+        $table->integer('asignacion')->default(0)->after('estado');
+      
+    });
+    return 'columna asignacion';
+   
 });

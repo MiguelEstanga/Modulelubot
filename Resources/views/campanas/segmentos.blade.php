@@ -6,7 +6,7 @@
 @section('content')
     @php
         use Illuminate\Support\Facades\DB;
-
+        use  Modules\Lubot\Http\Controllers\HelperController; 
         function getPrompt($id)
         {
             $prompt = DB::table('prompts')->where('id_campanas', $id)->first();
@@ -50,7 +50,7 @@
                         </div>
                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Objetivo de lubot </p>
-                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">{{$objetivo->objetivos ?? ''}}</p>
+                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">{{$objetivo->objetivos ?? 's'}}</p>
                         </div>
                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Estado </p>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">tiutlo </p>
-                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">swqsqwsqwsqws</p>
+                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">{{$campana->nombre}} </p>
                         </div>
                         @foreach ($segmentos as $segmento)
                             
@@ -75,7 +75,8 @@
                                         Tipo de negocio :
                                     </p>
                                     <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
-                                        {{ $segmento->tipo_de_negocio }}
+                                        {{ HelperController::con_tipo_negocio( $segmento->tipo_de_negocio , true)}}
+                                      
                                     </p>
                                 </div>
                                 <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
@@ -83,23 +84,18 @@
                                         Barrio :
                                     </p>
                                     <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
-                                        {{ $segmento->barrio }}
+                                      
+                                        {{ HelperController::con_barrios( $segmento->barrio, true)}}
                                     </p>
                                 </div>
-                                <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                    <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
-                                        Barrio :
-                                    </p>
-                                    <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
-                                        {{ $segmento->pais }}
-                                    </p>
-                                </div>
+                               
                                 <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                                     <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
                                         Ciudad :
                                     </p>
                                     <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
-                                        {{ $segmento->ciudad }}
+                                        
+                                        {{ HelperController::con_ciudad(  $segmento->ciudad, true)}}
                                     </p>
                                 </div>
                                 <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
@@ -112,12 +108,6 @@
                                 </div>
                            
                         @endforeach
-                        <div class="container">
-                            <button class="btn btn-danger">
-                                Eliminar
-                            </button>
-                        </div>
-
                     </div>
                 </div>
                 </div>
@@ -144,19 +134,20 @@
                                 Estado del bot:
                             </p>
                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap" id="campana_estado_encendido">
-
+                                {{ $campana->encendido === 0 ? "Apagado" : 'Encendido' }}
                             </p>
-                        </div>
-                        <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                            <div class="loader" style="display: none" id="loader_spiner">
-                                
-                            </div>
                         </div>
                     </div>
                     <div class="container">
-                        <button class="btn btn-success " id="reactivar_campana" style="margin: 10px; width:100%;">
-                            Reactivar campaña
-                        </button>
+                        @if($campana->encendido === 0)
+                     
+                            <a href="{{route('reactivar' , $campana_id)}}" class="btn btn-success " id="reactivar_campana" style="margin: 10px; width:100%;">
+                                Reactivar campaña
+                            </a>
+                        @else
+                            Encendido
+                        @endif
+                       
                     </div>
                 </div>
             </div>
@@ -166,7 +157,7 @@
 
 
         <script>
-          
+             
               
         </script>
     @endif

@@ -1,6 +1,6 @@
 @include('lubot::campanas.components.activar_rc')
 @include('lubot::campanas.components.preguntas_respuestas')
-@php 
+@php
     use Modules\Lubot\Http\Controllers\HelperController;
 @endphp
 <div class="container_info container-auto">
@@ -35,12 +35,10 @@
                 <span class="text-layout">cada</span>
                 <div class="col-md-2">
                     <select name="temporalidad" class="form-control selectpicker">
-
                         <option value="minutes">Minutos Solo para desarrollo</option>
                         <option value="hours"> Horas</option>
                         <option value="days">Dia</option>
                         <option value="weeks">Semanas</option>
-
                     </select>
                 </div>
             </div>
@@ -54,7 +52,7 @@
 
 
             </div>
-            <div class="btn_container">
+            <div class="btn_container" style="margin-top: 30px;">
                 <button onclick="modal_preguntas_respuest()" type="submit" class="btn btn-envio">Pagar y Enviar
                     Campaña</button>
             </div>
@@ -88,7 +86,7 @@
 <script>
     // Crea un nuevo objeto FormData
     const formData = new FormData();
-    console.log( 'form data en local',localStorage.getItem('formData'))
+    console.log('form data en local', localStorage.getItem('formData'))
     // Función para actualizar el FormData
     function updateFormData() {
         // Limpiar el formData antes de agregar nuevos valores
@@ -131,7 +129,7 @@
         document.querySelectorAll('select[name="ciudad[]"]').forEach(select => {
             ciudadesArray.push({
                 id: select.value
-            }); 
+            });
         });
         formData.append('ciudades', JSON.stringify(ciudadesArray));
 
@@ -175,7 +173,7 @@
 
         // Guardar el objeto en localStorage
         localStorage.setItem('formData', JSON.stringify(formDataObject));
-        
+
         console.log('FormData actualizado y guardado en localStorage:', formDataObject);
     }
 
@@ -346,8 +344,8 @@
     }
 
     function loadciudad(paisSelect) {
-      
-        loadOptions(paisSelect, '{{HelperController::url('lubot_master')}}/ciudades' , 'ciudad' );
+
+        loadOptions(paisSelect, `{{ $loadCiudad }}/ciudades`, 'ciudad');
         const parentRow = paisSelect.closest('.input-row');
         const barrioSelect = parentRow.querySelector('select[name="barrio[]"]');
 
@@ -364,7 +362,7 @@
     }
 
     function loadBarrios(ciudadSelect) {
-        loadOptions(ciudadSelect, '{{HelperController::url('lubot_master')}}/barrios', 'barrio');
+        loadOptions(ciudadSelect, `{{ $loadBarrios }}/barrios`, 'barrio');
     }
 
 
@@ -376,15 +374,15 @@
         // Crear una nueva fila con los mismos elementos que la original
         var newForm = `
             <div class="preguntas_respuesta">
-                <div class="col-md-5">
+                <div class=""">
                     <input type="text" class="custom_input margin-none" placeholder="Si el cliente dice:" name="pregunta[]">
                 </div>
-                <div class="col-md-5">
-                    <input type="text" class="custom_input margin-none" placeholder="ubot debería responder:" name="respuesta[]">
-                </div>
                 <div class="">
-                    <button class="btn btn-success" type="button" onclick="addForm(this)">+</button>
-                    <button class="btn btn-danger" type="button" onclick="removeForm(this)">-</button>
+                    <input type="text" class="custom_input margin-none" placeholder="Lubot debería responder:" name="respuesta[]">
+                </div>
+                <div class="container_agregar_borrar">
+                    <button class="btn btn-success btn_mas_menos" type="button" onclick="addForm(this)">+</button>
+                    <button class="btn btn-danger btn_mas_menos" type="button" onclick="removeForm(this)">-</button>
                 </div>
             </div>
      `;
@@ -422,92 +420,64 @@
         updateFormData();
     }
 
-    //function campana store 
-    function storeCampana() {
-        // Asegúrate de que la ruta sea interpolada correctamente en el Blade.
-       
-        const url = `{{ $campana_store }}`;
-        console.log('form')
-        const data = JSON.parse(localStorage.getItem('formData'))
-        if (data) {
-            if (typeof data.paises === "string") data.paises = JSON.parse(data.paises);
-            if (typeof data.ciudades === "string") data.ciudades = JSON.parse(data.ciudades);
-            if (typeof data.barrios === "string") data.barrios = JSON.parse(data.barrios);
-            if (typeof data.cantidades === "string") data.cantidades = JSON.parse(data.cantidades);
-            if (typeof data.preguntas_respuestas === "string") data.preguntas_respuestas = JSON.parse(data
-                .preguntas_respuestas);
-        }
-        console.log(data)
-        fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        'content') // Añadir el token CSRF
-                },
-                body: JSON.stringify(data)
-            })
+
+
+    function comprobacion() {
+        fetch(`{{ route('lubot.default_compania') }}`)
+            .then(response => response.json())
             .then(response => {
 
-                return response.json();
-            })
-            .then(responseData => {
-                //if (responseData?.status === 'error') alert(`${responseData.message}`)
-                if (responseData.status === 200) {
-                    modal_preguntas_y_respuesta.style.display = 'none'
-                    //pisa papeles aqui finaliza preguntas y respuesta 
-                    console.log('antes del reload ')
-                    location.reload();
+                if (parseInt(response.estado_rc) === 2 && response.code_rc != null) {
+
+                    activar_campana.style.display = "flex"
+                    container_codigo_rc.style.display = 'none'
+                    __activar_rc.style.display = "none"
                 }
-                console.log(responseData);
-                // Aquí puedes manejar la respuesta del servidor
-            })
-            .catch(error => {
-                console.error('Error:', error)
-                __activar_rc.disabled = false;
-                __activar_rc.innerHTML = 'Enviar Campaña'
-                alert(
-                    'Asegurece de llenar los campos en especial los de segmentos, si se refresco la pagina en el transcurso deseleccione y vuelva a seleccioar los selectores '
-                )
-            })
-            .finally(() => {
-                __activar_rc.disabled = false;
 
-
+                console.log(response)
             })
     }
-
-    function comprobacion()
-    {
-        fetch(`{{ route('lubot.default_compania') }}`)
-        .then(response => response.json())
-        .then(response => {
-                    
-                    if(parseInt(response.estado_rc) === 2 && response.code_rc != null)
-                    {
-                     
-                        activar_campana.style.display = "flex"
-                        container_codigo_rc.style.display = 'none'
-                          __activar_rc.style.display ="none"
-                    }
-                   
-                    console.log(response)
-         })
-      }
 
 
     function modal_preguntas_respuest() {
         //const nombre_campana = document.querySelector('input[name="nombre_campana"]');
         comprobacion()
         const validacion = JSON.parse(localStorage.getItem('formData'));
-        console.log(validacion.nombre_campana.length)
+        console.log(validacion.barrios)
+        let barrios = JSON.parse(validacion.barrios);
+        let ciudad = JSON.parse(validacion.ciudades);
+        let pais  = JSON.parse(validacion.paises);
+        let cantidad = JSON.parse(validacion.cantidades);
+
+        for (let i = 0; i < barrios.length; i++) {
+            if (barrios[i].id === null || barrios[i].id === "") {
+                alert("el barrio de la columna" + (i + 1) + " está vacío o es nulo.");
+                return ;
+            }
+
+            if (pais[i].id === null || pais[i].id === "") {
+                alert("el pais de la columna" + (i + 1) + " está vacío o es nulo.");
+                return ;
+            }
+
+            if (barrios[i].id === null || barrios[i].id === "") {
+                alert("el barrio de la columna" + (i + 1) + " está vacío o es nulo.");
+                return ;
+            }
+
+            if (cantidad[i].id === null || cantidad[i].id === "") {
+                alert("el cantidad de la columna" + (i + 1) + " está vacío o es nulo.");
+                return ;
+            }
+        }
+       
+
         if (validacion.nombre_campana.length < 4) {
             alert('El nombre de la campana debe tener al menos 4 letras')
         }
         if (validacion.frecuencia.length < 1) {
             alert('debe seleccionar con que frecuencia desea enviar la campana')
         }
-
         if (
             validacion.nombre_campana.length >= 4 && validacion.frecuencia.length >= 1
         ) {

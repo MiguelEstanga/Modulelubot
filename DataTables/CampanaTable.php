@@ -8,8 +8,21 @@ use Yajra\DataTables\Html\Column;
 
 class CampanaTable extends BaseDataTable
 {
+    public $idCompanie;
+
+    public function objetivo_lubot($id)
+    {
+        $objetivo = DB::table('objetivos_lubot')->where('id' , $id)->first();
+        return $objetivo->objetivos;
+    }
+    public function ConId($id)
+    {
+        $this->idCompanie = $id;
+        return $this;
+    } 
     public function dataTable($query)
     {
+
         return datatables()
             ->query($query)
             ->addIndexColumn()
@@ -24,6 +37,7 @@ class CampanaTable extends BaseDataTable
                 
                         $action .='<a href="' . route('campanas.eliminar', $row->id) . '" class="dropdown-item"><i class="bi bi-trash3"></i> Eliminar</a>';
                 $action .= '<a href="' . route('campana_segmentes', $row->id) . '" class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . __('app.view') . '</a>';
+                $action .= '<a  onclick="edit('.$row->id.')" class="dropdown-item"><i class="fa fa-eye mr-2"></i>' . 'Propms' . '</a>';
                 $action .= '</div>
                     </div>
                 </div>';
@@ -45,7 +59,7 @@ class CampanaTable extends BaseDataTable
             }) 
             
             ->addColumn('temporalidad', function ($row) {
-                return $row->spbre_la_empresa;
+                return $row->temporalidad;
             })   
 
             ->addColumn('credito', function ($row) {
@@ -53,16 +67,20 @@ class CampanaTable extends BaseDataTable
             })   
 
             ->addColumn('objetivo_de_lubot', function ($row) {
-                return $row->credito;
-            })   
+                return  $this->objetivo_lubot($row->objetivo_de_lubot) ;
+            })  
+            
+            ->addColumn('estado', function ($row) {
+                return  $row->encendido ;
+            })  
             ->rawColumns(['action'  ]); // Permitir HTML en estas columnas
             
     }
  
     public function query()
     {
-        $query = DB::table('campanas')
-            ->select(['id', 'nombre' , 'como_me_llamo' ,'spbre_la_empresa' , 'temporalidad' , 'credito' , 'objetivo_de_lubot'])
+        $query = DB::table('campanas' , $this->idCompanie)
+            ->select(['id', 'nombre' , 'como_me_llamo' ,'spbre_la_empresa' , 'temporalidad' , 'credito' , 'objetivo_de_lubot' , 'encendido'])
             ;
         return $query;
     }
@@ -94,6 +112,7 @@ class CampanaTable extends BaseDataTable
             Column::make('temporalidad')->title('temporalidad'),
             Column::make('credito')->title('credito'),
             Column::make('objetivo_de_lubot')->title('Objetivo de lubot'),
+            Column::make('estado')->title('Estado'),
             Column::computed('action')->exportable(false)->printable(false)->orderable(false)->searchable(false)->title(__('app.action'))
                 ->width(150)->addClass('text-right pr-20'),
           
