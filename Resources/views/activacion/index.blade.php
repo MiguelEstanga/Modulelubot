@@ -47,7 +47,7 @@
         .code-part {
             font-weight: bold;
             font-size: 20px;
-            padding: 10px;
+            padding: 6px;
             margin: 0 2px;
             border: 2px solid #085837;
             border-radius: 5px;

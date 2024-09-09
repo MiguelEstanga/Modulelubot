@@ -268,6 +268,7 @@
     .code-container {
         display: flex;
         align-items: center;
+        
     }
 
     #code,
@@ -278,14 +279,14 @@
         background-color: #ffffff;
         margin-top: 10px 0;
         font-family: Arial, sans-serif;
+       
     }
 
     .code-part {
         font-weight: bold;
-        font-size: 20px;
-        padding: 10px;
+        font-size: 18px;
+        padding: 6px!important;
         margin: 0 2px;
-       
         border-radius: 5px;
         text-align: center;
         background-color: #fff;

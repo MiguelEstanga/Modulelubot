@@ -35,8 +35,8 @@
                 <span class="text-layout">cada</span>
                 <div class="col-md-2">
                     <select name="temporalidad" class="form-control selectpicker">
-                        <option value="minutes">Minutos Solo para desarrollo</option>
-                        <option value="hours"> Horas</option>
+                        <!--option value="minutes">Minutos Solo para desarrollo</option>
+                        <option value="hours"> Horas</option-->
                         <option value="days">Dia</option>
                         <option value="weeks">Semanas</option>
                     </select>
@@ -44,7 +44,7 @@
             </div>
             <div class="frecuencia">
                 <span class="text-layout">Selecciona tu plan</span>
-                <div class="col-md-2">
+                <div class="">
                     <select name="plan" class=" selectpicker" style="width:284px!important;">
                         <option value=" 30 Envíos  PRO - $10 USD"> 30 Envíos PRO - $10 USD</option>
                     </select>
@@ -73,6 +73,7 @@
         justify-content: start;
         align-items: center;
         gap: 10px;
+      
         margin-top: 10px;
     }
 

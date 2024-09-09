@@ -50,7 +50,7 @@ class ActivarCampana extends Command
             ->where('next_run_at', '<=', now())->get();
         $contador = 0;
         foreach ($schedules as $schedule) {
-            //$this->notifyViaApi($schedule->campaign_id, $schedule->companie_id);
+            $this->notifyViaApi($schedule->campaign_id, $schedule->companie_id);
             
             DB::table('campaign_schedules')->where('id', $schedule->id)
             ->update(['next_run_at' => $this->calculateNextRun($schedule)]);
