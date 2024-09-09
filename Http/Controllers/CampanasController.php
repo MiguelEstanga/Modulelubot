@@ -401,7 +401,7 @@ class CampanasController extends AccountBaseController
 
     public function ver_campanas(CampanaTable $dataTable)
     {
-        //return 0;
+        //return  $this->data['company']['id'];
         $this->activeMenu = 'Campañas';
         $campanas =  DB::table('campanas')->where('id_companies',  $this->data['company']['id'])->get();
         //return $prompt = DB::table('prompts')->where('id_campanas', 6)->first()->prompt;

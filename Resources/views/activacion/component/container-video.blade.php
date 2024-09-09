@@ -1,16 +1,15 @@
 <div class="helper_container">
-    <div class="content_logo_helper">
-        <div class="logo">
-            <img src="{{ $logo }}" width="100px;" >
+    <div class="row">
+        <div class="logo col-md-3">
+            <img src="{{ $logo }}"  >
         </div> 
-        <div class="tex-container">
+        <div class="tex-container col-md-6">
             <h2>Bienvenido a Lubot</h2>
             <div class="">
                 <p class="text-layout "> 
                     El primer asistente con Inteligencia Artificial, capaz de conectar
                 tu negocio con potenciales clientes en todo el mundo
                 </p>
-                
             </div> 
         </div>
 

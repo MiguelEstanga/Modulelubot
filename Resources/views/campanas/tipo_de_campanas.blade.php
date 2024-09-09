@@ -2,17 +2,17 @@
 @include('lubot::css.css')
 
 @section('content')
-    <div class="content-wrapper row">
-        <div class="helper_container">
-            @include('lubot::component.vamos-hacer-magia-juntos')
-        </div>
+    <div class="content-wrapper " >
+        
+        @include('lubot::component.vamos-hacer-magia-juntos')
+        
 
-        <div class="contenedor_tipo_de_campana" style="gap: 10px; margin-top:20px;">
+        <div class="contenedor_tipo_de_campana" style="">
 
-            <div class="content_logo_helper row" >
+            <div class="content_logo_helper row">
                 <div class="lubot_">
                     <div class=" row">
-                        <div class="logo" class="logo">
+                        <div  class="">
                             <img src="{{ $logo }}" alt="">
                         </div>
                         <div class="col-md-8">
@@ -20,7 +20,7 @@
                                 <h2 class="fuente-titulo-xdefecto ">
                                     envía tu campaña
                                 </h2>
-                                <p class="text-layout" >
+                                <p class="text-layout">
                                     Selecciona la opción que más te guste
                                 </p>
                             </div>
@@ -44,13 +44,12 @@
                                     tus clientes, y los convenceré
                                     para cumplir mi objetivo, luego,
                                     haré una lista de los clientes interesados
-                                
+
                                 </p>
 
                             </div>
-                            <div class="btn_container" >
-                                <a href="{{ route('tipo_de_campanas') }}"
-                                    style=""
+                            <div class="btn_container">
+                                <a href="{{ route('tipo_de_campanas') }}" style=""
                                     class="btn btn-success  color-segundario-text">
                                     Campaña de Saludo
                                 </a>
@@ -61,7 +60,7 @@
                     <div class="pregunta">
 
                         <div class="content_pregunta">
-                           
+
                             <div class="baner_logo_leyenda_pregunta">
                                 <div class="logo_request">
                                     <img src="{{ $requiest }}" width="77px" height="77px">
@@ -71,12 +70,12 @@
                                     tus clientes, y los convenceré
                                     para cumplir mi objetivo, luego,
                                     haré una lista de los clientes interesados
-                                
+
                                 </p>
-                               
+
                             </div>
-                            <div class="btn_container" >
-                                <a href="{{ route('campanas.index' , 0) }}" style="color: #fff"
+                            <div class="btn_container">
+                                <a href="{{ route('campanas.index', 0) }}" style="color: #fff"
                                     class="btn content-btn-campana color-fondo-primario color-segundario-text">
                                     Campaña Pro
                                 </a>
@@ -93,21 +92,23 @@
 
     </div>
     <style>
-      
-        .baner_logo_leyenda_pregunta{
+        .content-wrapper {
           
-            display: grid;
-            grid-template-columns:30% 70%;
-            gap: 5px; 
-            
         }
-        .lubot_ {
-            padding-left: 30px;
-            max-width: 1007px;
-            display: flex;
+
+        .baner_logo_leyenda_pregunta {
+
+            display: grid;
+            grid-template-columns: 30% 70%;
+            gap: 5px;
 
         }
-      
+
+        .lubot_ {
+            width: 60%;
+            padding: 10px;
+        }
+
 
         .btn_container {
 
@@ -158,7 +159,7 @@
 
         .opciones_de_campana {
             display: flex;
-            justify-content: center;
+          
             gap: 30px;
 
             width: 1007px;
@@ -171,22 +172,32 @@
 
         .contenedor_tipo_de_campana {
             background: rgb(255, 255, 255);
-            display: grid;
-            place-content: center;
+           
             padding: 10px;
-         
-            width: 1017px;
+       
+            width: 900px;
             height: 354px;
         }
 
-        @media (max-width: 1700px) {
-            .lubot_ , .contenedor_tipo_de_campana{
-                width: 60%;
+       @media (max-width: 1800px) {
+
+           
+            .contenedor_tipo_de_campana {
+                width: 50%;
+                height: auto;
             }
+
             .lubot_ {
-                
-                position: relative;
-                right: -246px;
+                padding: 20px;
+                width: 100%;
+            }
+
+            .helper_container {
+             
+                width: 550px!important;
+            }
+            .video{
+                width: 510px!important;
             }
         }
     </style>

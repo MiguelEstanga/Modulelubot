@@ -21,7 +21,7 @@
 
                 <div class="">
                     <select name="objetivo_lubot" class="form-control selectpicker" data-live-search="true">
-                        <option value="0" selected>¿Cuál es mi objetivo?</option>
+                        <option value="1" selected>¿Cuál es mi objetivo?</option>
                         @foreach ($objetivos as $items)
                             <option value="{{ $items->id }}">{{ $items->nombre }}</option>
                         @endforeach

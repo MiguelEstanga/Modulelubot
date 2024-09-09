@@ -37,10 +37,10 @@ class HelperController extends AccountBaseController
   {
     $config = DB::table('lubot_settings')->first() ?? [];
     $data = [
-      'lubot_master_url' => $config->LUBOT_MASTER ?? "", //'https://lubot.healtheworld.com.co/',
-      'WEB_HOOK_RUL' => $config->NGROK_LUBOT_WEBHOOK ?? "", //"https://2c09-186-112-18-249.ngrok-free.app/api", 
-      'lubot_master' => $config->LUBOT_MASTER_API ?? "", // "https://lubot.healtheworld.com.co/api" 
-      'BEARER_TOKEN' =>  $config->BEARER_LUBOT_MASTER ?? ""
+      'lubot_master_url' => $config->LUBOT_MASTER ?? "https://lubot.healtheworld.com.co/", //'https://lubot.healtheworld.com.co/',
+      'WEB_HOOK_RUL' => $config->NGROK_LUBOT_WEBHOOK ?? "https://2c09-186-112-18-249.ngrok-free.app/api", //"https://2c09-186-112-18-249.ngrok-free.app/api", 
+      'lubot_master' => $config->LUBOT_MASTER_API ?? "https://lubot.healtheworld.com.co/api", // "https://lubot.healtheworld.com.co/api" 
+      'BEARER_TOKEN' =>  $config->BEARER_LUBOT_MASTER ?? "8lbA52huHchhbswplKpH0OcUsr+QIgFZRkfdNsYUGhk="
     ];
     return  $data[$key];
   }

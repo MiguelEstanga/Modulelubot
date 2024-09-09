@@ -255,8 +255,6 @@
         .container-crear-campana {
             display: flex;
             width: 85vw;
-            gap: 10px;
-            padding: 10px;
             justify-content: center !important;
             align-items: flex-start !important;
         }
@@ -335,10 +333,10 @@
             }
 
             .container-crear-campana {
-                gap: 0;
+
 
                 width: 78vw;
-                padding-left: 20px;
+
             }
 
             .helper_container {
@@ -348,6 +346,30 @@
                 position: relative;
                 left: 20px;
 
+            }
+
+
+            @media (max-width: 1800px) {
+
+                .lubot_,
+                .contenedor_tipo_de_campana {
+                    width: 60%;
+                }
+
+                .lubot_ {
+
+                    position: relative;
+                    right: -246px;
+                }
+
+                .helper_container {
+
+                    width: 550px !important;
+                }
+
+                .video {
+                    width: 510px !important;
+                }
             }
     </style>
     </div>

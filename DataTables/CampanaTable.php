@@ -79,7 +79,8 @@ class CampanaTable extends BaseDataTable
  
     public function query()
     {
-        $query = DB::table('campanas' , $this->idCompanie)
+        $query = DB::table('campanas')
+            ->where('id_companies' , $this->idCompanie)
             ->select(['id', 'nombre' , 'como_me_llamo' ,'spbre_la_empresa' , 'temporalidad' , 'credito' , 'objetivo_de_lubot' , 'encendido'])
             ;
         return $query;
