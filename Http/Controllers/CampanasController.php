@@ -284,7 +284,7 @@ class CampanasController extends AccountBaseController
         } catch (Exception  $e) {
             $response = $e;
         }
-        $this->actualizarAsignacionSegmentos($campana_id);
+        self::actualizarAsignacionSegmentos($campana_id);
         
         try {
             $response = Http::withHeaders(['Accept' => 'application/json'])
@@ -305,7 +305,7 @@ class CampanasController extends AccountBaseController
         );
     }
 
-    function actualizarAsignacionSegmentos($campana_id)
+    public static function actualizarAsignacionSegmentos($campana_id)
     {
         // Obtener la campaña específica
         $campana =  DB::table('campanas')->where('id' , $campana_id)->first() ;//Campana::with('segmentos')->findOrFail($idCampana);
@@ -383,7 +383,7 @@ class CampanasController extends AccountBaseController
     public function reactivar($campana_id)
     {
         
-        
+        self::actualizarAsignacionSegmentos($campana_id);
         try {
             $response = Http::withHeaders(['Accept' => 'application/json'])
                 ->get(HelperController::endpoiny('activar_ejecutable_ws', $this->data['company']['id']) . "/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
@@ -393,7 +393,7 @@ class CampanasController extends AccountBaseController
         } catch (Exception  $e) {
             $response = $e;
         }
-        $this->actualizarAsignacionSegmentos($campana_id);
+       
         //DB::table('campanas')->where('id', $campana_id)->update(['encendido' => 1]);
 
         return back();

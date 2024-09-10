@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Modules\Lubot\Http\Controllers\HelperController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-
+use Modules\Lubot\Http\Controllers\CampanasController;
+use Exception;
 class ActivarCampana extends Command
 {
     /**
@@ -51,14 +52,13 @@ class ActivarCampana extends Command
         $contador = 0;
         foreach ($schedules as $schedule) {
             $this->notifyViaApi($schedule->campaign_id, $schedule->companie_id);
-            
+
             DB::table('campaign_schedules')->where('id', $schedule->id)
-            ->update(['next_run_at' => $this->calculateNextRun($schedule)]);
-           
+                ->update(['next_run_at' => $this->calculateNextRun($schedule)]);
         }
         $json = json_encode($schedules);
         $hora = now();
-        $this->info("numero $contador");   
+        $this->info("numero $contador");
         $this->info("segmentos ejecutados $contador");
     }
 
@@ -84,22 +84,21 @@ class ActivarCampana extends Command
 
     private function notifyViaApi($companie_id, $campana_id)
     {
+        // calculamos la prxima ejecucion del promp
+        CampanasController::actualizarAsignacionSegmentos($campana_id);
 
-        // Construir la URL de la API con los datos necesarios
+        try {
+            $response = Http::withHeaders(['Accept' => 'application/json'])
+                ->get(HelperController::endpoiny('activar_ejecutable_ws') ."/$companie_id/{$campana_id}/{$companie_id}");
 
-        $url = HelperController::endpoiny('activar_ejecutable_ws' , $companie_id) . "/{$companie_id}/{$campana_id}/{$companie_id}";
-
-        // Llamar a la API para notificar
-        $response = Http::withHeaders(['Accept' => 'application/json'])->get($url);
-
-        // Comprobar la respuesta de la API
-        if ($response->successful()) {
-            // Actualizar la última notificación en la campaña
-
-            Log::info("Notificación enviada correctamente para la campaña ID: ");
-        } else {
-            Log::error("Error al enviar la notificación para la campaña ID: ");
+            Http::withHeaders(['Accept' => 'application/json'])
+                ->get(HelperController::endpoiny('activar_ejecutable_ryc') . "/$companie_id/{$campana_id}/{$companie_id}");
+        } catch (Exception  $e) {
+            $response = $e;
+            Log::info("error en el crom " ,$response );
         }
+
+        Log::info("Notificación enviada correctamente para la campaña ID: ");
     }
 
     /**

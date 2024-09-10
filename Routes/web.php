@@ -83,3 +83,17 @@ Route::get('lubot-crear_columna_asignacion' , function(){
     return 'columna asignacion';
    
 });
+
+Route::get('version' , function(){
+    return [
+        'name' => 'Features',
+        'verification_required' => true,
+        'envato_item_id' => 29292666,
+        'parent_envato_id' => 23263417,
+        'parent_min_version' => '1.10 + 2',
+        'setting' => null,
+        'autor' => 'Miguel Estanga',
+        'commit' => 'Ajuste de diseño',
+        'time' => '9/9/2024 a las 3:55 pm hora Venezuela'
+    ];  
+});
