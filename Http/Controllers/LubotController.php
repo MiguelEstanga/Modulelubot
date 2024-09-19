@@ -65,7 +65,8 @@ class LubotController extends AccountBaseController
         //if (!$settings) return  redirect()->route('lubot.settings')->with('message' , 'Debe configurar lubot antes usarlo');
 
         $this->data['activar_ws_url'] = HelperController::endpoiny('ejecutable_inicio_sesion' , $this->data['company']['id']);
-        $this->data['logo'] = HelperController::public('logo');
+        $this->data['bearer'] = HelperController::get_token();
+        $this->data['logo'] = HelperController::public('logo'); 
         $this->data['id_companie'] = $this->data['company']['id'];
         $activacion = DB::table('config_lubots')->where('id_companies', $this->data['company']['id'])->exists();
         if (!$activacion) {
@@ -93,7 +94,10 @@ class LubotController extends AccountBaseController
             $existe = DB::table('config_lubots')->where('id_companies', $this->data['company']['id'])->exists();
             if ($existe) {
                 DB::table('config_lubots')->where('id_companies', $this->data['company']['id'])->update(['numero' => $request->numero, 'id_codigo' => $request->codigo]);
-                return back();
+                return response()->json([
+                    'success' => 200,
+                    'response' => 'ok'
+                ]);
             }
             $activar =  DB::table('config_lubots')->insert(
                 [
@@ -109,13 +113,14 @@ class LubotController extends AccountBaseController
         }
         return response()->json([
             'success' => 200,
-            'response' => $activar
+            'response' => $activar,
+            'mensage' => 'aqui'
         ]);
     }
 
     public function correr_bot($companie_id)
     {
-        $url_webhook = HelperController::url('WEB_HOOK_RUL' , $this->data['company']['id']);
+        $url_webhook = HelperController::url('lubot_master' , $this->data['company']['id']);
         $response = Http::withHeaders(['Accept' => 'application/json'])->get("{$url_webhook}/activar_ws/{$companie_id}");
         return json_encode(['ok' => 'ok',  $response]);
     }

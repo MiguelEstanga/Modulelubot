@@ -2,7 +2,11 @@
 @section('content')
     <div class="containt-wrapper">
         <div class="d-flex flex-column w-tables rounded mt-3 bg-white" style="margin: 20px;">
-
+            <div style="margin: 10px;">
+                <a class="btn btn-success" href="{{route('campanas.index' , 1   )}}" >
+                    Enviar campaña
+                </a>
+            </div>
             {!! $dataTable->table(['class' => 'table table-hover border-0']) !!}
 
         </div>

@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Modules\Lubot\Http\Controllers\HelperController;
 use Exception;
+
 class BaseDeDatosController extends AccountBaseController
 {
 
@@ -40,16 +41,28 @@ class BaseDeDatosController extends AccountBaseController
             ->get() ?? [];
         $this->data['logo'] = HelperController::public('logo');
         $this->data['requiest'] = HelperController::public('requiest');
-
+        $this->data['url_segmentos'] = HelperController::endpoiny('segmentos');
         return view('lubot::bd.index', $this->data);
     }
 
+    function limpiar_texto($texto)
+    {
+        // Convertir el texto a UTF-8 para asegurar una correcta manipulación de caracteres especiales
+        $texto = utf8_encode($texto);
+
+        // Expresión regular para eliminar números, espacios, caracteres especiales y acentos
+        $patron = '/[^a-zA-Z]+/';
+
+        // Reemplazar los caracteres que coincidan con el patrón por una cadena vacía
+        $texto_limpio = preg_replace($patron, '', $texto);
+
+        return $texto_limpio;
+    }
 
     public function store(Request $request)
     {
-        $bearerToken = env('BEARER_LUBOT_MASTER');
-        $url = env('NGROK_LUBOT_WEBHOOK');
 
+        $bearerToken = env('BEARER_LUBOT_MASTER');
         if ($request->hasFile('file')) {
             $path = $request->file('file')->store('temp');
             $fullPath = Storage::path($path);
@@ -63,23 +76,22 @@ class BaseDeDatosController extends AccountBaseController
                 'id_companies' => $this->data['company']['id']
             ]);
             // Iterar sobre cada fila del Excel (omitimos la primera fila si son encabezados)
+            $dataToInsert = [];
             foreach ($data->skip(1) as $row) {
                 $jsonData['data'][] = [
-
                     'nombre' => $row[0],
                     'direccion' => $row[1],
                     'telefono' => (string)$row[2],
                     'url_web'  => $row[3],
                     'rating'   =>  (string)$row[4],
                     'descripcion'   => $row[5],
-
-                    'tipo_negocio'   => ($row[7]),
+                    'tipo_negocio'   => $row[7],
                     'pais' => ($row[8]),
                     'ciudad' => ($row[9]),
                     'barrio' => ($row[10])
                 ];
-
-                DB::table('data_db')->insert([
+              
+                $dataToInsert[] = [
                     'id_companies' => $this->data['company']['id'],
                     'id_user_db' => $id_db,
                     'nombre' => $row[0],
@@ -89,23 +101,26 @@ class BaseDeDatosController extends AccountBaseController
                     'rating'   => $row[4],
                     'descripcion'   => $row[5],
                     'mensaje_inicial_enviado'   => $row[6],
-                    'tipo_negocio_id'   => HelperController::con_tipo_negocio(trim($row[7])),
-                    'pais_id' => HelperController::con_pais(trim($row[8])),
-                    'ciudad_id' => HelperController::con_ciudad(trim($row[9])),
-                    'barrio_id' => HelperController::con_barrios(trim($row[10]))
-                ]);
+                    'tipo_negocio_id'   => trim($row[7]),
+                    'pais_id' => trim($row[8]),
+                    'ciudad_id' => trim($row[9]),
+                    'barrio_id' => trim($row[10]),
+                ];
             }
-            //https://2bc7-186-114-113-54.ngrok-free.app/api
-            $url = HelperController::url('WEB_HOOK_RUL', $this->data['company']['id']);
-            $response = Http::withToken($bearerToken)->post("{$url}/utils/save-data-customer", $jsonData);
+           
+            DB::table('data_db')->insert($dataToInsert);
+            /** 
+            $url = HelperController::url('lubot_master', $this->data['company']['id'])."/utils/save-data-customer";
+            return $response = Http::withToken('8lbA52huHchhbswplKpH0OcUsr+QIgFZRkfdNsYUGhk=')->post("https://a379-186-169-8-212.ngrok-free.app/api/utils/save-data-customer", $jsonData);
 
             // Verificar la respuesta
             if ($response->successful()) {
-                response()->json(['message' => 'Datos enviados con éxito'], 200);
+                return response()->json(['message' => 'Datos enviados con éxito'], 200);
                 return redirect()->route('campanas.index', 1);
             } else {
                 return response()->json(['error' => 'Fallo al enviar datos'], $response->status());
             }
+                */
             // Retornar la estructura JSON
             return response()->json($jsonData);
 
@@ -127,10 +142,10 @@ class BaseDeDatosController extends AccountBaseController
             DB::table('campanas')->where('id', $id)->update(['encendido' => 1]);
             try {
                 $response = Http::withHeaders(['Accept' => 'application/json'])
-                    ->get(HelperController::endpoiny('activar_ejecutable_ws' ,$this->data['company']['id'] ) . "/{$this->data['company']['id']}/{$campanas->id}/{$this->data['company']['id']}");
+                    ->get(HelperController::endpoiny('activar_ejecutable_ws', $this->data['company']['id']) . "/{$this->data['company']['id']}/{$campanas->id}/{$this->data['company']['id']}");
 
                 Http::withHeaders(['Accept' => 'application/json'])
-                    ->get(HelperController::endpoiny('activar_ejecutable_ryc' , $this->data['company']['id']) . "/{$this->data['company']['id']}/{$campanas->id}/{$this->data['company']['id']}");
+                    ->get(HelperController::endpoiny('activar_ejecutable_ryc', $this->data['company']['id']) . "/{$this->data['company']['id']}/{$campanas->id}/{$this->data['company']['id']}");
             } catch (Exception  $e) {
                 $response = $e;
             }
@@ -149,8 +164,16 @@ class BaseDeDatosController extends AccountBaseController
     }
     public function delete($id)
     {
+        // Elimina todos los registros relacionados en 'data_db' en una sola operación
+        DB::table('data_db')->where('id_user_db', $id)->delete();
 
-        DB::table('campanas')->where('id', $id)->delete();
+        // Luego elimina el registro del usuario
+        DB::table('user_db')->where('id', $id)->delete();
+
+        return back();
+
+        //$db->delete();
+
         return back();
     }
 }

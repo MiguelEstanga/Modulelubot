@@ -8,26 +8,32 @@
         Configura tu campaña
     </div>
     <div>
-        <input class="custom_input" type="text" placeholder="Nombre de tu campaña" name="nombre_campana" required>
-        <div class="text-layout" style="position: relative; top:-10px;">
-            ¿Qué tipo de clientes te interesan?
-        </div>
-        <div class="">
-            <select name="segmento" class="form-control selectpicker ">
-                @foreach ($segmentos as $segmento)
-                    <option value="{{ $segmento['id'] }}">{{ $segmento['nombre'] }}</option>
-                @endforeach
-            </select>
-        </div>
+        <input class="custom_input" type="text" placeholder="Nombre de tu campaña {{$bd_externar}}" name="nombre_campana" required>
+        @if ($bd_externar == 0)
+            <div class="text-layout" style="position: relative; top:-10px;">
+                ¿Qué tipo de clientes te interesan?
+            </div>
+            <div class="">
+                <select name="segmento" class="form-control selectpicker ">
+                    @foreach ($segmentos as $segmento)
+                        <option value="{{ $segmento['id'] }}">{{ $segmento['nombre'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
+
         <div>
-            <div class="divider" style="margin-top:30px;"></div>
-            <div class="text-layout">
-                ¿Dónde quieres que encuentre clientes para ti?
-            </div>
-            <div>
-                @include('lubot::campanas.components.segmentos')
-            </div>
-            <div class="divider" style="margin-top:30px;"></div>
+            @if ($bd_externar == 0)
+                <div class="divider" style="margin-top:30px;"></div>
+                <div class="text-layout">
+                    ¿Dónde quieres que encuentre clientes para ti?
+                </div>
+                <div>
+                    @include('lubot::campanas.components.segmentos')
+                </div>
+                <div class="divider" style="margin-top:30px;"></div>
+            @endif
+
             <div class="frecuencia">
                 <span class="text-layout">Frecuencia de envío</span>
                 <input class="" type="number" name="frecuencia"
@@ -73,7 +79,7 @@
         justify-content: start;
         align-items: center;
         gap: 10px;
-      
+
         margin-top: 10px;
     }
 
@@ -88,6 +94,8 @@
     // Crea un nuevo objeto FormData
     const formData = new FormData();
     console.log('form data en local', localStorage.getItem('formData'))
+    let bd_externar = {{ $bd_externar }}
+
     // Función para actualizar el FormData
     function updateFormData() {
         // Limpiar el formData antes de agregar nuevos valores
@@ -105,50 +113,55 @@
         formData.delete('objetivo_lubot');
         formData.delete('spbre_la_empresa');
 
-        // Capturar los valores individuales
         formData.append('nombre_campana', document.querySelector('input[name="nombre_campana"]').value);
-        formData.append('segmento', document.querySelector('select[name="segmento"]').value);
-        formData.append('frecuencia', document.querySelector('input[name="frecuencia"]').value);
         formData.append('temporalidad', document.querySelector('select[name="temporalidad"]').value);
-        formData.append('plan', document.querySelector('select[name="plan"]').value);
-
-        // Capturar nuevos campos
-        formData.append('como_me_llamo', document.querySelector('input[name="como_me_llamo"]').value);
+        formData.append('frecuencia', document.querySelector('input[name="frecuencia"]').value);
         formData.append('objetivo_lubot', document.querySelector('select[name="objetivo_lubot"]').value);
         formData.append('spbre_la_empresa', document.querySelector('textarea[name="spbre_la_empresa"]').value);
+        formData.append('plan', document.querySelector('select[name="plan"]').value);
+          // Capturar nuevos campos
+          formData.append('como_me_llamo', document.querySelector('input[name="como_me_llamo"]').value);
+        if (bd_externar === 0) {
+          
+            formData.append('segmento', document.querySelector('select[name="segmento"]').value);
+           
+            // Capturar los valores que pueden repetirse y agruparlos en arrays de objetos
 
-        // Capturar los valores que pueden repetirse y agruparlos en arrays de objetos
-        let paisesArray = [];
-        document.querySelectorAll('select[name="pais[]"]').forEach(select => {
-            paisesArray.push({
-                id: select.value
+            let paisesArray = [];
+            document.querySelectorAll('select[name="pais[]"]').forEach(select => {
+                paisesArray.push({
+                    id: select.value
+                });
             });
-        });
-        formData.append('paises', JSON.stringify(paisesArray));
+            formData.append('paises', JSON.stringify(paisesArray));
 
-        let ciudadesArray = [];
-        document.querySelectorAll('select[name="ciudad[]"]').forEach(select => {
-            ciudadesArray.push({
-                id: select.value
+            let ciudadesArray = [];
+            document.querySelectorAll('select[name="ciudad[]"]').forEach(select => {
+                ciudadesArray.push({
+                    id: select.value
+                });
             });
-        });
-        formData.append('ciudades', JSON.stringify(ciudadesArray));
+            formData.append('ciudades', JSON.stringify(ciudadesArray));
 
-        let barriosArray = [];
-        document.querySelectorAll('select[name="barrio[]"]').forEach(select => {
-            barriosArray.push({
-                id: select.value
+            let barriosArray = [];
+            document.querySelectorAll('select[name="barrio[]"]').forEach(select => {
+                barriosArray.push({
+                    id: select.value
+                });
             });
-        });
-        formData.append('barrios', JSON.stringify(barriosArray));
+            formData.append('barrios', JSON.stringify(barriosArray));
 
-        let cantidadesArray = [];
-        document.querySelectorAll('input[name="cantidad[]"]').forEach(input => {
-            cantidadesArray.push({
-                cantidad: input.value
+            let cantidadesArray = [];
+            document.querySelectorAll('input[name="cantidad[]"]').forEach(input => {
+                cantidadesArray.push({
+                    cantidad: input.value
+                });
             });
-        });
-        formData.append('cantidades', JSON.stringify(cantidadesArray));
+            formData.append('cantidades', JSON.stringify(cantidadesArray));
+
+        }
+
+
 
         // Capturar preguntas y respuestas en un array de objetos
         let preguntasRespuestasArray = [];
@@ -321,13 +334,18 @@
             $(nextSelect).selectpicker('refresh');
         } else {
             // Cargar opciones basadas en el ID seleccionado
-            fetch(`${endpoint}/${id}`)
+            fetch(`${endpoint}/${id}` , {
+                headers: {
+                    'Content-Type': 'application/json',
+                     'Authorization': `Bearer {{$bearer}}`
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     nextSelect.innerHTML = `<option value="0">${allOptionText}</option>`;
                     nextSelect.disabled = false;
-
-                    data.forEach(item => {
+                    console.log('carga')
+                    data.data.forEach(item => {
                         const option = document.createElement('option');
                         option.value = item.id;
                         option.textContent = item.nombre;
@@ -346,7 +364,7 @@
 
     function loadciudad(paisSelect) {
 
-        loadOptions(paisSelect, `{{ $loadCiudad }}/ciudades`, 'ciudad');
+        loadOptions(paisSelect, `{{ $loadCiudad }}`, 'ciudad');
         const parentRow = paisSelect.closest('.input-row');
         const barrioSelect = parentRow.querySelector('select[name="barrio[]"]');
 
@@ -363,7 +381,7 @@
     }
 
     function loadBarrios(ciudadSelect) {
-        loadOptions(ciudadSelect, `{{ $loadBarrios }}/barrios`, 'barrio');
+        loadOptions(ciudadSelect, `{{ $loadBarrios }}`, 'barrio');
     }
 
 
@@ -429,10 +447,11 @@
             .then(response => {
 
                 if (parseInt(response.estado_rc) === 2 && response.code_rc != null) {
-
+                    console.log('proceso completado')
                     activar_campana.style.display = "flex"
                     container_codigo_rc.style.display = 'none'
                     __activar_rc.style.display = "none"
+                    console.log('el proceso de rc se a completado exitosamente')
                 }
 
                 console.log(response)
@@ -444,46 +463,55 @@
         //const nombre_campana = document.querySelector('input[name="nombre_campana"]');
         comprobacion()
         const validacion = JSON.parse(localStorage.getItem('formData'));
-        console.log(validacion.barrios)
-        let barrios = JSON.parse(validacion.barrios);
-        let ciudad = JSON.parse(validacion.ciudades);
-        let pais  = JSON.parse(validacion.paises);
-        let cantidad = JSON.parse(validacion.cantidades);
+       // console.log(validacion.barrios)
 
-        for (let i = 0; i < barrios.length; i++) {
-            if (barrios[i].id === null || barrios[i].id === "") {
-                alert("el barrio de la columna" + (i + 1) + " está vacío o es nulo.");
-                return ;
+
+        console.log('bd_externa', bd_externar)
+        if (bd_externar === 0) {
+            let barrios = JSON.parse(validacion.barrios);
+            let ciudad = JSON.parse(validacion.ciudades);
+            let pais = JSON.parse(validacion.paises);
+            let cantidad = JSON.parse(validacion.cantidades);
+            for (let i = 0; i < barrios.length; i++) {
+                if (barrios[i].id === null || barrios[i].id === "") {
+                    alert("el barrio de la columna" + (i + 1) + " está vacío o es nulo.");
+                    return;
+                }
+
+                if (pais[i].id === null || pais[i].id === "") {
+                    alert("el pais de la columna" + (i + 1) + " está vacío o es nulo.");
+                    return;
+                }
+
+                if (barrios[i].id === null || barrios[i].id === "") {
+                    alert("el barrio de la columna" + (i + 1) + " está vacío o es nulo.");
+                    return;
+                }
+
+                if (cantidad[i].id === null || cantidad[i].id === "") {
+                    alert("el cantidad de la columna" + (i + 1) + " está vacío o es nulo.");
+                    return;
+                }
             }
 
-            if (pais[i].id === null || pais[i].id === "") {
-                alert("el pais de la columna" + (i + 1) + " está vacío o es nulo.");
-                return ;
+            if (validacion.nombre_campana.length < 4) {
+                alert('El nombre de la campana debe tener al menos 4 letras')
             }
-
-            if (barrios[i].id === null || barrios[i].id === "") {
-                alert("el barrio de la columna" + (i + 1) + " está vacío o es nulo.");
-                return ;
+            if (validacion.frecuencia.length < 1) {
+                alert('debe seleccionar con que frecuencia desea enviar la campana')
             }
-
-            if (cantidad[i].id === null || cantidad[i].id === "") {
-                alert("el cantidad de la columna" + (i + 1) + " está vacío o es nulo.");
-                return ;
+            if (
+                validacion.nombre_campana.length >= 4 && validacion.frecuencia.length >= 1
+            ) {
+                modal_preguntas_y_respuesta.style.display = 'flex'
             }
+        }else{
+             modal_preguntas_y_respuesta.style.display = 'flex'
         }
        
 
-        if (validacion.nombre_campana.length < 4) {
-            alert('El nombre de la campana debe tener al menos 4 letras')
-        }
-        if (validacion.frecuencia.length < 1) {
-            alert('debe seleccionar con que frecuencia desea enviar la campana')
-        }
-        if (
-            validacion.nombre_campana.length >= 4 && validacion.frecuencia.length >= 1
-        ) {
-            modal_preguntas_y_respuesta.style.display = 'flex'
-        }
+
+
 
     }
 
@@ -491,8 +519,9 @@
         const storedFormData = JSON.parse(localStorage.getItem('formData'));
         if (storedFormData) {
             // Rellenar los campos individuales
+
             document.querySelector('input[name="nombre_campana"]').value = storedFormData.nombre_campana || '';
-            document.querySelector('select[name="segmento"]').value = storedFormData.segmento || '';
+
             document.querySelector('input[name="frecuencia"]').value = storedFormData.frecuencia || '';
             document.querySelector('select[name="temporalidad"]').value = storedFormData.temporalidad || '';
             document.querySelector('select[name="plan"]').value = storedFormData.plan || '';
@@ -500,27 +529,31 @@
             document.querySelector('select[name="objetivo_lubot"]').value = storedFormData.objetivo_lubot || '';
             document.querySelector('textarea[name="spbre_la_empresa"]').value = storedFormData.spbre_la_empresa || '';
 
-            // Rellenar los arrays de objetos
-            const paisesArray = JSON.parse(storedFormData.paises) || [];
-            paisesArray.forEach((pais, index) => {
-                if (index > 0) addRow(); // Añadir nuevas filas si hay más de un país
-                document.querySelectorAll('select[name="pais[]"]')[index].value = pais.id;
-            });
+            if (bd_externar === 0) {
+                document.querySelector('select[name="segmento"]').value = storedFormData.segmento || '';
+                // Rellenar los arrays de objetos
+                const paisesArray = JSON.parse(storedFormData.paises) || [];
+                paisesArray.forEach((pais, index) => {
+                    if (index > 0) addRow(); // Añadir nuevas filas si hay más de un país
+                    document.querySelectorAll('select[name="pais[]"]')[index].value = pais.id;
+                });
 
-            const ciudadesArray = JSON.parse(storedFormData.ciudades) || [];
-            ciudadesArray.forEach((ciudad, index) => {
-                document.querySelectorAll('select[name="ciudad[]"]')[index].value = ciudad.id;
-            });
+                const ciudadesArray = JSON.parse(storedFormData.ciudades) || [];
+                ciudadesArray.forEach((ciudad, index) => {
+                    document.querySelectorAll('select[name="ciudad[]"]')[index].value = ciudad.id;
+                });
 
-            const barriosArray = JSON.parse(storedFormData.barrios) || [];
-            barriosArray.forEach((barrio, index) => {
-                document.querySelectorAll('select[name="barrio[]"]')[index].value = barrio.id;
-            });
+                const barriosArray = JSON.parse(storedFormData.barrios) || [];
+                barriosArray.forEach((barrio, index) => {
+                    document.querySelectorAll('select[name="barrio[]"]')[index].value = barrio.id;
+                });
 
-            const cantidadesArray = JSON.parse(storedFormData.cantidades) || [];
-            cantidadesArray.forEach((cantidad, index) => {
-                document.querySelectorAll('input[name="cantidad[]"]')[index].value = cantidad.cantidad;
-            });
+                const cantidadesArray = JSON.parse(storedFormData.cantidades) || [];
+                cantidadesArray.forEach((cantidad, index) => {
+                    document.querySelectorAll('input[name="cantidad[]"]')[index].value = cantidad.cantidad;
+                });
+            }
+
 
             const preguntasRespuestasArray = JSON.parse(storedFormData.preguntas_respuestas) || [];
             preguntasRespuestasArray.forEach((item, index) => {

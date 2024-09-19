@@ -4,7 +4,8 @@
     let pollingInterval;
     let companie = {{ $id_companie }};
     let url_webhook_activar_ws = `{{ $activar_ws_url }}/${companie}/ws`;
-
+    let bearer = `{{$bearer}}`
+    console.log(bearer);
     code_ws()
     setTimeout(() => {
         container_loader.style.display = 'none'
@@ -33,9 +34,9 @@
         resetear_estado()
         estado()
         code_ws(false)
-        codeContainer.innerHTML =""
-        start = false 
-        document.getElementById('contador_espera').style.display ="none"
+        codeContainer.innerHTML = ""
+        start = false
+        document.getElementById('contador_espera').style.display = "none"
         abra_cadabra.style.display = 'none'
         activar_ws.innerHTML = "Activar"
         container_loader.style.display = 'none'
@@ -72,18 +73,19 @@
         fetch(`{{ route('lubot.default_compania') }}`)
             .then(response => response.json())
             .then(data => {
+                console.log('pulling')
                 console.log(data)
                 // Verificar si los datos están definidos y no están vacíos
                 if (reset) {
                     if (data.estado_ws === 0) container_loader.style.display = 'flex';
                 }
-               
+
                 if ((data.estado_ws === 1 || data.estado_ws === 2) && data.code_ws != null) abra_cadabra.style
                     .display = 'flex'
                 if (data.estado_ws === 2) container_loader.style.display = 'none';
                 if (data.estado_ws === 1) {
                     contador_espera.style.display = 'block'
-                  
+
                 }
                 if (data.estado_ws === 2) {
                     abra_cadabra_listo.style.display = 'flex'
@@ -137,6 +139,7 @@
 
     document.getElementById('activar_ws').addEventListener('click', function(e) {
         start = true;
+        console.log('activacion')
         let numero_de_telefono = numero_telefono.value
         let codigo_de_region = codigo_region.value
 
@@ -164,7 +167,11 @@
                 })
             })
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(response => {
+                console.log(response)
+                console.log('polling')
+            })
+            .catch(error => console.log(error))
 
 
 
@@ -172,20 +179,28 @@
         activar_ws.disabled = true
         fetch(`${url_webhook_activar_ws}`, {
                 headers: {
+                    'Authorization' : `Bearer ${bearer}`,    
                     'ngrok-skip-browser-warning': 'true'
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error fetching data: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+
+            })
             .then(data => {
                 console.log('Raw data:', data);
-                document.getElementById('iniciar').innerText = "Volver a intentar";
+               // document.getElementById('iniciar').innerText = "Volver a intentar";
             })
             .catch(error => {
-                console.error('Error en la solicitud:', error);
-                //document.getElementById('iniciar').innerText = "Error de comunicación";
+                console.error('Error:', error);
+                console.log('error en la linea 191 archivo script_ws_blade');
+                document.getElementById('iniciar').innerText = "Error de comunicación";
             })
             .finally(function() {
-                activar_ws.disabled = false
+                activar_ws.disabled = false;
             });
 
         cuentaRegresiva(1);

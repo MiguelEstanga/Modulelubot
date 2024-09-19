@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Log;
 use Exception;
+
 class ConfigLubotController  extends AccountBaseController
 {
     public function __construct()
@@ -33,8 +34,8 @@ class ConfigLubotController  extends AccountBaseController
     {
         $this->data['pageTitle'] = 'configuracion';
         $this->data['pageDescription'] = [];
-     $this->data['configuracion'] = DB::table('lubot_settings')->where('id_companie', $this->data['company']['id'])->first() ?? [];
-      
+        $this->data['configuracion'] = DB::table('lubot_settings')->first();
+
         return view('lubot::notification-settings.configuracion', $this->data);
     }
 
@@ -51,7 +52,7 @@ class ConfigLubotController  extends AccountBaseController
             });
 
             DB::table('lubot_settings')->insert([
-                'id_companie' => $this->data['company']['id'],
+                'id_companie' => 20,
                 'LUBOT_MASTER_API' => 'https://lubot.healtheworld.com.co/api',
                 'LUBOT_MASTER' => 'https://lubot.healtheworld.com.co/',
                 'NGROK_LUBOT_WEBHOOK' => 'https://2c09-186-112-18-249.ngrok-free.app/api',
@@ -66,7 +67,7 @@ class ConfigLubotController  extends AccountBaseController
         $this->migracion_automatica();
 
         try {
-            $config = DB::table('lubot_settings')->where('id_companie', $this->data['company']['id'])->exists();
+            $config = DB::table('lubot_settings')->exists();
             if (!$config) {
                 DB::table('lubot_settings')->insert([
                     'id_companie' => $this->data['company']['id'],
@@ -76,7 +77,7 @@ class ConfigLubotController  extends AccountBaseController
                     'BEARER_LUBOT_MASTER' => $request->BEARER_LUBOT_MASTER,
                 ]);
             } else {
-                DB::table('lubot_settings')->where('id_companie', $this->data['company']['id'])->update([
+                DB::table('lubot_settings')->update([
                     'id_companie' => $this->data['company']['id'],
                     'LUBOT_MASTER_API' => $request->url_master,
                     'LUBOT_MASTER' => $request->LUBOT_MASTER,
@@ -85,10 +86,9 @@ class ConfigLubotController  extends AccountBaseController
                 ]);
             }
         } catch (Exception $e) {
-            return response()->json(['success' => 500, 'mesange' => "Error"]);
+            return response()->json(['success' => 500, 'message' => "Error"]);
         }
 
         return response()->json(['success' => 200, 'mesange' => "actulizacion lista"]);
-        
     }
 }

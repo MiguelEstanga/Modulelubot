@@ -113,30 +113,30 @@
                 </div>
                 <div class="col-md-4 d-flex flex-column w-tables rounded mt-3 bg-white" style="padding: 10px;">
                     <div class="" style="width: 100%!important;">
-                        <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
+                        <!--div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
                                 Negocios encontrados:
                             </p>
                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                 0
                             </p>
-                        </div>
+                        </div-->
                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
                                 Cantidad de activación:
                             </p>
                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
-                                {{ $campana->contador }}
+                                {{ $campana->contador }} 
                             </p>
                         </div>
-                        <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
+                        <!--div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
                                 Estado del bot:
                             </p>
                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap" id="campana_estado_encendido">
                                 {{ $campana->encendido === 0 ? "Apagado" : 'Encendido' }}
                             </p>
-                        </div>
+                        </div-->
                     </div>
                     <div class="container">
                         @if($campana->encendido === 0)

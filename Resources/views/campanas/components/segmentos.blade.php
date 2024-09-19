@@ -5,7 +5,7 @@
             <div class="input-row row">
                 <div class="col-md-2 ">
                     <select name="pais[]" onchange="loadciudad(this)" class="form-control selectpicker"  data-live-search="true">
-                        <option value="0">Todos</option>
+                        <option selected value="0">Todos</option>
                         @foreach ($paises as $pais)
                             <option value="{{ $pais['id'] }}">{{ $pais['nombre'] }}</option>
                         @endforeach
@@ -14,12 +14,12 @@
                 </div>
                 <div class="col-md-2">
                     <select name="ciudad[]" onchange="loadBarrios(this)" class="form-control selectpicker ciudad-select" data-live-search="true" >
-                        <option value="0">Todos</option>
+                        <option selected value="0">Todos</option>
                     </select>
                 </div>
                 <div class="col-md-2" id='conten_barrios_dinamicos'>
                     <select name="barrio[]" id='barrio_select1' class="form-control selectpicker barrio-select" data-live-search="true">
-                        
+                        <option selected value="0">Todos</option>
                     </select>
                 </div> 
 

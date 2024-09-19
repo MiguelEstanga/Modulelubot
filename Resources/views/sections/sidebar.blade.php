@@ -1,8 +1,9 @@
 @php
     $paquete = json_decode($company->package['module_in_package'] , true);   
-    $indice = array_search("Lubot", $paquete);
+    $indice = array_search("Lubot", $paquete); 
+    $lubot_permisos = array_search("lubot_admin", $paquete);
 @endphp
-@if (in_array('admin', user_roles()) && $indice)
+@if (in_array('admin', user_roles()) || $indice || $lubot_permisos)
 
     <x-menu-item icon="camera-video" text="Lubot" :addon="App::environment('demo')">
         <x-slot name="iconPath">

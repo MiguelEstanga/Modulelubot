@@ -88,10 +88,8 @@
                             console.log('response.estado_rc === 0 || response.estado_rc === 2 linea80')
                         }
                         if (response.code_rc != null) {
-                            console.log('response.code_rc != null')
-                            if ((parseInt(response.estado_rc) === 2 || parseInt(response.estado_rc) === 1) &&
-                                response.code_rc !=
-                                null) {
+                            
+                            if ( (parseInt(response.estado_rc) === 2 || parseInt(response.estado_rc) === 1) ) {
 
                                 _codigo_rc.innerHTML = '';
                                 let code = response.code_rc;
@@ -117,13 +115,14 @@
 
                         }
                         if (response?.code_rc != null && parseInt(response.estado_rc) == 2) {
-                            clearInterval(intervalId);
-                            clearInterval(countdownIntervalId);
+                           
                             conten_loader_rc.style.display = 'none';
                             code_verificacion_rc.style.display = 'grid'
-                            console.log('response.code_rc != null && response.estado_rc == 2')
+                            
 
                             comprobacion()
+                            clearInterval(intervalId);
+                            clearInterval(countdownIntervalId);
                             __activar_rc.style.display = "none"
                             activar_campana.style.display = "flex"
 
@@ -132,9 +131,10 @@
             }
 
             function startCountdown() {
-                countdownTime = 120;
+                countdownTime = 2000 ;
                 countdownIntervalId = setInterval(function() {
                     countdownTime--;
+                    console.log(countdownTime)
                     if (countdownTime <= 0) {
                         clearInterval(countdownIntervalId);
                         clearInterval(intervalId);
@@ -177,12 +177,12 @@
                         return response.json();
                     })
                     .then(responseData => {
-                        console.log(responseData.route)
+                        console.log(responseData)
                         if (responseData.status === 200) {
                             modal_preguntas_y_respuesta.style.display = 'none'
                             //pisa papeles aqui finaliza preguntas y respuesta 
                             setTimeout(function() {
-                                window.location.href = responseData.route;
+                                //window.location.href = responseData.route;
                             }, 2000);
 
                         } else {

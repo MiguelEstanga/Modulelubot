@@ -90,10 +90,10 @@ Route::get('version' , function(){
         'verification_required' => true,
         'envato_item_id' => 29292666,
         'parent_envato_id' => 23263417,
-        'parent_min_version' => '1.10 + 2',
+        'parent_min_version' => '1.10 + 4',
         'setting' => null,
         'autor' => 'Miguel Estanga',
-        'commit' => 'Ajuste de diseño',
-        'time' => '9/9/2024 a las 3:55 pm hora Venezuela'
+        'commit' => 'ajuste de configuracion para lubot settings ',
+        'time' => '12/9/2024 a las 11:10 am hora Venezuela'
     ];  
 });
