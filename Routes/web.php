@@ -90,7 +90,7 @@ Route::get('version' , function(){
         'verification_required' => true,
         'envato_item_id' => 29292666,
         'parent_envato_id' => 23263417,
-        'parent_min_version' => '1.10 + 4',
+        'parent_min_version' => '1.10 + 5',
         'setting' => null,
         'autor' => 'Miguel Estanga',
         'commit' => 'ajuste de configuracion para lubot settings ',
