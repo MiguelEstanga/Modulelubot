@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->integer('cantidad_consumida')->default(0);
             $table->integer('estado')->default(1);
-          
+           
             $table->unsignedBigInteger('id_campanas')->nullable();
             $table->timestamps();
         });

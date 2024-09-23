@@ -2,9 +2,7 @@
 
 namespace Modules\Lubot\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\AccountBaseController;
@@ -131,15 +129,46 @@ class HelperController extends AccountBaseController
   //activa el ws
   public static function activar_ws($company_id, $campains_id)
   {
-    $response = Http::withHeaders(self::get_headers())
-      ->get(HelperController::endpoiny('activar_ejecutable_ws') . "/{$company_id}/{$campains_id}/{$company_id}");
-    return $response;
+    Log::info('activar_ws');
+    $response = [];
+    try {
+      $response = Http::withHeaders(self::get_headers())
+        ->get(HelperController::endpoiny('activar_ejecutable_ws') . "/{$company_id}/{$campains_id}/{$company_id}");
+      return $response;
+    } catch (Exception  $e) {
+      Log::info('activar_ws');
+      Log::info('error en ws linea 159');
+      Log::info($e);
+      return json_encode(
+        [
+          'status' => 500,
+          'reponse' =>  'error',
+          'response_bot' => $response,
+        ]
+      );
+    }
   }
 
   public static function activar_rc($company_id, $campains_id)
   {
-    Http::withHeaders(self::get_headers())
-      ->get(HelperController::endpoiny('activar_ejecutable_ryc')."/{$company_id}/{$campains_id}/{$company_id}" );
+    Log::info('activar_ws');
+    $response = "";
+    try {
+      $response = Http::withHeaders(self::get_headers())
+        ->get(HelperController::endpoiny('activar_ejecutable_ryc') . "/{$company_id}/{$campains_id}/{$company_id}");
+      return $response;
+    } catch (Exception  $e) {
+      Log::info('error en rc linea 159');
+      Log::info($e);
+      Log::info('activar_ws');
+      return json_encode(
+        [
+          'status' => 500,
+          'reponse' =>  'error',
+          'response_bot' => $response,
+        ]
+      );
+    }
   }
 
   public static function calculateNextRun($frequencyNumber, $frequencyUnit)

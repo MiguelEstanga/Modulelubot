@@ -18,7 +18,8 @@
             let countdownIntervalId;
             let countdownTime = 120; // 120 seconds
             let companie = {{ $companie }};
-            let url_webhook_activar_rc = `{{ $url_activar_rc }}/${companie}/rc`;
+            let url_webhook_activar_rc = `{{ $url_activar_rc }}`;
+            let bearer = `{{$bearer}}`;
             setTimeout(() => {
                 conten_loader_rc.style.display = 'none'
             }, 3000);
@@ -60,7 +61,8 @@
 
                 fetch(url_webhook_activar_rc, {
                         headers: {
-                            'ngrok-skip-browser-warning': 'true'
+                            'ngrok-skip-browser-warning': 'true',
+                            'Authorization' : `Bearer ${bearer}`
                         }
                     })
                     .then(response => response.json())

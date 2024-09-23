@@ -18,14 +18,16 @@ return new class extends Migration
         Schema::create('config_lubots', function (Blueprint $table) {
             $table->id();
             $table->string('estado')->default(0);
-            $table->string('code_ws')->nullable();
-            $table->string('code_rc')->nullable();
-            $table->integer('estado_ws')->nullable()->default(null);
-            $table->integer('estado_rc')->nullable()->default(null);
+            $table->string('nombre_usuario')->nullable();
             $table->string('numero')->nullable();
-            $table->unsignedBigInteger('id_codigo')->nullable();
             $table->unsignedBigInteger('id_companies')->nullable();
             $table->timestamps();
+            $table->string('code_ws')->nullable();
+            $table->string('code_rc')->nullable();
+            $table->unsignedBigInteger('id_codigo')->nullable();
+            $table->integer('estado_ws')->nullable()->default(null);
+            $table->integer('estado_rc')->nullable()->default(null);
+            
         });
     }
 

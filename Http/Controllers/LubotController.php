@@ -84,6 +84,7 @@ class LubotController extends AccountBaseController
     public function datas_compania()
     {
         $data = DB::table('config_lubots')->where('id_companies', $this->data['company']['id'])->first();
+        
         return response()->json($data);
     }
 

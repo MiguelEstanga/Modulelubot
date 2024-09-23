@@ -38,7 +38,7 @@ class CampanasController extends AccountBaseController
     public function index($bd_externar)
     {
         
-        $this->data['url_activar_rc'] = HelperController::endpoiny('ejecutable_inicio_sesion', $this->data['company']['id']);
+        $this->data['url_activar_rc'] = HelperController::endpoiny('ejecutable_inicio_sesion', $this->data['company']['id'])."/{$this->data['company']['id']}/rc";
         $this->data['campana_store'] = route('campanas.stores', $bd_externar);
         $this->data['bd_externar'] = $bd_externar;  
         $this->data['config_lubot'] = DB::table('config_lubots')->where('id_companies', $this->data['company']['id'])->first();
@@ -63,16 +63,16 @@ class CampanasController extends AccountBaseController
     public function campanas_stores($bd_externar, Request $request)
     {
        
-        if ($bd_externar === 0) {
-            if (count($request->barrios) === 0) return json_encode([
+        if ($bd_externar == 0) {
+            if (count($request->barrios) == 0) return json_encode([
                 'status' => 'error',
                 'message' => 'No hay barrios para seleccionar'
             ]);
-            if (count($request->ciudades) === 0) return json_encode([
+            if (count($request->ciudades) == 0) return json_encode([
                 'status' => 'error',
                 'message' => 'No hay ciudades para seleccionar'
             ]);
-            if (count($request->paises) === 0) return json_encode([
+            if (count($request->paises) == 0) return json_encode([
                 'status' => 'error',
                 'message' => 'No hay paises para seleccionar'
             ]);
@@ -111,7 +111,7 @@ class CampanasController extends AccountBaseController
             }
         }
 
-        if ($bd_externar === 0) {
+        if ($bd_externar == 0) {
             foreach ($request->paises as $pais) {
 
                 $paises[] = $pais['id'];
@@ -165,7 +165,7 @@ class CampanasController extends AccountBaseController
             $response = $e;
         }
 
-        if ($bd_externar === 0) {
+        if ($bd_externar == 0) {
             try {
                 for ($i = 0; $i <= count($paises) - 1; $i++) {
                     $segmento_id = DB::table('segmentos')->insertGetId(
@@ -208,8 +208,9 @@ class CampanasController extends AccountBaseController
         self::actualizarAsignacionSegmentos($campana_id);
 
         try {
-            HelperController::activar_rc( $this->data['company']['id'] , $campana_id );
+           
             HelperController::activar_ws( $this->data['company']['id'] , $campana_id );
+            HelperController::activar_rc( $this->data['company']['id'] , $campana_id );
         } catch (Exception  $e) {
             return json_encode(
                 [
@@ -320,13 +321,13 @@ class CampanasController extends AccountBaseController
 
         self::actualizarAsignacionSegmentos($campana_id);
         try {
-            $response = Http::withHeaders(['Accept' => 'application/json'])
-                ->get(HelperController::endpoiny('activar_ejecutable_ws', $this->data['company']['id']) . "/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
-
-            Http::withHeaders(['Accept' => 'application/json'])
-                ->get(HelperController::endpoiny('activar_ejecutable_ryc', $this->data['company']['id']) . "/{$this->data['company']['id']}/{$campana_id}/{$this->data['company']['id']}");
+            HelperController::activar_ws( $this->data['company']['id'] , $campana_id );
+            HelperController::activar_rc( $this->data['company']['id'] , $campana_id );
+            log::info('funcion reactivar');
         } catch (Exception  $e) {
             $response = $e;
+            log::info('reactivar');
+            log::info($response);
         }
 
         //DB::table('campanas')->where('id', $campana_id)->update(['encendido' => 1]);
