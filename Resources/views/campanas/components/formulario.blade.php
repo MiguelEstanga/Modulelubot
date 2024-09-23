@@ -326,7 +326,8 @@
         const id = selectElement.value;
         const parentRow = selectElement.closest('.input-row');
         const nextSelect = parentRow.querySelector(`select[name="${nextSelectName}[]"]`);
-
+        console.log(nextSelectName)
+        console.log(`${endpoint}/${id}`)
         if (id === '0') {
             // Seleccionó "Todos"
             nextSelect.innerHTML = `<option value="0">${allOptionText}</option>`;
@@ -365,6 +366,7 @@
     function loadciudad(paisSelect) {
 
         loadOptions(paisSelect, `{{ $loadCiudad }}`, 'ciudad');
+        console.log(`{{ $loadCiudad }}${paisSelect}`)
         const parentRow = paisSelect.closest('.input-row');
         const barrioSelect = parentRow.querySelector('select[name="barrio[]"]');
 
