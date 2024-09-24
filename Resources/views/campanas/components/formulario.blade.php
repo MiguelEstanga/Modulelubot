@@ -356,7 +356,7 @@
                     $(nextSelect).selectpicker('refresh');
                 })
                 .catch(error => {
-                    console.error(`Error al cargar opciones desde ${endpoint}:`, error);
+                    console.error(`Error al cargar opciones desde ${endpoint}/${id}`, error);
                 });
         }
 

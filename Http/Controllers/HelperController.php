@@ -48,7 +48,8 @@ class HelperController extends AccountBaseController
     $config = DB::table('lubot_settings')->first() ?? [];
     $data = [
       'lubot_master' =>  $config->LUBOT_MASTER_API  ?? 'http://localhost:8001/api',
-      'BEARER_TOKEN' =>  $config->BEARER_LUBOT_MASTER ?? "8lbA52huHchhbswplKpH0OcUsr+QIgFZRkfdNsYUGhk="
+      'BEARER_TOKEN' =>  $config->BEARER_LUBOT_MASTER ?? "8lbA52huHchhbswplKpH0OcUsr+QIgFZRkfdNsYUGhk=",
+      'NGROK_HOOK' => ""
     ];
     return  $data[$key];
   }
