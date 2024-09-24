@@ -38,7 +38,7 @@ class CampanasController extends AccountBaseController
     public function index($bd_externar)
     {
         
-        $this->data['url_activar_rc'] = HelperController::endpoiny('ejecutable_inicio_sesion', $this->data['company']['id'])."/{$this->data['company']['id']}/rc";
+        $this->data['url_activar_rc'] = HelperController::endpoiny('ejecutable_inicio_sesion')."/{$this->data['company']['id']}/rc";
         $this->data['campana_store'] = route('campanas.stores', $bd_externar);
         $this->data['bd_externar'] = $bd_externar;  
         $this->data['config_lubot'] = DB::table('config_lubots')->where('id_companies', $this->data['company']['id'])->first();

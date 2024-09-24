@@ -47,9 +47,9 @@ class HelperController extends AccountBaseController
   {
     $config = DB::table('lubot_settings')->first() ?? [];
     $data = [
-      'lubot_master' =>  $config->LUBOT_MASTER_API  ?? 'http://localhost:8001/api',
+      'lubot_master' => 'https://lubot.healtheworld.com.co/api'  ?? 'https://lubot.healtheworld.com.co/api',
       'BEARER_TOKEN' =>  $config->BEARER_LUBOT_MASTER ?? "8lbA52huHchhbswplKpH0OcUsr+QIgFZRkfdNsYUGhk=",
-      'NGROK_HOOK' => ""
+      'NGROK_HOOK' => "https://a1b1-186-113-165-19.ngrok-free.app/api"
     ];
     return  $data[$key];
   }
@@ -115,14 +115,15 @@ class HelperController extends AccountBaseController
 
 
     $lubot_master = self::url('lubot_master');
+    $ngrok = self::url('NGROK_HOOK');
     $data = [
-      'ejecutable_inicio_sesion' => "{$lubot_master}/bot/start-session",
-      'activar_ejecutable_ws' => "{$lubot_master}/bot/start-ws",
-      'activar_ejecutable_ryc' => "{$lubot_master}/bot/start-rc",
-      'paises'  => "{$lubot_master}/utils/countries",
-      'segmentos'  => "{$lubot_master}/utils/business-type",
-      'barrios'  => "{$lubot_master}/utils/neighborhoods",
-      'ciudades'  => "{$lubot_master}/utils/cities",
+      'ejecutable_inicio_sesion' => "{$ngrok}/activar_inicio_session",
+      'activar_ejecutable_ws' => "{$ngrok}/activar_ejecutable_ws",
+      'activar_ejecutable_ryc' => "{$ngrok}/activar_ejecutable_ryc",
+      'paises'  => "{$lubot_master}/paises",
+      'segmentos'  => "{$lubot_master}/tipos_negocios",
+      'barrios'  => "{$lubot_master}/barrios",
+      'ciudades'  => "{$lubot_master}/ciudades",
     ];
     return  $data[$key];
   }
@@ -201,7 +202,7 @@ class HelperController extends AccountBaseController
     $response =  Http::withHeaders(self::get_headers())
       ->get(self::endpoiny('paises'));
     $data = json_decode($response, true);
-    return $data['data'];
+    return $data;
   }
 
   public static function tipo_de_negocio()
@@ -209,14 +210,14 @@ class HelperController extends AccountBaseController
     $response =  Http::withHeaders(self::get_headers())
       ->get(self::endpoiny('segmentos'));
     $data = json_decode($response, true);
-    return $data['data'];
+    return $data;
   }
 
   public function barrios()
   {
     $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::endpoiny('barrios'));
     $data = json_decode($response, true);
-    return $data['data'];
+    return $data;
   }
 
   public function ciudades()

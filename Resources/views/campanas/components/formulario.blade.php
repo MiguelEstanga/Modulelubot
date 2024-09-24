@@ -346,7 +346,7 @@
                     nextSelect.innerHTML = `<option value="0">${allOptionText}</option>`;
                     nextSelect.disabled = false;
                     console.log('carga')
-                    data.data.forEach(item => {
+                    data.forEach(item => {
                         const option = document.createElement('option');
                         option.value = item.id;
                         option.textContent = item.nombre;

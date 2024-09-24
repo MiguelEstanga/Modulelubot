@@ -64,7 +64,7 @@ class LubotController extends AccountBaseController
        // $settings = DB::table('lubot_settings')->where('id_companie' , $this->data['company']['id'])->exists();
         //if (!$settings) return  redirect()->route('lubot.settings')->with('message' , 'Debe configurar lubot antes usarlo');
 
-        $this->data['activar_ws_url'] = HelperController::endpoiny('ejecutable_inicio_sesion' , $this->data['company']['id']);
+        $this->data['activar_ws_url'] = HelperController::endpoiny('ejecutable_inicio_sesion');
         $this->data['bearer'] = HelperController::get_token();
         $this->data['logo'] = HelperController::public('logo'); 
         $this->data['id_companie'] = $this->data['company']['id'];
