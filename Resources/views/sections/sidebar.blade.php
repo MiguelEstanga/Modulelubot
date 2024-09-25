@@ -3,7 +3,7 @@
     $indice = array_search("Lubot", $paquete); 
     $lubot_permisos = array_search("lubot_admin", $paquete);
 @endphp
-@if (in_array('admin', user_roles()) || $indice || $lubot_permisos)
+@if (in_array('admin', user_roles()) && $indice )
 
     <x-menu-item icon="camera-video" text="Lubot" :addon="App::environment('demo')">
         <x-slot name="iconPath">
@@ -17,6 +17,5 @@
             <x-sub-menu-item :link="route('ver_campanas.todas')" text="Mis campañas"/>
         </div>
     </x-menu-item>
-
 @endif
 

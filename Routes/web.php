@@ -93,7 +93,7 @@ Route::get('version' , function(){
         'parent_min_version' => '1.10 + 5',
         'setting' => null,
         'autor' => 'Miguel Estanga',
-        'commit' => 'ajuste de configuracion para lubot settings ',
-        'time' => '12/9/2024 a las 11:10 am hora Venezuela'
+        'commit' => 'version de desarrollo ',
+        'time' => '25/9/2024 a las 6:36 pm hora Venezuela'
     ];  
 });

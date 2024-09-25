@@ -5,7 +5,7 @@
     $indice = array_search('Lubot', $paquete);
 @endphp
 @if (in_array('admin', user_roles()) && $indice)
-    @if ($company->id === 2 ) <!-- cambiar en produccion  id 20-->
+    @if ($company->id === 3 ) <!-- cambiar en produccion  id 20-->
         <x-setting-menu-item :active="$activeMenu" menu="lubot_settings" :href="route('lubot.settings')" text="Configuracion De Lubot" />
     @endif
 @endif
