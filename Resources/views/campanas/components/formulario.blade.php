@@ -16,7 +16,7 @@
             <div class="">
                 <select name="segmento" class="form-control selectpicker ">
                     @foreach ($segmentos as $segmento)
-                        <option value="{{ $segmento['id'] }}">{{ $segmento['nombre'] }}</option>
+                        <option value="{{ $segmento['id'] ?? 1 }}">{{ $segmento['nombre'] }}</option>
                     @endforeach
                 </select>
             </div>

@@ -140,7 +140,7 @@ class CampanasController extends AccountBaseController
                     'objetivo_de_lubot' => $objetivo_lubot === 0 ? 1 : $objetivo_lubot,
                     'como_me_llamo' => $como_me_llamo,
                     'frecuencia' => $frecuencia,
-                    'tipo_negocio' => $bd_externar === 0 ?  $tipo_de_negocio : 0,
+                    'tipo_negocio' => $bd_externar == 0 ?  ($tipo_de_negocio ?? 2) : 0,
                     'spbre_la_empresa' => $spbre_la_empresa,
                     'temporalidad' =>  $temporalidad,
                     'credito' => 30,
@@ -171,7 +171,7 @@ class CampanasController extends AccountBaseController
                     $segmento_id = DB::table('segmentos')->insertGetId(
                         [
                             'id_campanas' =>  $campana_id,
-                            'tipo_de_negocio' => $tipo_de_negocio,
+                            'tipo_de_negocio' => $tipo_de_negocio ?? 2,
                             'ciudad' =>  $ciudades[$i],
                             'pais'  =>  $paises[$i],
                             'barrio'   => $barrios[$i],

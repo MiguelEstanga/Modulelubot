@@ -60,7 +60,7 @@
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">tiutlo </p>
                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">{{$campana->nombre}} </p>
                         </div>
-                        @foreach ($segmentos as $segmento)
+                        @foreach ($segmentos as $segmento)  
                             
                                 <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                                     <p class="mb-0 text-lightest f-14 w-30 text-capitalize">

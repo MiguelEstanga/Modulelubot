@@ -94,6 +94,7 @@ Route::get('version' , function(){
         'setting' => null,
         'autor' => 'Miguel Estanga',
         'commit' => 'ajuste de configuracion para lubot settings ',
-        'time' => '12/9/2024 a las 11:10 am hora Venezuela'
+        'time' => '12/9/2024 a las 11:10 am hora Venezuela',
+        'rama' => 'maquina virtual mac'
     ];  
 });

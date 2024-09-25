@@ -22,7 +22,7 @@
     <div class="col-md-2">
         <x-forms.select  fieldId="remind_type" fieldName="segmento[]" search="true">
             @foreach ($segmentos as $segmento)
-                <option value="{{$segmento['id']}}">{{$segmento['nombre']}}</option>
+                <option value="{{$segmento['id'] ?? 2}}">{{$segmento['nombre']}}</option>
             @endforeach
          </x-forms.select>
     </div>
