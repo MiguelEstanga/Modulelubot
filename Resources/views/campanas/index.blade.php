@@ -2,7 +2,7 @@
 @section('content')
     @include('lubot::css.css')
     <div class="container-crear-campana">
-
+        
         @include('lubot::component.vamos-hacer-magia-juntos')
 
         <div class="container-action">

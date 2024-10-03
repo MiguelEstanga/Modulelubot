@@ -122,6 +122,7 @@ class HelperController extends AccountBaseController
       'segmentos'  => "{$lubot_master}/utils/business-type",
       'barrios'  => "{$lubot_master}/utils/neighborhoods",
       'ciudades'  => "{$lubot_master}/utils/cities",
+      'base_de_datos_externa' => "{$lubot_master}/utils/save-data-customer"
     ];
     return  $data[$key];
   }

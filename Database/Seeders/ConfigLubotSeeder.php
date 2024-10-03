@@ -37,7 +37,7 @@ class ConfigLubotSeeder extends Seeder
             'display_name' => 'View Lubot Admin',
             'module_id' => $module->id,
             'is_custom' => 0,
-            'allowed_permissions' => '{"all":4, "none":5}'
+            'allowed_permissions' => '{ "all":4, "none":5 , "both":3 , "owned":2 , "added":1  }'
         ]);
 
         $permissionFranchise = Permission::create([
@@ -45,7 +45,7 @@ class ConfigLubotSeeder extends Seeder
             'display_name' => 'View Lubot Franchise',
             'module_id' => $module->id,
             'is_custom' => 0,
-            'allowed_permissions' => '{"all":4, "none":5}'
+            'allowed_permissions' => '{ "all":4, "none":5 , "both":3 , "owned":2 , "added":1  }'
         ]);
 
         // Roles

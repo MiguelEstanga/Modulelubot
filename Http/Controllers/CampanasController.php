@@ -62,7 +62,7 @@ class CampanasController extends AccountBaseController
     }
     public function campanas_stores($bd_externar, Request $request)
     {
-       
+        //return $request->all();
         if ($bd_externar == 0) {
             if (count($request->barrios) == 0) return json_encode([
                 'status' => 'error',
@@ -88,7 +88,7 @@ class CampanasController extends AccountBaseController
         $ciudades = array();
         $barrios = array();
         $cantidad = array();
-        $tipo_de_negocio = $bd_externar === 0 ?  $request->segmento : '';
+        $tipo_de_negocio = $bd_externar == 0 ?  $request->segmento : '';
         $objetivo_lubot = $request->objetivo_lubot;
         $como_me_llamo = $request->como_me_llamo;
         $frecuencia = $request->frecuencia;
@@ -140,7 +140,7 @@ class CampanasController extends AccountBaseController
                     'objetivo_de_lubot' => $objetivo_lubot === 0 ? 1 : $objetivo_lubot,
                     'como_me_llamo' => $como_me_llamo,
                     'frecuencia' => $frecuencia,
-                    'tipo_negocio' => $bd_externar === 0 ?  $tipo_de_negocio : 0,
+                    'tipo_negocio' => $bd_externar == 0 ?  $tipo_de_negocio : 0,
                     'spbre_la_empresa' => $spbre_la_empresa,
                     'temporalidad' =>  $temporalidad,
                     'credito' => 30,
@@ -191,6 +191,18 @@ class CampanasController extends AccountBaseController
             } catch (Exception  $e) {
                 $response = $e;
             }
+        }else{
+            $segmento_id = DB::table('segmentos')->insertGetId(
+                [
+                    'id_campanas' =>  $campana_id,
+                    'tipo_de_negocio' => 0,
+                    'ciudad' =>  0,
+                    'pais'  =>  0,
+                    'barrio'   => 0,
+                    'cantidad' => 10
+                ]
+            );
+
         }
 
 
@@ -428,5 +440,10 @@ class CampanasController extends AccountBaseController
         $this->data['logo'] = HelperController::public('logo');
         $this->data['requiest'] = HelperController::public('requiest');
         return view('lubot::campanas.tipo_de_campanas', $this->data);
+    }
+
+    public function registrar_leads()
+    {
+        return 0;
     }
 }

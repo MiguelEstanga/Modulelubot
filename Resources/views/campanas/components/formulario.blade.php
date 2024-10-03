@@ -8,7 +8,8 @@
         Configura tu campaña
     </div>
     <div>
-        <input class="custom_input" type="text" placeholder="Nombre de tu campaña {{$bd_externar}}" name="nombre_campana" required>
+        <input class="custom_input" type="text" placeholder="Nombre de tu campaña {{ $bd_externar }}"
+            name="nombre_campana" required>
         @if ($bd_externar == 0)
             <div class="text-layout" style="position: relative; top:-10px;">
                 ¿Qué tipo de clientes te interesan?
@@ -119,12 +120,12 @@
         formData.append('objetivo_lubot', document.querySelector('select[name="objetivo_lubot"]').value);
         formData.append('spbre_la_empresa', document.querySelector('textarea[name="spbre_la_empresa"]').value);
         formData.append('plan', document.querySelector('select[name="plan"]').value);
-          // Capturar nuevos campos
-          formData.append('como_me_llamo', document.querySelector('input[name="como_me_llamo"]').value);
+        // Capturar nuevos campos
+        formData.append('como_me_llamo', document.querySelector('input[name="como_me_llamo"]').value);
         if (bd_externar === 0) {
-          
+
             formData.append('segmento', document.querySelector('select[name="segmento"]').value);
-           
+
             // Capturar los valores que pueden repetirse y agruparlos en arrays de objetos
 
             let paisesArray = [];
@@ -324,6 +325,7 @@
 
     function loadOptions(selectElement, endpoint, nextSelectName, allOptionText = "Todos") {
         const id = selectElement.value;
+        console.log('id de loadOptions' ,id)
         const parentRow = selectElement.closest('.input-row');
         const nextSelect = parentRow.querySelector(`select[name="${nextSelectName}[]"]`);
         console.log(nextSelectName)
@@ -335,14 +337,17 @@
             $(nextSelect).selectpicker('refresh');
         } else {
             // Cargar opciones basadas en el ID seleccionado
-            fetch(`${endpoint}/${id}` , {
-                headers: {
-                    'Content-Type': 'application/json',
-                     'Authorization': `Bearer {{$bearer}}`
-                }
-            })
+            fetch(`${endpoint}/${id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer 8lbA52huHchhbswplKpH0OcUsr+QIgFZRkfdNsYUGhk=`,
+                        'ngrok-skip-browser-warning': 'true',
+                    }
+                })
                 .then(response => response.json())
                 .then(data => {
+                    console.log('data')
+                    console.log(data)
                     nextSelect.innerHTML = `<option value="0">${allOptionText}</option>`;
                     nextSelect.disabled = false;
                     console.log('carga')
@@ -364,9 +369,11 @@
     }
 
     function loadciudad(paisSelect) {
+        console.log('pais seleccionado' ,paisSelect.value)
 
         loadOptions(paisSelect, `{{ $loadCiudad }}`, 'ciudad');
-        console.log(`{{ $loadCiudad }}${paisSelect}`)
+        console.log(`{{ $loadCiudad }}/${paisSelect.value}`)
+        console.log("test cargando ciudad")
         const parentRow = paisSelect.closest('.input-row');
         const barrioSelect = parentRow.querySelector('select[name="barrio[]"]');
 
@@ -383,6 +390,8 @@
     }
 
     function loadBarrios(ciudadSelect) {
+        console.log('test cargando barrios')
+        console.log(ciudadSelect)
         loadOptions(ciudadSelect, `{{ $loadBarrios }}`, 'barrio');
     }
 
@@ -465,7 +474,7 @@
         //const nombre_campana = document.querySelector('input[name="nombre_campana"]');
         comprobacion()
         const validacion = JSON.parse(localStorage.getItem('formData'));
-       // console.log(validacion.barrios)
+        // console.log(validacion.barrios)
 
 
         console.log('bd_externa', bd_externar)
@@ -507,10 +516,10 @@
             ) {
                 modal_preguntas_y_respuesta.style.display = 'flex'
             }
-        }else{
-             modal_preguntas_y_respuesta.style.display = 'flex'
+        } else {
+            modal_preguntas_y_respuesta.style.display = 'flex'
         }
-       
+
 
 
 
@@ -523,7 +532,6 @@
             // Rellenar los campos individuales
 
             document.querySelector('input[name="nombre_campana"]').value = storedFormData.nombre_campana || '';
-
             document.querySelector('input[name="frecuencia"]').value = storedFormData.frecuencia || '';
             document.querySelector('select[name="temporalidad"]').value = storedFormData.temporalidad || '';
             document.querySelector('select[name="plan"]').value = storedFormData.plan || '';

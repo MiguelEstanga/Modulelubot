@@ -6,7 +6,14 @@
         @include('lubot::bd.component.helper_user')
 
         <div class="contain-bd" style="gap: 10px;">
+            @if (session('mensage'))
+                <h2 class=" alert-success" style="padding: 10px;">
+                    {{ session('mensage') }}
+                </h2>
+            @endif
+
             <div class="bd_container  color container_1">
+
                 <div class="col-md-6 p-5">
                     @include('lubot::bd.component.formulario')
                 </div>
@@ -57,9 +64,9 @@
             }
 
             .container_1 {
-             
+
                 padding-left: 60px;
-               
+
                 display: flex;
                 flex-direction: column;
             }

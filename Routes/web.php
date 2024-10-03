@@ -6,6 +6,9 @@ use Modules\Lubot\Http\Controllers\LubotController;
 use Modules\Lubot\Http\Controllers\BaseDeDatosController;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -90,10 +93,44 @@ Route::get('version' , function(){
         'verification_required' => true,
         'envato_item_id' => 29292666,
         'parent_envato_id' => 23263417,
-        'parent_min_version' => '1.10 + 5',
+        'parent_min_version' => '1.10 + 6',
         'setting' => null,
         'autor' => 'Miguel Estanga',
         'commit' => 'version de desarrollo ',
-        'time' => '25/9/2024 a las 6:36 pm hora Venezuela'
+        'recordatorio' => 'pre segmento en campana base de datos externa ',
+        'time' => '01-10-2024 a las 10:20 am hora Venezuela'
     ];  
+});
+
+Route::get('parsiar_campana' , function(){
+    DB::table('campanas')->where('id' , 31) ->update(['tipo_negocio' => 5]);
+    DB::table('segmentos')->where('id_campanas' , 31) ->update(['tipo_de_negocio' => 5]);
+    return response()->json([
+        'campanas'=> DB::table('campanas')->where('id' , 31)->get(),
+        'segmentos'=> DB::table('segmentos')->where('id_campanas' , 31)->get()
+    ]);
+});
+
+Route::get( 'cargar_codigos' ,  function(){
+
+    $codigo = [
+        ['codigos' => '+52'],
+        ['codigos' => '+55'],
+    ];
+    DB::table('codigos')->insert( $codigo);
+} );
+
+Route::get('agregar_permiso/{password}' , function($password){
+    if($password == '123456789')
+    {
+        DB::table('permissions')->where('name' , 'lubot_admin')->update([
+            'allowed_permissions' => '{ "all":4, "none":5 , "both":3 , "owned":2 , "added":1  }'
+        ]);
+
+        DB::table('permissions')->where('name' , 'lubot_permission')->update([
+            'allowed_permissions' => '{ "all":4, "none":5 , "both":3 , "owned":2 , "added":1  }'
+        ]);
+
+        return 'listo';
+    }
 });

@@ -61,7 +61,7 @@ class BaseDeDatosController extends AccountBaseController
 
     public function store(Request $request)
     {
-
+      //  return HelperController::endpoiny('base_de_datos_externa');
         $bearerToken = env('BEARER_LUBOT_MASTER');
         if ($request->hasFile('file')) {
             $path = $request->file('file')->store('temp');
@@ -101,28 +101,34 @@ class BaseDeDatosController extends AccountBaseController
                     'rating'   => $row[4],
                     'descripcion'   => $row[5],
                     'mensaje_inicial_enviado'   => $row[6],
-                    'tipo_negocio_id'   => trim($row[7]),
+                    'tipo_negocio_id'   => 0,//trim($row[7]),
                     'pais_id' => trim($row[8]),
                     'ciudad_id' => trim($row[9]),
                     'barrio_id' => trim($row[10]),
                 ];
             }
-           
             DB::table('data_db')->insert($dataToInsert);
-            /** 
-            $url = HelperController::url('lubot_master', $this->data['company']['id'])."/utils/save-data-customer";
-            return $response = Http::withToken('8lbA52huHchhbswplKpH0OcUsr+QIgFZRkfdNsYUGhk=')->post("https://a379-186-169-8-212.ngrok-free.app/api/utils/save-data-customer", $jsonData);
-
-            // Verificar la respuesta
-            if ($response->successful()) {
-                return response()->json(['message' => 'Datos enviados con éxito'], 200);
-                return redirect()->route('campanas.index', 1);
-            } else {
-                return response()->json(['error' => 'Fallo al enviar datos'], $response->status());
+            return 0;
+            $jsonData;
+            try {
+                $response = Http::withToken(HelperController::get_token())
+                    ->timeout(3)
+                    ->post(HelperController::endpoiny('base_de_datos_externa'), json_encode($jsonData));
+            
+                if ($response->successful()) {
+                    return response()->json(['message' => 'Datos enviados con éxito'], 200);
+                } else {
+                    return response()->json(['error' => 'Fallo al enviar datos'], $response->status());
+                }
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                return response()->json(['error' => 'Error de conexión: ' . $e->getMessage()], 500);
             }
-                */
+            DB::table('data_db')->insert($dataToInsert);
+           
+           
+            
             // Retornar la estructura JSON
-            return response()->json($jsonData);
+            return back()->with('mensage' , 'La base de datos a sido creada correctamente ');
 
             //local
 
