@@ -52,55 +52,8 @@ class HelperController extends AccountBaseController
     ];
     return  $data[$key];
   }
-  // filtro de paises 
-  public static function con_pais($nombre, $name = false)
-  {
-    try {
-      $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::url('lubot_master_url') . "pais/{$nombre}");
-      $data = json_decode($response, true);
-      if ($name) return $data['nombre'] ??  "todas";
-      return $data['id'] ?? 0;
-    } catch (Exception  $e) {
-      $response = $e;
-    }
-  }
 
-  public static function con_ciudad($nombre, $name = false)
-  {
-    try {
-      $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::url('lubot_master_url') . "ciudad/{$nombre}");
-      $data = json_decode($response, true);
-      if ($name) return $data['nombre'] ?? "todas";
-      return $data['id'] ?? 0;
-    } catch (Exception  $e) {
-      $response = $e;
-    }
-  }
-
-  public static function con_barrios($nombre, $name = false)
-  {
-    try {
-      $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::url('lubot_master_url') . "barrios/{$nombre}");
-      $data = json_decode($response, true);
-      if ($name) return $data['nombre'] ??  "todas";
-      return $data['id'] ?? 0;
-    } catch (Exception  $e) {
-      $response = $e;
-    }
-  }
-
-  public static function con_tipo_negocio($nombre, $name = false)
-  {
-    try {
-      $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::url('lubot_master_url') . "tipo_negocio/{$nombre}");
-      $data = json_decode($response, true);
-      if ($name) return $data['nombre'] ??  "todas";
-      return $data['id'] ?? 0;
-    } catch (Exception  $e) {
-      $response = $e;
-    }
-  }
-
+  //esto para las imagenes y archivos multimedias de cloudinary
   public static function public($key)
   {
     $data =  [
@@ -111,8 +64,6 @@ class HelperController extends AccountBaseController
   }
   public static function endpoiny($key, $id = 0)
   {
-
-
     $lubot_master = self::url('lubot_master');
     $data = [
       'ejecutable_inicio_sesion' => "{$lubot_master}/bot/start-session",
@@ -122,7 +73,8 @@ class HelperController extends AccountBaseController
       'segmentos'  => "{$lubot_master}/utils/business-type",
       'barrios'  => "{$lubot_master}/utils/neighborhoods",
       'ciudades'  => "{$lubot_master}/utils/cities",
-      'base_de_datos_externa' => "{$lubot_master}/utils/save-data-customer"
+      'base_de_datos_externa' => "{$lubot_master}/utils/save-data-customer",
+      'get_leads' => "{$lubot_master}/utils/get_clientes"
     ];
     return  $data[$key];
   }
@@ -149,7 +101,7 @@ class HelperController extends AccountBaseController
       );
     }
   }
-
+  //activar el rc
   public static function activar_rc($company_id, $campains_id)
   {
     Log::info('activar_ws');
@@ -171,7 +123,7 @@ class HelperController extends AccountBaseController
       );
     }
   }
-
+  //para calcular la proxima ejecucion del cromp
   public static function calculateNextRun($frequencyNumber, $frequencyUnit)
   {
     date_default_timezone_set('America/Bogota');
@@ -203,7 +155,7 @@ class HelperController extends AccountBaseController
     $data = json_decode($response, true);
     return $data['data'];
   }
-
+   //returno de tipo de negocios lubot_master
   public static function tipo_de_negocio()
   {
     $response =  Http::withHeaders(self::get_headers())
@@ -211,18 +163,27 @@ class HelperController extends AccountBaseController
     $data = json_decode($response, true);
     return $data['data'];
   }
-
+  /** 
+   //returno de barrios lubot_master
   public function barrios()
   {
-    $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::endpoiny('barrios'));
+    $response = Http::withHeaders(self::get_headers())->get(self::endpoiny('barrios'));
     $data = json_decode($response, true);
     return $data['data'];
   }
-
+   //returno de ciudades lubot_master
   public function ciudades()
   {
-    $response = Http::withHeaders(['Accept' => 'application/json'])->get(self::endpoiny('ciudades'));
+    $response = Http::withHeaders(self::get_headers())->get(self::endpoiny('ciudades'));
     $data = json_decode($response, true);
     return $data;
+  }
+*/
+  public static function get_leads($company_id)
+  {
+    $response = Http::withHeaders(self::get_headers())
+    ->get(HelperController::endpoiny('get_leads') . "/{$company_id}");
+
+    return json_decode($response , true );
   }
 }

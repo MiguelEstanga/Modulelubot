@@ -16,6 +16,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use  Modules\Lubot\Http\Controllers\HelperController;
 
+use Modules\Lubot\Http\Controllers\LeadsController;
 class CampanasController extends AccountBaseController
 {
     public function __construct()
@@ -37,17 +38,17 @@ class CampanasController extends AccountBaseController
 
     public function index($bd_externar)
     {
-        
-        $this->data['url_activar_rc'] = HelperController::endpoiny('ejecutable_inicio_sesion', $this->data['company']['id'])."/{$this->data['company']['id']}/rc";
+
+        $this->data['url_activar_rc'] = HelperController::endpoiny('ejecutable_inicio_sesion', $this->data['company']['id']) . "/{$this->data['company']['id']}/rc";
         $this->data['campana_store'] = route('campanas.stores', $bd_externar);
-        $this->data['bd_externar'] = $bd_externar;  
+        $this->data['bd_externar'] = $bd_externar;
         $this->data['config_lubot'] = DB::table('config_lubots')->where('id_companies', $this->data['company']['id'])->first();
         $this->data['companie'] =       $this->data['company']['id'];
-         $this->data['segmentos'] =      HelperController::tipo_de_negocio();
+        $this->data['segmentos'] =      HelperController::tipo_de_negocio();
         $this->data['objetivos'] =      DB::table('objetivos_lubot')->get() ?? [];
         $this->data['loadBarrios'] =    HelperController::endpoiny('barrios');
         $this->data['loadCiudad'] =     HelperController::endpoiny('ciudades');
-        $this->data['paises'] =        HelperController::paises() ;
+        $this->data['paises'] =        HelperController::paises();
         $this->data['bearer'] =        HelperController::get_token();
         $this->activeMenu = 'lubot';
         //return HelperController::endpoiny('activar_ejecutable_ws') . "/1/1/1";
@@ -191,7 +192,7 @@ class CampanasController extends AccountBaseController
             } catch (Exception  $e) {
                 $response = $e;
             }
-        }else{
+        } else {
             $segmento_id = DB::table('segmentos')->insertGetId(
                 [
                     'id_campanas' =>  $campana_id,
@@ -202,7 +203,6 @@ class CampanasController extends AccountBaseController
                     'cantidad' => 10
                 ]
             );
-
         }
 
 
@@ -220,9 +220,12 @@ class CampanasController extends AccountBaseController
         self::actualizarAsignacionSegmentos($campana_id);
 
         try {
-           
-            HelperController::activar_ws( $this->data['company']['id'] , $campana_id );
-            HelperController::activar_rc( $this->data['company']['id'] , $campana_id );
+            // Llama a la función para activar el WS
+            $response_ws = HelperController::activar_ws($this->data['company']['id'], $campana_id);
+            // Espera 10 segundos
+            sleep(10);
+            // Llama a la función para activar el RC
+            $response_rc = HelperController::activar_rc($this->data['company']['id'], $campana_id);
         } catch (Exception  $e) {
             return json_encode(
                 [
@@ -268,15 +271,14 @@ class CampanasController extends AccountBaseController
         $mensajesAsignados = [];
 
         // Variable para acumular los mensajes sobrantes
-        if($segmentosActivos === 0 )
-        {
+        if ($segmentosActivos === 0) {
             $mensajesSobrantes =  $frecuencia % 1; // Esto te da 2;
 
-        }else{
+        } else {
             $mensajesSobrantes =  $frecuencia % $segmentosActivos; // Esto te da 2;
 
         }
-        
+
         // Primera ronda de asignación de mensajes
         foreach ($segmentos as $segmento) {
             $cantidadRestante = $segmento->cantidad - $segmento->cantidad_consumida;
@@ -333,8 +335,9 @@ class CampanasController extends AccountBaseController
 
         self::actualizarAsignacionSegmentos($campana_id);
         try {
-            HelperController::activar_ws( $this->data['company']['id'] , $campana_id );
-            HelperController::activar_rc( $this->data['company']['id'] , $campana_id );
+            HelperController::activar_ws($this->data['company']['id'], $campana_id);
+            sleep(10);
+            HelperController::activar_rc($this->data['company']['id'], $campana_id);
             log::info('funcion reactivar');
         } catch (Exception  $e) {
             $response = $e;
@@ -349,7 +352,9 @@ class CampanasController extends AccountBaseController
 
     public function ver_campanas(CampanaTable $dataTable)
     {
-        //return  $this->data['company']['id'];
+        
+         LeadsController::leads(2); ;
+          $this->data['company']['id'];
         $this->activeMenu = 'Campañas';
         $campanas =  DB::table('campanas')->where('id_companies',  $this->data['company']['id'])->get();
         //return $prompt = DB::table('prompts')->where('id_campanas', 6)->first()->prompt;

@@ -97,7 +97,7 @@
         width: 85vw;
         gap: 10px;
         padding: 10px;
-        justify-content: center !important;
+        #justify-content: center !important;
         align-items: flex-start !important;
 
     }
@@ -279,7 +279,7 @@
         background-color: #ffffff;
         margin-top: 10px 0;
         font-family: Arial, sans-serif;
-       
+        
     }
 
     .code-part {

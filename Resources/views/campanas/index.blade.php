@@ -12,7 +12,7 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function() { 
             let start_rc = false;
             let intervalId;
             let countdownIntervalId;
@@ -22,7 +22,7 @@
             let bearer = `{{$bearer}}`;
             setTimeout(() => {
                 conten_loader_rc.style.display = 'none'
-            }, 3000);
+            }, 3000); 
 
             $('#cerrar_rc').on('click', function() {
                 modal_preguntas_y_respuesta.style.display = 'none';

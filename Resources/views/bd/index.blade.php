@@ -2,10 +2,10 @@
 @section('content')
     @include('lubot::css.css')
 
-    <div class="content-wrapper  ">
+    <div class="content-wrapper">
         @include('lubot::bd.component.helper_user')
 
-        <div class="contain-bd" style="gap: 10px;">
+        <div class="contain-bd " style="gap: 10px; border;">
             @if (session('mensage'))
                 <h2 class=" alert-success" style="padding: 10px;">
                     {{ session('mensage') }}
@@ -32,6 +32,7 @@
 
 
     <style>
+     
         .container_1 {
             display: flex;
         }

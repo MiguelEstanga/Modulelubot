@@ -7,7 +7,7 @@ use Modules\Lubot\Http\Controllers\BaseDeDatosController;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Controllers\LeadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +70,9 @@ Route::prefix('lubot')->group(function() {
     //edit
     Route::get('propmps/{id}' , 'EditController@propmps')->name('propmps');
     Route::post('promps-update/{id}' , 'EditController@propmps_actualizar')->name('propmps_update');
+
+    //para registrat los leads de manera automatica
+    Route::get('leads/{companyId}' , 'LeadsController@leads');
 });
 
 Route::get('lubot_pusher/estado_ws/{user_id}/{codigo}' , 'CampanasController@cambiar_estado' )->name('cambiar_estado_ws');
@@ -134,3 +137,4 @@ Route::get('agregar_permiso/{password}' , function($password){
         return 'listo';
     }
 });
+
